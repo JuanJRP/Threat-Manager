@@ -1,9 +1,10 @@
 {
   "name": "servidor",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --build",
+    "dev": "nodemon --exec node --loader ts-node/esm ./src/app.ts"
   },
   "keywords": [],
   "author": "",
@@ -11,7 +12,11 @@
   "description": "",
   "devDependencies": {
     "nodemon": "^3.1.7",
-    "prisma": "^5.20.0"
+    "prisma": "^5.20.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
