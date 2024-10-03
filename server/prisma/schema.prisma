@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-ts"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Threat {
+  id               Int      @id @default(autoincrement())
+  name             String   @db.VarChar(255)
+  description      String?  @db.VarChar(255)
+  actionPlan Action_plan[]
+  risk      Risk[]
+}
+
+model Action_plan {
+  id                   Int      @id @default(autoincrement())
+  residual_risk        String   @db.Text
+  treatment            String   @db.VarChar(255)
+  action_plan          String   @db.Text
+  responsible          String   @db.VarChar(255)
+  implementation_date  DateTime
+  control_tracking     String?  @db.Text
+  state                String   @db.VarChar(255)
+  monitoring           String?  @db.Text
+  monitor_date         DateTime
+  indicator            String?  @db.Text
+  risk_id              Int
+  risk            Risk          @relation(fields: [risk_id], references: [id])
+  Threat Threat[]
+}
+
+model Affect {
+  id                      Int      @id @default(autoincrement())
+  probability             Int
+  impact_id               Int
+  type                    String   @db.VarChar(255)
+  implementation          String?  @db.VarChar(255)
+  control_cualification   String?  @db.VarChar(255)
+  documented              String   @db.VarChar(255)
+  frequency               String?  @db.VarChar(255)
+  evidence                String?  @db.Text
+  impact    Impact   @relation(fields: [impact_id], references: [id])
+}
+
+model Impact {
+  id               Int      @id @default(autoincrement())
+  penalty          Int
+  impact           Int
+  risk_Zone        String   @db.VarChar(255)
+  probability      Int?
+  comment          String?  @db.Text
+  Affect Affect[]
+}
+
+model Risk {
+  id               Int      @id @default(autoincrement())
+  risk_type_id     Int
+  frequency        Int
+  threat_id        Int
+  vulnerability_id Int
+  asset_type_id    Int
+  risk_type       Risk_type @relation(fields: [risk_type_id], references: [id])
+  threat          Threat    @relation(fields: [threat_id], references: [id])
+  asset_type      Asset_type @relation(fields: [asset_type_id], references: [id])
+  vulnerability    Vulnerability @relation(fields: [vulnerability_id], references: [id])
+  actionPlans     Action_plan[]
+}
+
+model Risk_type {
+  id             Int     @id @default(autoincrement())
+  name           String  @db.VarChar(255)
+  description    String? @db.VarChar(255)
+  classification String? @db.VarChar(255)
+  risks   Risk[]
+}
+
+model Control {
+  id                      Int      @id @default(autoincrement())
+  code                    String   @db.Text
+  description_iso         String?  @db.Text
+  description_city_hall   String?  @db.Text
+  classification          Int?
+  vulnerabilities Vulnerability[]
+}
+
+model Vulnerability {
+  id                Int      @id @default(autoincrement())
+  control_code      Int
+  name              String?  @db.VarChar(255)
+  description       String?  @db.VarChar(255)
+  control       Control @relation(fields: [control_code], references: [id])
+  Risk Risk[]
+}
+
+model Asset {
+  id                      Int      @id @default(autoincrement())
+  process                 String?  @db.VarChar(255)
+  name                    String?  @db.VarChar(255)
+  description             String?  @db.VarChar(255)
+  asset_type              Int
+  format                  String?  @db.VarChar(255)
+  software_version        String?  @db.VarChar(255)
+  manufacturer            String?  @db.VarChar(255)
+  physical_location       String?  @db.VarChar(255)
+  electronic_location     String?  @db.VarChar(255)
+  responsible             String?  @db.VarChar(255)
+  user_acess              String?  @db.VarChar(255)
+  access_date             DateTime
+  state                   Boolean
+  entry_date              DateTime
+  retirement_data         DateTime
+  valuation_id            BigInt
+  asset_type_id  Asset_type @relation(fields: [asset_type], references: [id])
+}
+
+model Asset_type {
+  id               Int      @id @default(autoincrement())
+  name             String   @db.VarChar(255)
+  description      String?  @db.Text
+  assets      Asset[]
+  Risk Risk[]
+}
