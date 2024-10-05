@@ -29,6 +29,16 @@ app.get('/threats', async (req, res) => {
   }
 });
 
+app.get('/asset_types', async (req, res) => {
+  try {
+    const allAssetTypes = await prisma.asset_type.findMany();
+    res.json(allAssetTypes);
+  } catch (error) {
+    console.error('Error fetching asset types:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
