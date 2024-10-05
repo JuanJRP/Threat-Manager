@@ -11,121 +11,126 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-model Threat {
-  id               Int      @id @default(autoincrement())
-  name             String   @db.VarChar(255)
-  description      String?  @db.VarChar(255)
-  actionPlan Action_plan[]
-  risk      Risk[]
-}
-
-model Action_plan {
-  id                   Int      @id @default(autoincrement())
-  residual_risk        String   @db.Text
-  treatment            String   @db.VarChar(255)
-  action_plan          String   @db.Text
-  responsible          String   @db.VarChar(255)
-  implementation_date  DateTime
-  control_tracking     String?  @db.Text
-  state                String   @db.VarChar(255)
-  monitoring           String?  @db.Text
-  monitor_date         DateTime
-  indicator            String?  @db.Text
-  risk_id              Int
-  risk            Risk          @relation(fields: [risk_id], references: [id])
-  Threat Threat[]
-}
-
-model Affect {
-  id                      Int      @id @default(autoincrement())
-  probability             Int
-  impact_id               Int
-  type                    String   @db.VarChar(255)
-  implementation          String?  @db.VarChar(255)
-  control_cualification   String?  @db.VarChar(255)
-  documented              String   @db.VarChar(255)
-  frequency               String?  @db.VarChar(255)
-  evidence                String?  @db.Text
-  impact    Impact   @relation(fields: [impact_id], references: [id])
-}
-
-model Impact {
-  id               Int      @id @default(autoincrement())
-  penalty          Int
-  impact           Int
-  risk_Zone        String   @db.VarChar(255)
-  probability      Int?
-  comment          String?  @db.Text
-  Affect Affect[]
-}
-
-model Risk {
-  id               Int      @id @default(autoincrement())
-  risk_type_id     Int
-  frequency        Int
-  threat_id        Int
-  vulnerability_id Int
-  asset_type_id    Int
-  risk_type       Risk_type @relation(fields: [risk_type_id], references: [id])
-  threat          Threat    @relation(fields: [threat_id], references: [id])
-  asset_type      Asset_type @relation(fields: [asset_type_id], references: [id])
-  vulnerability    Vulnerability @relation(fields: [vulnerability_id], references: [id])
-  actionPlans     Action_plan[]
-}
-
-model Risk_type {
-  id             Int     @id @default(autoincrement())
-  name           String  @db.VarChar(255)
-  description    String? @db.VarChar(255)
-  classification String? @db.VarChar(255)
-  risks   Risk[]
-}
-
-model Control {
-  id                      Int      @id @default(autoincrement())
-  code                    String   @db.Text
-  description_iso         String?  @db.Text
-  description_city_hall   String?  @db.Text
-  classification          Int?
-  vulnerabilities Vulnerability[]
-}
-
-model Vulnerability {
-  id                Int      @id @default(autoincrement())
-  control_code      Int
-  name              String?  @db.VarChar(255)
-  description       String?  @db.VarChar(255)
-  control       Control @relation(fields: [control_code], references: [id])
-  Risk Risk[]
+  directUrl = env("DIRECT_URL")
 }
 
 model Asset {
-  id                      Int      @id @default(autoincrement())
-  process                 String?  @db.VarChar(255)
-  name                    String?  @db.VarChar(255)
-  description             String?  @db.VarChar(255)
-  asset_type              Int
-  format                  String?  @db.VarChar(255)
-  software_version        String?  @db.VarChar(255)
-  manufacturer            String?  @db.VarChar(255)
-  physical_location       String?  @db.VarChar(255)
-  electronic_location     String?  @db.VarChar(255)
-  responsible             String?  @db.VarChar(255)
-  user_acess              String?  @db.VarChar(255)
-  access_date             DateTime
-  state                   Boolean
-  entry_date              DateTime
-  retirement_data         DateTime
-  valuation_id            BigInt
-  asset_type_id  Asset_type @relation(fields: [asset_type], references: [id])
+  id                  Int        @id @default(autoincrement())
+  process             String     @db.VarChar(255)
+  name                String     @db.VarChar(255)
+  description         String     @db.VarChar(255)
+  asset_type          Asset_type @relation(fields: [asset_type_id], references: [id])
+  asset_type_id       Int
+  format              String     @db.VarChar(255) // CSV, TXT
+  software_version    String     @db.VarChar(255)
+  manufacturer        String     @db.VarChar(255)
+  physical_location   String     @db.VarChar(255)
+  electronic_location String     @db.VarChar(255)
+  responsible         String     @db.VarChar(255)
+  user_access         String     @db.VarChar(255)
+  access_date         DateTime
+  state               Boolean   // True = Activo, False = Inactivo
+  entry_date          DateTime
+  retirement_date     DateTime
+  availability        Boolean  // True = Disponible, False = No Disponible
+  integrity           String     @db.Text
+  confidentiality     String     @db.Text
 }
 
 model Asset_type {
-  id               Int      @id @default(autoincrement())
-  name             String   @db.VarChar(255)
-  description      String?  @db.Text
-  assets      Asset[]
-  Risk Risk[]
+  id          Int     @id @default(autoincrement())
+  name        String  @db.VarChar(255) // Hardware, Software, Información ENUM
+  description String  @db.Text
+  category    String  @db.VarChar(255) 
+  asset       Asset[]
+  risk        Risk[]
+}
+
+model Vulnerability {
+  id           Int     @id @default(autoincrement())
+  code         Control @relation(fields: [control_code], references: [code])
+  control_code Int
+  name         String  @db.VarChar(255)
+  description  String  @db.Text
+  risk         Risk[]
+}
+
+model Control {
+  id                    Int             @id @default(autoincrement())
+  code                  Int             @unique
+  description_iso       String          @db.Text
+  description_city_hall String          @db.Text
+  classification        Int
+  vulnerability         Vulnerability[]
+}
+
+model Affect {
+  id                    Int     @id @default(autoincrement())
+  probability           Int
+  impact                Impact  @relation(fields: [impact_id], references: [id])
+  impact_id             Int
+  type                  String  @db.VarChar(255) // Preventivo 25%, Correctivo 10%, Detectivo 15% ENUM
+  implementation        String  @db.VarChar(255) // automatico 25%, manual 15% ENUM
+  control_qualification Int // type + implementation
+  documented            Boolean // True = Documented, False = Not Documented
+  frequency             String  @db.VarChar(255)
+  evidence              String  @db.VarChar(255)
+}
+
+model Impact {
+  id          Int      @id @default(autoincrement())
+  penalty     Int
+  impact      Int
+  risk_zone   String?  @db.VarChar(255)
+  probability String?  @db.VarChar(255) // Baja, Media, Alta ENUM
+  comment     String?  @db.Text
+  affect      Affect[]
+  risk        Risk     @relation(fields: [risk_id], references: [id])
+  risk_id     Int
+}
+
+model Threath {
+  id          Int    @id @default(autoincrement())
+  name        String @db.VarChar(255)
+  description String @db.Text
+  risk        Risk[]
+}
+
+model Action_plan {
+  id                  Int      @id @default(autoincrement())
+  residual_risk       String   @db.Text
+  treatment           String   @db.VarChar(255)
+  action_plan         String   @db.Text
+  responsible         String   @db.VarChar(255)
+  implementation_date DateTime
+  control_tracking    String   @db.Text
+  state               String   @db.VarChar(255) // Pendiente, En proceso, Finalizado ENUM
+  monitoring          String   @db.Text
+  monitoring_date     DateTime
+  indicator           String   @db.Text
+  risk                Risk     @relation(fields: [risk_id], references: [id])
+  risk_id             Int
+}
+
+model Risk_type {
+  id             Int    @id @default(autoincrement())
+  name           String @db.VarChar(255)
+  description    String @db.Text
+  classification String @db.VarChar(255) // Alta, Media, Baja ENUM
+  risk           Risk[]
+}
+
+model Risk {
+  id               Int           @id @default(autoincrement())
+  risk_type        Risk_type     @relation(fields: [risk_type_id], references: [id])
+  risk_type_id     Int
+  frequency        Int?          
+  threat           Threath       @relation(fields: [threat_id], references: [id])
+  threat_id        Int
+  asset_type       Asset_type    @relation(fields: [asset_type_id], references: [id])
+  asset_type_id    Int
+  vulnerability    Vulnerability @relation(fields: [vulnerability_id], references: [id])
+  vulnerability_id Int
+  action_plan      Action_plan[]
+  impact           Impact[]
 }
