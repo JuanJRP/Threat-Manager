@@ -67,7 +67,7 @@ model Affect {
   id                    Int     @id @default(autoincrement())
   probability           Int?
   impact                Impact  @relation(fields: [impact_id], references: [id])
-  impact_id             Int
+  impact_id             Int     @unique
   type                  String  @db.VarChar(255) // Preventivo 25%, Correctivo 10%, Detectivo 15% ENUM
   implementation        String  @db.VarChar(255) // automatico 25%, manual 15% ENUM
   control_qualification Int // type + implementation
@@ -77,15 +77,15 @@ model Affect {
 }
 
 model Impact {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   penalty     Int
-  impact      String   @db.VarChar(255) // Leve, Menor, Moderado, Mayor, Catastrofico, no calificado ENUM 
-  probability String   @db.VarChar(255) // Muy Baja, Baja, Media, Alta, Muy Alta, no calificado ENUM
-  risk_zone   String   @db.VarChar(255) // No clasificado, Bajo, Moderado, Alto, Catastrofico, Extremo
-  comment     String   @db.Text
-  affect      Affect[]
-  risk        Risk     @relation(fields: [risk_id], references: [id])
-  risk_id     Int
+  impact      String  @db.VarChar(255) // Leve, Menor, Moderado, Mayor, Catastrofico, no calificado ENUM 
+  probability String  @db.VarChar(255) // Muy Baja, Baja, Media, Alta, Muy Alta, no calificado ENUM
+  risk_zone   String  @db.VarChar(255) // No clasificado, Bajo, Moderado, Alto, Catastrofico, Extremo
+  comment     String  @db.Text
+  affect      Affect?
+  risk        Risk    @relation(fields: [risk_id], references: [id])
+  risk_id     Int     @unique
 }
 
 model Threath {
@@ -108,7 +108,7 @@ model Action_plan {
   monitoring_date     DateTime?
   indicator           String?   @db.Text
   risk                Risk      @relation(fields: [risk_id], references: [id])
-  risk_id             Int
+  risk_id             Int       @unique
 }
 
 model Risk_type {
@@ -130,6 +130,6 @@ model Risk {
   asset_type_id    Int
   vulnerability    Vulnerability @relation(fields: [vulnerability_id], references: [id])
   vulnerability_id Int
-  action_plan      Action_plan[]
-  impact           Impact[]
+  action_plan      Action_plan?
+  impact           Impact?
 }
