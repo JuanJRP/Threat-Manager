@@ -1,8 +1,0 @@
-﻿process,name,description,asset_type_id,format,software_version,manufacturer,physical_location,electronic_location,responsible,user_access,access_date,state,entry_date,retirement_date,availability,integrity,confidentiality;;
-Proceso 1,Activo 1,Descripción 1,1,Formato 1,v1.0,Fabricante 1,Ubicación Física 1,Ubicación Electrónica 1,Responsable 1,Acceso Usuario 1,2024-01-01,true,2024-01-01,2025-01-01,true,Alta,Alta;;
-Proceso 2,Activo 2,Descripción 2,2,Formato 2,v2.0,Fabricante 2,Ubicación Física 2,Ubicación Electrónica 2,Responsable 2,Acceso Usuario 2,2024-02-01,false,2024-02-01,2025-02-01,false,Media,Media;;
-;;
-;;
-;;
-;;
-;;
