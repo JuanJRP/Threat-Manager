@@ -9,7 +9,7 @@ class RiskController {
       await riskServices.createRisk(risk);
       res.status(201).json({ message: "Riesgo creado correctamente" });
     } catch (err) {
-      res.status(500).json({ message: "Error al crear el riesgo" });
+      res.status(500).json({ message: "Error al crear el riesgo", err });
     }
   }
 
@@ -18,7 +18,7 @@ class RiskController {
       const risks = await riskServices.getAllRisks();
       res.status(200).json(risks);
     } catch (err) {
-      res.status(500).json({ message: "Error al obtener los riesgos" });
+      res.status(500).json({ message: "Error al obtener los riesgos" , err});
     }
   }
 
