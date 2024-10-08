@@ -68,5 +68,8 @@ npx prisma studio
 - **Manuela Martínez loaiza**
 
 ### Back-End
+
+### Back-End
 - **Jorge Alejandro Zapata Sanchez**
+- **Juan Jose Restrepo Pabon**
 - **Juan Jose Restrepo Pabon**
