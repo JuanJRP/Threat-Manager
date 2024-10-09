@@ -34,8 +34,12 @@ class AssetService {
 
   async DeleteManyAssetById(array: number[]): Promise<void> {
     await Promise.all(
-      array.map(async (item) => {
-        await this.assetRepository.DeleteAssetById(item);
+      array.map(async (id) => {
+        try {
+          await this.assetRepository.DeleteAssetById(id);
+        } catch (err) {
+          console.error(`Error deleting asset with id ${id}`);
+        }
       })
     );
   }

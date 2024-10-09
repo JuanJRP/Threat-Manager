@@ -2,11 +2,10 @@ export interface AssetDTO {
     process: string;
     name: string;
     description: string;
-    asset_type_id: number;
     format: string;
     software_version: string;
     manufacturer: string;
-    physical_location: string;
+    physical_location?: string;
     electronic_location: string;
     responsible: string;
     user_access: string;
@@ -17,4 +16,6 @@ export interface AssetDTO {
     availability: boolean;
     integrity: string;
     confidentiality: string;
+    asset_type_id: number;
+    user_id: number;
 }

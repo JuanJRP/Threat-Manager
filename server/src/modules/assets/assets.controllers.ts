@@ -44,6 +44,16 @@ export class AssetController {
     }
   }
 
+  async GetAssetByName(req: Request, res: Response): Promise<void> {
+    const name = req.params.name;
+    try {
+      const asset = await AssetService.GetAssetByName(name);
+      res.status(200).json(asset);
+    } catch (err) {
+      res.status(500).json({ message: "Error al obtener el Activo", err });
+    }
+  }
+
   async UpdateAssetById(req: Request, res: Response): Promise<void> {
     const id = parseInt(req.params.id);
     try {
@@ -61,31 +71,21 @@ export class AssetController {
       await AssetService.DeleteAssetById(id);
       res.status(200).json({ message: "Activo eliminado correctamente" });
     } catch (err) {
-      res.status(500).json({ message: "Error al eliminar el Activo", err });
+      res.status(500).json({ message: "Error al eliminar el Activo" });
     }
   }
 
   async DeleteManyAssetById(req: Request, res: Response): Promise<void> {
     try {
-      const array = JSON.parse(req.params.array);
-      if (!Array.isArray(array)) {
-        res.status(400).json({ message: "Invalid array format" });
+      const { ids } = req.body;
+      if (!Array.isArray(ids) || ids.length === 0) {
+        res.status(400).json({ message: "Invalid array format or empty array" });
+      }else{
+        await AssetService.DeleteManyAssetById(ids);
+        res.status(200).json({ message: "Assets deleted successfully" });
       }
-      await AssetService.DeleteManyAssetById(array);
-      res.status(200).json({ message: "Assets deleted successfully" });
     } catch (err) {
-      res.status(500).json({ message: "Error deleting assets", err });
+      res.status(500).json({ message: "Error deleting one or more assets" });
     }
   }
-
-  async GetAssetByName(req: Request, res: Response): Promise<void> {
-    const name = req.params.name;
-    try {
-      const asset = await AssetService.GetAssetByName(name);
-      res.status(200).json(asset);
-    } catch (err) {
-      res.status(500).json({ message: "Error al obtener el Activo", err });
-    }
-  }
-
 }
