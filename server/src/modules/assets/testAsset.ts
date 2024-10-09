@@ -3,16 +3,6 @@ import AssetService from './assets.services';
 
 const prisma = new PrismaClient();
 
-async function testGetAssetByType() {
-    const assetTypeId = 1;
-    try {
-        const GetAssetByType = await AssetService.GetAssetByType(assetTypeId);
-        console.log('Activo Listado por Type:', GetAssetByType);
-    } catch (error) {
-        console.error('Error al listado por Type:', error);
-    }
-}
-
 async function testDeleteManyAssetById() {
     const array = [5, 6];
     try {
@@ -25,8 +15,7 @@ async function testDeleteManyAssetById() {
 
 async function main() {
     //--------------------------------Importar CSV
-    //await testGetAssetByType();
-    //await testDeleteManyAssetById();
+    await testDeleteManyAssetById();
     await prisma.$disconnect();
 }
 

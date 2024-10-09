@@ -15,7 +15,8 @@ export class AssetRepository {
   }
 
   async GetAssetByName(name: string) {
-    return prisma.asset.findMany({ where: {
+    return prisma.asset.findMany({ 
+      where: {
         name: {
           equals: name, 
         },
@@ -33,9 +34,5 @@ export class AssetRepository {
 
   async DeleteAssetById(id: number) {
     return prisma.asset.delete({ where: { id } });
-  }
-
-  async DeleteMany(assetTypeId: number) {
-    return prisma.asset.deleteMany({ where: { asset_type_id: assetTypeId } });
   }
 }
