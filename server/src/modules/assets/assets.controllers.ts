@@ -1,44 +1,91 @@
+import AssetService from './assets.services';
 import { Request, Response } from 'express';
-import { AssetService } from './assets.services';
 import { AssetDTO } from './assets.models';
 
 export class AssetController {
-  private assetService = new AssetService();
 
-  async createAsset(req: Request, res: Response) {
+  async createAsset(req: Request, res: Response): Promise<void> {
     const assetDTO: AssetDTO = req.body;
-    const asset = await this.assetService.createAsset(assetDTO);
-    res.json(asset);
-  }
-
-  async GetAssetById(req: Request, res: Response) {
-    const asset = await this.assetService.GetAssetById(+req.params.id);
-    if (asset) {
-      res.json(asset);
-    } else {
-      res.status(404).send("Asset no encontrado");
+    try {
+      const asset = await AssetService.createAsset(assetDTO);
+      res.status(201).json(asset);
+    } catch (err) {
+      res.status(500).json({ message: "Error al crear el Activo", err });
     }
   }
 
-  async GetAssetByType(req: Request, res: Response) {
-    const assets = await this.assetService.GetAssetByType(+req.params.assetTypeId);
-    res.json(assets);
+  async getAllAssets(req: Request, res: Response): Promise<void> {
+    try {
+      const assets = await AssetService.getAllAssets();
+      res.status(200).json(assets);
+    } catch (err) {
+      res.status(500).json({ message: "Error al obtener los Activos", err });
+    }
   }
 
-  async UpdateAssetById(req: Request, res: Response) {
-    const assetDTO: Partial<AssetDTO> = req.body;
-    const asset = await this.assetService.UpdateAssetById(+req.params.id, assetDTO);
-    res.json(asset);
+  async GetAssetById(req: Request, res: Response): Promise<void> {
+    const id = parseInt(req.params.id);
+    try {
+      const asset = await AssetService.GetAssetById(id);
+      console.log(id);
+      res.status(200).json(asset);
+    } catch (err) {
+      res.status(500).json({ message: "Error al obtener el Activo", err });
+    }
   }
 
-  async DeleteAssetById(req: Request, res: Response) {
-    await this.assetService.DeleteAssetById(+req.params.id);
-    res.sendStatus(204);
+  async GetAssetByType(req: Request, res: Response): Promise<void> {
+    const id = parseInt(req.params.id);
+    try {
+      const assets = await AssetService.GetAssetByType(id);
+      res.status(200).json(assets);
+    }catch (err) {
+      res.status(500).json({ message: "Error al obtener el Activo", err });
+    }
   }
 
-  /*async eliminarVariosAssetsPorTipo(req: Request, res: Response) {
-    const { assetTypeId } = req.body;
-    await this.assetService.eliminarVariosAssetsPorTipo(assetTypeId);
-    res.sendStatus(204);
-  }*/
+  async UpdateAssetById(req: Request, res: Response): Promise<void> {
+    const id = parseInt(req.params.id);
+    try {
+      const assetDTO: Partial<AssetDTO> = req.body;
+      const asset = await AssetService.UpdateAssetById(id, assetDTO);
+      res.status(200).json(asset);
+    } catch (err) {
+      res.status(500).json({ message: "Error al actualizar el Activo", err });
+    }
+  }
+
+  async DeleteAssetById(req: Request, res: Response): Promise<void> {
+    const id = parseInt(req.params.id);
+    try {
+      await AssetService.DeleteAssetById(id);
+      res.status(200).json({ message: "Activo eliminado correctamente" });
+    } catch (err) {
+      res.status(500).json({ message: "Error al eliminar el Activo", err });
+    }
+  }
+
+  async DeleteManyAssetById(req: Request, res: Response): Promise<void> {
+    try {
+      const array = JSON.parse(req.params.array);
+      if (!Array.isArray(array)) {
+        res.status(400).json({ message: "Invalid array format" });
+      }
+      await AssetService.DeleteManyAssetById(array);
+      res.status(200).json({ message: "Assets deleted successfully" });
+    } catch (err) {
+      res.status(500).json({ message: "Error deleting assets", err });
+    }
+  }
+
+  async GetAssetByName(req: Request, res: Response): Promise<void> {
+    const name = req.params.name;
+    try {
+      const asset = await AssetService.GetAssetByName(name);
+      res.status(200).json(asset);
+    } catch (err) {
+      res.status(500).json({ message: "Error al obtener el Activo", err });
+    }
+  }
+
 }

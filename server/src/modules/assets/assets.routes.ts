@@ -4,11 +4,13 @@ import { AssetController } from './assets.controllers';
 const router = Router();
 const assetController = new AssetController();
 
-router.post('/assets', assetController.createAsset.bind(assetController));
-router.get('/assets/:id', assetController.GetAssetById.bind(assetController));
-router.get('/assets/type/:assetTypeId', assetController.GetAssetByType.bind(assetController));
-router.put('/assets/:id', assetController.UpdateAssetById.bind(assetController));
-router.delete('/assets/:id', assetController.DeleteAssetById.bind(assetController));
-//router.delete('/assets/type/:assetTypeId', assetController.eliminarVariosAssetsPorTipo.bind(assetController));
+router.post('/assets', assetController.createAsset);
+router.get('/assets', assetController.getAllAssets);
+router.get('/assets/:id', assetController.GetAssetById);
+//router.get('/assets/type/:assetTypeId', assetController.GetAssetByType);
+router.get('/assets/name/:name', assetController.GetAssetByName);
+router.put('/assets/:id', assetController.UpdateAssetById);
+router.delete('/assets/:id', assetController.DeleteAssetById);
+//router.delete('/assets/:array', assetController.DeleteManyAssetById);
 
 export default router;
