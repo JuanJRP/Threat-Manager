@@ -10,9 +10,9 @@ const app: Express = express();
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
+
 //app.use("/", risksRouter);
 app.use("/", assetsRouter);
 app.use("/", threathsRouter);
-
 
 export default app;

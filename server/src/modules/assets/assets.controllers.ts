@@ -35,7 +35,7 @@ export class AssetController {
   }
 
   async GetAssetByType(req: Request, res: Response): Promise<void> {
-    const id = parseInt(req.params.assetTypeId);
+    const id = parseInt(req.params.id);
     try {
       const assets = await AssetService.GetAssetByType(id);
       res.status(200).json(assets);
