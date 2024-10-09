@@ -27,6 +27,7 @@ El proyecto está dividido en dos partes principales: `client` y `server`.
   - `middlewares`: Middlewares utilizados en la aplicación.
   - `modules`: Módulos de la aplicación.
     - `app.ts`: Archivo principal del servidor.
+    - `index.ts`: Archivo donde se inicia el servidor
 - `.env`: Variables de entorno.
 - `README.md`: Este archivo.
 
@@ -66,10 +67,10 @@ npx prisma studio
 ### Front-End
 - **Daniel ALzate Zapata**
 - **Manuela Martínez loaiza**
-
-### Back-End
+- **David Alejandro Chica**
 
 ### Back-End
 - **Jorge Alejandro Zapata Sanchez**
 - **Juan Jose Restrepo Pabon**
 - **Juan Jose Restrepo Pabon**
+- **David Alejandro Chica**
