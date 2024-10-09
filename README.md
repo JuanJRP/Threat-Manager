@@ -72,5 +72,4 @@ npx prisma studio
 ### Back-End
 - **Jorge Alejandro Zapata Sanchez**
 - **Juan Jose Restrepo Pabon**
-- **Juan Jose Restrepo Pabon**
 - **David Alejandro Chica**

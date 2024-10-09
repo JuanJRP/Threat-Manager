@@ -1,19 +1,23 @@
 import { AssetRepository } from './assets.repository';
 import { AssetDTO } from './assets.models';
 
-export class AssetService {
+class AssetService {
   private assetRepository = new AssetRepository();
 
   async createAsset(asset: AssetDTO) {
     return this.assetRepository.createAsset(asset);
   }
 
+  async getAllAssets() {
+    return this.assetRepository.getAllAssets();
+  }
+
   async GetAssetById(id: number) {
     return this.assetRepository.GetAssetById(id);
   }
 
-  async GetAssetByName(nameString: string) {
-    return this.assetRepository.GetAssetByName(nameString);
+  async GetAssetByName(name: string) {
+    return this.assetRepository.GetAssetByName(name);
   }
 
   async GetAssetByType(assetTypeId: number) {
@@ -28,7 +32,7 @@ export class AssetService {
     return this.assetRepository.DeleteAssetById(id);
   }
 
-  async DeleteManyAssetById(array: number[]) {
+  async DeleteManyAssetById(array: number[]): Promise<void> {
     await Promise.all(
       array.map(async (item) => {
         await this.assetRepository.DeleteAssetById(item);
@@ -36,3 +40,5 @@ export class AssetService {
     );
   }
 }
+
+export default new AssetService();
