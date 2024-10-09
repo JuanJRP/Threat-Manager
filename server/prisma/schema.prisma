@@ -18,8 +18,6 @@ model Asset {
   process             String      @db.VarChar(255) // Misional, Estrategico, apoyo, Evaluacion y mejora ENUM
   name                String      @db.VarChar(255)
   description         String      @db.VarChar(255)
-  asset_type          Asset_type? @relation(fields: [asset_type_id], references: [id])
-  asset_type_id       Int
   format              String      @db.VarChar(255) // CSV, TXT
   software_version    String      @db.VarChar(255)
   manufacturer        String      @db.VarChar(255)
@@ -33,7 +31,12 @@ model Asset {
   retirement_date     DateTime?
   availability        Boolean // True = Disponible, False = No Disponible
   integrity           String      @db.Text
+  extra_atributes     Json?       @db.Json
   confidentiality     String      @db.Text
+  asset_type          Asset_type? @relation(fields: [asset_type_id], references: [id])
+  asset_type_id       Int
+  User                User        @relation(fields: [user_id], references: [id])
+  user_id             Int
 }
 
 model Asset_type {
@@ -59,33 +62,7 @@ model Control {
   code                  Int             @unique
   description_iso       String          @db.Text
   description_city_hall String          @db.Text
-  classification        Int? // ??? No lo veo en el diagrama
   vulnerability         Vulnerability[]
-}
-
-model Affect {
-  id                    Int     @id @default(autoincrement())
-  probability           Int?
-  impact                Impact  @relation(fields: [impact_id], references: [id])
-  impact_id             Int     @unique
-  type                  String  @db.VarChar(255) // Preventivo 25%, Correctivo 10%, Detectivo 15% ENUM
-  implementation        String  @db.VarChar(255) // automatico 25%, manual 15% ENUM
-  control_qualification Int // type + implementation
-  documented            Boolean // True = Documented, False = Not Documented
-  frequency             String  @db.VarChar(255)
-  evidence              String  @db.VarChar(255)
-}
-
-model Impact {
-  id          Int     @id @default(autoincrement())
-  penalty     Int
-  impact      String  @db.VarChar(255) // Leve, Menor, Moderado, Mayor, Catastrofico, no calificado ENUM 
-  probability String  @db.VarChar(255) // Muy Baja, Baja, Media, Alta, Muy Alta, no calificado ENUM
-  risk_zone   String  @db.VarChar(255) // No clasificado, Bajo, Moderado, Alto, Catastrofico, Extremo
-  comment     String  @db.Text
-  affect      Affect?
-  risk        Risk    @relation(fields: [risk_id], references: [id])
-  risk_id     Int     @unique
 }
 
 model Threath {
@@ -120,16 +97,41 @@ model Risk_type {
 }
 
 model Risk {
-  id               Int           @id @default(autoincrement())
-  risk_type        Risk_type     @relation(fields: [risk_type_id], references: [id])
-  risk_type_id     Int
-  frequency        Int?
-  threat           Threath       @relation(fields: [threat_id], references: [id])
-  threat_id        Int
-  asset_type       Asset_type    @relation(fields: [asset_type_id], references: [id])
-  asset_type_id    Int
-  vulnerability    Vulnerability @relation(fields: [vulnerability_id], references: [id])
-  vulnerability_id Int
-  action_plan      Action_plan?
-  impact           Impact?
+  id                     Int           @id @default(autoincrement())
+  risk_type              Risk_type     @relation(fields: [risk_type_id], references: [id])
+  risk_type_id           Int
+  frequency              Int
+  penalty                Int
+  inherent_probability   String?       @db.VarChar(255)
+  probability_percentage Decimal?
+  inherent_impact        String?       @db.VarChar(255)
+  impact_percentage      Decimal?
+  inherent_risk          String?       @db.VarChar(255)
+  control_type           String?       @db.VarChar(255)
+  implementation         String?       @db.VarChar(255)
+  control_qualificatiob  Decimal?
+  residual_probability   Decimal?
+  residual_impact        Decimal?
+  final_risk             String?       @db.VarChar(255)
+  threat                 Threath       @relation(fields: [threat_id], references: [id])
+  threat_id              Int
+  asset_type             Asset_type    @relation(fields: [asset_type_id], references: [id])
+  asset_type_id          Int
+  vulnerability          Vulnerability @relation(fields: [vulnerability_id], references: [id])
+  vulnerability_id       Int
+  action_plan            Action_plan?
+  user                   User          @relation(fields: [user_id], references: [id])
+  user_id                Int
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  username  String  @db.VarChar(255)
+  name      String  @db.VarChar(255)
+  last_name String  @db.VarChar(255)
+  email     String  @db.VarChar(255)
+  password  String  @db.VarChar(255)
+  role      String  @db.VarChar(255) // Administrador, Usuario ENUM
+  risk      Risk[]
+  asset     Asset[]
 }
