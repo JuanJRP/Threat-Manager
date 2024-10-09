@@ -17,6 +17,7 @@ export class AssetRepository {
   async GetAssetByName(name: string) {
     return prisma.asset.findMany({ 
       where: {
+
         name: {
           equals: name, 
         },
