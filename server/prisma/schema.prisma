@@ -33,6 +33,7 @@ model Asset {
   integrity           String      @db.Text
   extra_atributes     Json?       @db.Json
   confidentiality     String      @db.Text
+  criticality         String      @db.Text
   asset_type          Asset_type? @relation(fields: [asset_type_id], references: [id])
   asset_type_id       Int
   User                User        @relation(fields: [user_id], references: [id])
@@ -124,14 +125,20 @@ model Risk {
   user_id                Int
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 model User {
-  id        Int     @id @default(autoincrement())
-  username  String  @db.VarChar(255)
-  name      String  @db.VarChar(255)
-  last_name String  @db.VarChar(255)
-  email     String  @db.VarChar(255)
-  password  String  @db.VarChar(255)
-  role      String  @db.VarChar(255) // Administrador, Usuario ENUM
-  risk      Risk[]
-  asset     Asset[]
+  id            Int     @id @default(autoincrement())
+  username      String  @unique @db.VarChar(255)
+  first_name    String  @db.VarChar(255)
+  last_name     String  @db.VarChar(255)
+  email         String  @unique @db.VarChar(255)
+  password      String  @db.VarChar(255)
+  role          Role[]  @default([USER])
+  refresh_token String  @default("")
+  risk          Risk[]
+  asset         Asset[]
 }

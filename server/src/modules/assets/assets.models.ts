@@ -16,6 +16,7 @@ export interface AssetDTO {
     availability: boolean;
     integrity: string;
     confidentiality: string;
+    criticality: string;
     asset_type_id: number;
     user_id: number;
 }
