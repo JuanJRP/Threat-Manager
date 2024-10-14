@@ -5,12 +5,14 @@ import { threathsRouter } from "./modules/threats/threats.routes";
 import Auth from "./middlewares/Auth";
 import { Role } from "@prisma/client";
 import { AuthRoutes } from "./modules/auth/AuthRoutes";
+import { actionPlanRouter } from "./modules/action_plan/action_plan.routes";
 
 const router = Router();
 const authMiddleware = new Auth();
 
 router.use("/assets", assetsRouter);
 router.use("/threat", threathsRouter);
+router.use("/action-plans", actionPlanRouter)
 router.use(
   "/users",
   authMiddleware.verifyToken,
