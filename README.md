@@ -73,3 +73,6 @@ npx prisma studio
 - **Jorge Alejandro Zapata Sanchez**
 - **Juan Jose Restrepo Pabon**
 - **David Alejandro Chica**
+- **Jose David Rivas Londoño**
+- **Eyder Fabian Leiton Usuga**
+- **Simón Oquendo Rivera**
