@@ -1,11 +1,11 @@
 import AssetService from './assets.services';
 import { Request, Response } from 'express';
-import { AssetDTO } from './assets.models';
+import type { Prisma } from '@prisma/client';
 
 export class AssetController {
 
   async createAsset(req: Request, res: Response): Promise<void> {
-    const assetDTO: AssetDTO = req.body;
+    const assetDTO: Prisma.AssetCreateInput = req.body;
     try {
       const asset = await AssetService.createAsset(assetDTO);
       res.status(201).json(asset);
@@ -35,7 +35,7 @@ export class AssetController {
   }
 
   async GetAssetByType(req: Request, res: Response): Promise<void> {
-    const id = parseInt(req.params.id);
+    const id = parseInt(req.params.assetTypeId);
     try {
       const assets = await AssetService.GetAssetByType(id);
       res.status(200).json(assets);
@@ -57,7 +57,7 @@ export class AssetController {
   async UpdateAssetById(req: Request, res: Response): Promise<void> {
     const id = parseInt(req.params.id);
     try {
-      const assetDTO: Partial<AssetDTO> = req.body;
+      const assetDTO: Prisma.AssetUpdateInput = req.body;
       const asset = await AssetService.UpdateAssetById(id, assetDTO);
       res.status(200).json(asset);
     } catch (err) {
