@@ -74,3 +74,4 @@ npx prisma studio
 - **Juan Jose Restrepo Pabon**
 - **David Alejandro Chica**
 - **Jose David Rivas Londoño**
+- **Eyder Fabian Leiton Usuga**
