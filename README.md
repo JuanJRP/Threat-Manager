@@ -75,3 +75,4 @@ npx prisma studio
 - **David Alejandro Chica**
 - **Jose David Rivas Londoño**
 - **Eyder Fabian Leiton Usuga**
+- **Simón Oquendo Rivera**
