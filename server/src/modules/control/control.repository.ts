@@ -1,52 +1,41 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../database/prisma';
+import { ControlDTO, UpdateControlDTO } from './control.models';
 
-const prisma = new PrismaClient();
+export class ControlRepository {
+  async createControl(control: ControlDTO) {
+    return prisma.control.create({ data: control });
+  }
 
-// Crear control
-export const createControl = async (data: any) => {
-    return prisma.control.create({
-        data,
-    });
-};
-
-// Importar varios controles
-export const importControls = async (data: any[]) => {
-    return prisma.control.createMany({
-        data,
-    });
-};
-
-// Consultar controles asociados a vulnerabilidades
-export const getControls = async () => {
+  async getAllControls() {
     return prisma.control.findMany({
-        include: {
-            vulnerability: true,  // Incluir las vulnerabilidades asociadas
-        },
+      include: { vulnerability: true },  // Include vulnerabilities
     });
-};
+  }
 
-// Modificar control
-export const updateControl = async (id: number, data: any) => {
+  async getControlById(id: number) {
+    return prisma.control.findUnique({
+      where: { id },
+      include: { vulnerability: true },  // Include vulnerabilities
+    });
+  }
+
+  async getControlByCode(code: number) {
+    return prisma.control.findUnique({
+      where: { code },
+      include: { vulnerability: true },  // Include vulnerabilities
+    });
+  }
+
+  async updateControlById(id: number, data: UpdateControlDTO) {
     return prisma.control.update({
-        where: { id },
-        data,
+      where: { id },
+      data,
     });
-};
+  }
 
-// Eliminar control
-export const deleteControl = async (id: number) => {
+  async deleteControlById(id: number) {
     return prisma.control.delete({
-        where: { id },
+      where: { id },
     });
-};
-
-// Eliminar varios controles
-export const deleteControls = async (ids: number[]) => {
-    return prisma.control.deleteMany({
-        where: {
-            id: {
-                in: ids,
-            },
-        },
-    });
-};
+  }
+}

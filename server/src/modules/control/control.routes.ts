@@ -1,20 +1,13 @@
 import { Router } from 'express';
-import {
-    createControl,
-    importControls,
-    getControls,
-    updateControl,
-    deleteControl,
-    deleteControls,
-} from './control.controllers';
+import { ControlController } from './control.controllers';
 
 const router = Router();
+const controlController = new ControlController();
 
-router.post('/', createControl);
-router.post('/import', importControls);
-router.get('/', getControls);
-router.put('/:id', updateControl);
-router.delete('/:id', deleteControl);
-router.delete('/', deleteControls);
+router.post('/', controlController.createControl);
+router.get('/', controlController.getAllControls);
+router.get('/:id', controlController.getControlById);
+router.put('/:id', controlController.updateControlById);
+router.delete('/:id', controlController.deleteControlById);
 
-export default router;
+export { router as controlsRouter };

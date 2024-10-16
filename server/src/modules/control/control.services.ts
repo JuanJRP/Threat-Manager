@@ -1,31 +1,32 @@
-import * as controlRepository from './control.repository';
+import { ControlRepository } from './control.repository';
+import { ControlDTO, UpdateControlDTO } from './control.models';
 
-// Crear control
-export const createControl = async (data: any) => {
-    return controlRepository.createControl(data);
-};
+class ControlService {
+  private controlRepository = new ControlRepository();
 
-// Importar varios controles
-export const importControls = async (data: any[]) => {
-    return controlRepository.importControls(data);
-};
+  async createControl(control: ControlDTO) {
+    return this.controlRepository.createControl(control);
+  }
 
-// Consultar controles asociados a vulnerabilidades
-export const getControls = async () => {
-    return controlRepository.getControls();
-};
+  async getAllControls() {
+    return this.controlRepository.getAllControls();
+  }
 
-// Modificar control
-export const updateControl = async (id: number, data: any) => {
-    return controlRepository.updateControl(id, data);
-};
+  async getControlById(id: number) {
+    return this.controlRepository.getControlById(id);
+  }
 
-// Eliminar control
-export const deleteControl = async (id: number) => {
-    return controlRepository.deleteControl(id);
-};
+  async getControlByCode(code: number) {
+    return this.controlRepository.getControlByCode(code);
+  }
 
-// Eliminar varios controles
-export const deleteControls = async (ids: number[]) => {
-    return controlRepository.deleteControls(ids);
-};
+  async updateControlById(id: number, data: UpdateControlDTO) {
+    return this.controlRepository.updateControlById(id, data);
+  }
+
+  async deleteControlById(id: number) {
+    return this.controlRepository.deleteControlById(id);
+  }
+}
+
+export default new ControlService();

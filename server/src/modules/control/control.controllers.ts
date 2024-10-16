@@ -1,66 +1,55 @@
+import ControlService from './control.services';
+import { ControlDTO, UpdateControlDTO } from './control.models';
 import { Request, Response } from 'express';
-import * as controlService from './control.services';
 
-// Crear control
-export const createControl = async (req: Request, res: Response) => {
+export class ControlController {
+  async createControl(req: Request, res: Response): Promise<void> {
+    const controlDTO: ControlDTO = req.body;
     try {
-        const control = await controlService.createControl(req.body);
-        res.status(201).json(control);
-    } catch (error) {
-        console.error("Error al crear el control:", error);  // Log del error
-        res.status(500).json({ message: 'Error al crear el control', error });
+      const control = await ControlService.createControl(controlDTO);
+      res.status(201).json(control);
+    } catch (err) {
+      res.status(500).json({ message: 'Error creating Control', err });
     }
-};
+  }
 
-// Importar varios controles
-export const importControls = async (req: Request, res: Response) => {
+  async getAllControls(req: Request, res: Response): Promise<void> {
     try {
-        const controls = await controlService.importControls(req.body);
-        res.status(201).json(controls);
-    } catch (error) {
-        res.status(500).json({ message: 'Error al importar los controles', error });
+      const controls = await ControlService.getAllControls();
+      res.status(200).json(controls);
+    } catch (err) {
+      res.status(500).json({ message: 'Error fetching Controls', err });
     }
-};
+  }
 
-// Consultar controles asociados a vulnerabilidades
-export const getControls = async (req: Request, res: Response) => {
+  async getControlById(req: Request, res: Response): Promise<void> {
+    const id = parseInt(req.params.id);
     try {
-        const controls = await controlService.getControls();
-        res.status(200).json(controls);
-    } catch (error) {
-        res.status(500).json({ message: 'Error al consultar los controles', error });
+      const control = await ControlService.getControlById(id);
+      res.status(200).json(control);
+    } catch (err) {
+      res.status(500).json({ message: 'Error fetching Control', err });
     }
-};
+  }
 
-// Modificar control
-export const updateControl = async (req: Request, res: Response) => {
+  async updateControlById(req: Request, res: Response): Promise<void> {
+    const id = parseInt(req.params.id);
+    const data: Partial<UpdateControlDTO> = req.body;
     try {
-        const id = parseInt(req.params.id); 
-        const control = await controlService.updateControl(id, req.body);
-        res.status(200).json(control);
-    } catch (error) {
-        res.status(500).json({ message: 'Error al modificar el control', error });
+      const control = await ControlService.updateControlById(id, data);
+      res.status(200).json(control);
+    } catch (err) {
+      res.status(500).json({ message: 'Error updating Control', err });
     }
-};
+  }
 
-// Eliminar control
-export const deleteControl = async (req: Request, res: Response) => {
+  async deleteControlById(req: Request, res: Response): Promise<void> {
+    const id = parseInt(req.params.id);
     try {
-        const id = parseInt(req.params.id);  // Convertir req.params.id a número
-        await controlService.deleteControl(id);
-        res.status(200).json({ message: 'Control eliminado' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error al eliminar el control', error });
+      await ControlService.deleteControlById(id);
+      res.status(200).json({ message: 'Control deleted successfully' });
+    } catch (err) {
+      res.status(500).json({ message: 'Error deleting Control', err });
     }
-};
-
-// Eliminar varios controles
-export const deleteControls = async (req: Request, res: Response) => {
-    try {
-        const ids = req.body.ids.map((id: string) => parseInt(id));  // Convertir a número cada id
-        await controlService.deleteControls(ids);
-        res.status(200).json({ message: 'Controles eliminados' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error al eliminar los controles', error });
-    }
-};
+  }
+}
