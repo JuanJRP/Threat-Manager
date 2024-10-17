@@ -21,17 +21,20 @@ A robust Express.js application for managing security risks, assets, threats, an
 ## Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/DavidChicaH/gestorDeAmenazas.git
 cd ./server
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Set up the database and run migrations:
+
 ```bash
 npx prisma generate
 ```
@@ -74,6 +77,7 @@ npx prisma generate
 ## Middleware
 
 The application includes several middleware functions:
+
 - CORS handling
 - Request logging (morgan)
 - JSON body parsing
