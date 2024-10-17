@@ -18,7 +18,12 @@ const ErrorFactory = (err: Error, res: Response) => {
   return null;
 };
 
-const ErrorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
+const ErrorHandler = (
+  err: Error,
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
   const handledError = ErrorFactory(err, res);
   if (!handledError) {
     console.log(JSON.stringify(`Unhandled error: ${err}`, null, 2));

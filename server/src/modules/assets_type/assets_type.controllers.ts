@@ -11,7 +11,9 @@ export class AssetTypeController {
       const assetType = await service.createAssetType(data);
       res.status(201).json(assetType);
     } catch (error) {
-      res.status(500).json({ message: "Error al crear el tipo de activo", error });
+      res
+        .status(500)
+        .json({ message: "Error al crear el tipo de activo", error });
     }
   }
 
@@ -26,7 +28,9 @@ export class AssetTypeController {
         res.status(404).json({ message: "Tipo de activo no encontrado" });
       }
     } catch (error) {
-      res.status(500).json({ message: "Error al obtener el tipo de activo", error });
+      res
+        .status(500)
+        .json({ message: "Error al obtener el tipo de activo", error });
     }
   }
 
@@ -36,7 +40,9 @@ export class AssetTypeController {
       const assetTypes = await service.getAllAssetTypes();
       res.status(200).json(assetTypes);
     } catch (error) {
-      res.status(500).json({ message: "Error al obtener los tipos de activos", error });
+      res
+        .status(500)
+        .json({ message: "Error al obtener los tipos de activos", error });
     }
   }
 
@@ -48,7 +54,9 @@ export class AssetTypeController {
       const updatedAssetType = await service.updateAssetType(id, data);
       res.status(200).json(updatedAssetType);
     } catch (error) {
-      res.status(500).json({ message: "Error al actualizar el tipo de activo", error });
+      res
+        .status(500)
+        .json({ message: "Error al actualizar el tipo de activo", error });
     }
   }
 
@@ -59,7 +67,9 @@ export class AssetTypeController {
       await service.deleteAssetType(id);
       res.status(200).json({ message: "El id fue borrado correctamente" });
     } catch (error) {
-      res.status(500).json({ message: "Error al eliminar el tipo de activo", error });
+      res
+        .status(500)
+        .json({ message: "Error al eliminar el tipo de activo", error });
     }
   }
 }

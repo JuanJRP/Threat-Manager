@@ -2,7 +2,7 @@ import { Router } from "express";
 import { userRoutes } from "./modules/user/user.routes";
 import { assetsRouter } from "./modules/assets/assets.routes";
 import { threathsRouter } from "./modules/threats/threats.routes";
-import { risk_typeRouter } from './modules/risk_type/risk_type.routes';
+import { risk_typeRouter } from "./modules/risk_type/risk_type.routes";
 import { assetTypeRoutes } from "./modules/assets_type/assets_type.routes";
 import Auth from "./middlewares/Auth";
 import { Role } from "@prisma/client";

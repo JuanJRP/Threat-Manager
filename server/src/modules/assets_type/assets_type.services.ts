@@ -5,7 +5,7 @@ const repository = new AssetTypeRepository();
 
 export class AssetTypeService {
   // Crear un nuevo tipo de activo
-  async createAssetType(data: Omit<AssetTypeDTO, 'id'>): Promise<AssetTypeDTO> {
+  async createAssetType(data: Omit<AssetTypeDTO, "id">): Promise<AssetTypeDTO> {
     return await repository.createAssetType(data);
   }
 
@@ -20,7 +20,10 @@ export class AssetTypeService {
   }
 
   // Actualizar un tipo de activo
-  async updateAssetType(id: number, data: Partial<AssetTypeDTO>): Promise<AssetTypeDTO> {
+  async updateAssetType(
+    id: number,
+    data: Partial<AssetTypeDTO>
+  ): Promise<AssetTypeDTO> {
     return await repository.updateAssetType(id, data);
   }
 
