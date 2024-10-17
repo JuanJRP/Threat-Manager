@@ -62,7 +62,11 @@ const Form: React.FC<FormProps> = ({
         className="border rounded w-full p-2"
         required
       />
+      <label htmlFor="classification" className="block text-sm font-medium text-gray-700">
+        Clasificación
+      </label>
       <select
+        id="classification"
         name="classification"
         value={formData.classification}
         onChange={handleChange}

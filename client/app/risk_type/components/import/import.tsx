@@ -53,12 +53,14 @@ const Import: React.FC<ImportProps> = ({ isOpen, onClose, onImport }) => {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Importar Tipos de Riesgos">
-      <p>Subir datos en formato CSV:</p>
+      <label htmlFor="csvFile" className="block mb-2">Subir datos en formato CSV:</label>
       <input 
+        id="csvFile"
         type="file" 
         accept=".csv" 
         onChange={(e) => setImportFile(e.target.files ? e.target.files[0] : null)} 
         className="border rounded p-1 w-full" 
+        placeholder="Selecciona un archivo CSV"
       />
       <div className="flex justify-between mt-6 w-full">
         <Button 
