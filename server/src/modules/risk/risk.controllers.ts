@@ -1,60 +1,85 @@
-import { Request, Response } from "express";
-import riskServices from "./risk.services";
-import Risk from "./risk.models";
+import { NextFunction, Request, Response } from "express";
+import RiskService from "./risk.services";
+import { Prisma } from "@prisma/client";
+
+const riskService = new RiskService();
 
 class RiskController {
-  async createRisk(req: Request, res: Response): Promise<void> {
-    const risk: Risk = req.body;
+  private readonly riskService: RiskService;
+  constructor() {
+    this.riskService = riskService;
+  }
+
+  async createRisk(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const risk: Prisma.RiskCreateInput = req.body;
     try {
-      await riskServices.createRisk(risk);
-      res.status(201).json({ message: "Riesgo creado correctamente" });
+      await this.riskService.createRisk(risk);
+      res.status(201).json({ risk });
     } catch (err) {
-      res.status(500).json({ message: "Error al crear el riesgo", err });
+      next(err);
     }
   }
 
-  async getAllRisks(req: Request, res: Response): Promise<void> {
+  async getAllRisks(
+    _req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     try {
-      const risks = await riskServices.getAllRisks();
-      res.status(200).json(risks);
+      const risks = await this.riskService.getAllRisks();
+      res.status(200).json({ risks });
     } catch (err) {
-      res.status(500).json({ message: "Error al obtener los riesgos" , err});
+      next(err);
     }
   }
 
-  async getRiskById(req: Request, res: Response): Promise<void> {
+  async getRiskById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const id = parseInt(req.params.id);
+    try {
+      const risk = await this.riskService.getRiskById(id);
+      res.status(200).json({ risk });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async updateRisk(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    const id: number = parseInt(req.params.id);
+    const risk: Prisma.RiskUpdateInput = req.body;
+    try {
+      const newRisk = await this.riskService.updateRisk(id, risk);
+      res.status(200).json({ newRisk });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async deleteRisk(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
     const id = parseInt(req.params.id);
 
     try {
-      const risk = await riskServices.getRiskById(id);
-      res.status(200).json(risk);
+      await this.riskService.deleteRisk(id);
+      res.status(204).json({ message: "Riesgo eliminado correctamente" });
     } catch (err) {
-      res.status(500).json({ message: "Error al obtener el riesgo" });
-    }
-  }
-
-  async updateRisk(req: Request, res: Response): Promise<void> {
-    const id = parseInt(req.params.id);
-    const frequency = parseInt(req.body.frequency);
-
-    try {
-      await riskServices.updateRisk(id, frequency);
-      res.status(200).json({ message: "Riesgo actualizado correctamente" });
-    } catch (err) {
-      res.status(500).json({ message: "Error al actualizar el riesgo" });
-    }
-  }
-
-  async deleteRisk(req: Request, res: Response): Promise<void> {
-    const id = parseInt(req.params.id);
-
-    try {
-      await riskServices.deleteRisk(id);
-      res.status(200).json({ message: "Riesgo eliminado correctamente" });
-    } catch (err) {
-      res.status(500).json({ message: "Error al eliminar el riesgo" });
+      next(err);
     }
   }
 }
 
-export default new RiskController();
+export default RiskController;
