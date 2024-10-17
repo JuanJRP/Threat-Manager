@@ -24,11 +24,11 @@ class ActionPlanService {
   async getByKey(
     key: keyof Prisma.Action_planWhereInput,
     value: Prisma.Action_planWhereInput[keyof Prisma.Action_planWhereInput]
-  ) {                                     
+  ) {
     return await this.actionPlanRepository.getByKey(key, value);
   }
-                                                                                      
-  async create(action_plan: Action_planDTO) {               
+
+  async create(action_plan: Action_planDTO) {
     return await this.actionPlanRepository.create(action_plan);
   }
 

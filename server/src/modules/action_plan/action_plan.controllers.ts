@@ -20,7 +20,9 @@ export class ActionPlanController {
 
   async GetPlanActionById(req: Request, res: Response, next: NextFunction) {
     try {
-      const actionPlan = await this.actionPlanService.getById(Number(req.params.id));
+      const actionPlan = await this.actionPlanService.getById(
+        Number(req.params.id)
+      );
       res.status(200).json({ actionPlan });
     } catch (err) {
       next(err);

@@ -1,8 +1,7 @@
-import { RiskTypeDTO } from './risk_type.models';
-import prisma from '../../database/prisma'; // Importando Prisma
+import { RiskTypeDTO } from "./risk_type.models";
+import prisma from "../../database/prisma"; // Importando Prisma
 
 export class RiskTypeRepository {
-  
   async createRiskType(riskType: RiskTypeDTO): Promise<RiskTypeDTO> {
     const newRiskType = await prisma.risk_type.create({
       data: riskType,
@@ -20,7 +19,10 @@ export class RiskTypeRepository {
     });
   }
 
-  async updateRiskType(id: number, data: Partial<RiskTypeDTO>): Promise<RiskTypeDTO | null> {
+  async updateRiskType(
+    id: number,
+    data: Partial<RiskTypeDTO>
+  ): Promise<RiskTypeDTO | null> {
     const updatedRiskType = await prisma.risk_type.update({
       where: { id },
       data: data,
@@ -34,6 +36,3 @@ export class RiskTypeRepository {
     });
   }
 }
-
-
-
