@@ -10,7 +10,7 @@ const ValidateRequest = (validationSchema: z.Schema) => {
     } catch (err) {
       if (err instanceof ZodError) {
         const errorMessages = err.errors.map(
-          (error) => `${error.path.join(".")} is ${error.message.toLowerCase()}`
+          (error) => `${error.message.toLowerCase()}`
         );
         next(new HttpValidationExceptions(errorMessages));
       }
