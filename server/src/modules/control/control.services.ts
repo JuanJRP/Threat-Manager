@@ -1,5 +1,5 @@
-import { ControlRepository } from './control.repository';
-import { ControlDTO, UpdateControlDTO } from './control.models';
+import { ControlRepository } from "./control.repository";
+import { ControlDTO, UpdateControlDTO } from "./control.models";
 
 class ControlService {
   private controlRepository = new ControlRepository();

@@ -1,6 +1,6 @@
-import ControlService from './control.services';
-import { ControlDTO, UpdateControlDTO } from './control.models';
-import { Request, Response } from 'express';
+import ControlService from "./control.services";
+import { ControlDTO, UpdateControlDTO } from "./control.models";
+import { Request, Response } from "express";
 
 export class ControlController {
   async createControl(req: Request, res: Response): Promise<void> {
@@ -9,7 +9,7 @@ export class ControlController {
       const control = await ControlService.createControl(controlDTO);
       res.status(201).json(control);
     } catch (err) {
-      res.status(500).json({ message: 'Error creating Control', err });
+      res.status(500).json({ message: "Error creating Control", err });
     }
   }
 
@@ -18,7 +18,7 @@ export class ControlController {
       const controls = await ControlService.getAllControls();
       res.status(200).json(controls);
     } catch (err) {
-      res.status(500).json({ message: 'Error fetching Controls', err });
+      res.status(500).json({ message: "Error fetching Controls", err });
     }
   }
 
@@ -28,7 +28,7 @@ export class ControlController {
       const control = await ControlService.getControlById(id);
       res.status(200).json(control);
     } catch (err) {
-      res.status(500).json({ message: 'Error fetching Control', err });
+      res.status(500).json({ message: "Error fetching Control", err });
     }
   }
 
@@ -39,7 +39,7 @@ export class ControlController {
       const control = await ControlService.updateControlById(id, data);
       res.status(200).json(control);
     } catch (err) {
-      res.status(500).json({ message: 'Error updating Control', err });
+      res.status(500).json({ message: "Error updating Control", err });
     }
   }
 
@@ -47,9 +47,9 @@ export class ControlController {
     const id = parseInt(req.params.id);
     try {
       await ControlService.deleteControlById(id);
-      res.status(200).json({ message: 'Control deleted successfully' });
+      res.status(200).json({ message: "Control deleted successfully" });
     } catch (err) {
-      res.status(500).json({ message: 'Error deleting Control', err });
+      res.status(500).json({ message: "Error deleting Control", err });
     }
   }
 }

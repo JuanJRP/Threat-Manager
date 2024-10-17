@@ -1,5 +1,5 @@
-import { AssetRepository } from './assets.repository';
-import type { Prisma } from '@prisma/client';
+import { AssetRepository } from "./assets.repository";
+import type { Prisma } from "@prisma/client";
 
 class AssetService {
   private assetRepository = new AssetRepository();

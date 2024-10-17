@@ -1,9 +1,9 @@
-import  prisma  from '../../database/prisma';
-import { ThreathDTO } from './threats.models';
+import prisma from "../../database/prisma";
+import { ThreathDTO } from "./threats.models";
 
 export class ThreathRepository {
   async createThreath(threath: ThreathDTO) {
-    return prisma.threath.create({ data: threath});
+    return prisma.threath.create({ data: threath });
   }
 
   async getAllThreaths() {
@@ -15,10 +15,10 @@ export class ThreathRepository {
   }
 
   async GetThreathByName(name: string) {
-    return prisma.threath.findMany({ 
+    return prisma.threath.findMany({
       where: {
         name: {
-          equals: name, 
+          equals: name,
         },
       },
     });

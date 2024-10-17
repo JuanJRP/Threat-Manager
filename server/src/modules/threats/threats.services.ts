@@ -1,5 +1,5 @@
-import { ThreathRepository } from './threats.repository';
-import { ThreathDTO } from './threats.models';
+import { ThreathRepository } from "./threats.repository";
+import { ThreathDTO } from "./threats.models";
 
 class ThreathService {
   private ThreathRepository = new ThreathRepository();
