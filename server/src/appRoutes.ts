@@ -27,6 +27,7 @@ router.use("/vulnerability", vulnerabilitiesRouter);
 router.use("/control", controlsRouter);
 router.use(
   "/users",
+  authMiddleware.verifyToken,
   userRoutes
 );
 

@@ -131,14 +131,14 @@ enum Role {
 }
 
 model User {
-  id            Int     @id @default(autoincrement())
-  username      String  @unique @db.VarChar(255)
-  first_name    String  @db.VarChar(255)
-  last_name     String  @db.VarChar(255)
-  email         String  @unique @db.VarChar(255)
-  password      String  @db.VarChar(255)
-  role          Role[]  @default([USER])
-  refresh_token String  @default("")
-  risk          Risk[]
-  asset         Asset[]
+  id           Int     @id @default(autoincrement())
+  username     String  @unique @db.VarChar(255)
+  first_name   String  @db.VarChar(255)
+  last_name    String  @db.VarChar(255)
+  email        String  @unique @db.VarChar(255)
+  password     String  @db.VarChar(255)
+  role         Role[]  @default([USER])
+  refreshToken String  @default("")
+  risk         Risk[]
+  asset        Asset[]
 }

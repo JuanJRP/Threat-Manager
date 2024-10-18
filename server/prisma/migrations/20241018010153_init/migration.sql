@@ -99,20 +99,20 @@ CREATE TABLE "Risk_type" (
 -- CreateTable
 CREATE TABLE "Risk" (
     "id" SERIAL NOT NULL,
-    "risk_type_id" INTEGER NOT NULL,
     "frequency" INTEGER NOT NULL,
     "penalty" INTEGER NOT NULL,
     "inherent_probability" VARCHAR(255),
-    "probability_percentage" DECIMAL(65,30),
+    "probability_percentage" DOUBLE PRECISION,
     "inherent_impact" VARCHAR(255),
-    "impact_percentage" DECIMAL(65,30),
+    "impact_percentage" DOUBLE PRECISION,
     "inherent_risk" VARCHAR(255),
     "control_type" VARCHAR(255),
     "implementation" VARCHAR(255),
-    "control_qualificatiob" DECIMAL(65,30),
-    "residual_probability" DECIMAL(65,30),
-    "residual_impact" DECIMAL(65,30),
+    "control_qualification" DOUBLE PRECISION,
+    "residual_probability" TEXT,
+    "residual_impact" TEXT,
     "final_risk" VARCHAR(255),
+    "risk_type_id" INTEGER NOT NULL,
     "threat_id" INTEGER NOT NULL,
     "asset_type_id" INTEGER NOT NULL,
     "vulnerability_id" INTEGER NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE "User" (
     "email" VARCHAR(255) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "role" "Role"[] DEFAULT ARRAY['USER']::"Role"[],
-    "refresh_token" TEXT NOT NULL DEFAULT '',
+    "refreshToken" TEXT NOT NULL DEFAULT '',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
