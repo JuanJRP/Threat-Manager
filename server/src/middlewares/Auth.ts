@@ -2,7 +2,10 @@ import type { Role } from "@prisma/client";
 import type { Request, Response, NextFunction } from "express";
 import { HttpException } from "../utils/HttpExceptions";
 import { JwtService } from "../services/JwtService";
-import { getPermissionsByRole } from "../config/permissions";
+import { getPermissionsByRoles } from "../config/permissions";
+import dotenv from "dotenv";
+
+dotenv.config()
 
 export interface AuthRequest extends Request {
   user?: {
@@ -49,7 +52,7 @@ export default class Auth {
     return (req: AuthRequest, _res: Response, next: NextFunction): void => {
       if (!req.user || !req.user?.role)
         throw new HttpException(403, "Forbidden");
-      const userPermissions = getPermissionsByRole(req.user.role);
+      const userPermissions = getPermissionsByRoles(req.user.role);
       if (!userPermissions || !userPermissions.includes(permission))
         throw new HttpException(403, `No tienes permisos para ${permission}`);
       next();
