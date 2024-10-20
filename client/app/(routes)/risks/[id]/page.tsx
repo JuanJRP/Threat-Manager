@@ -7,7 +7,7 @@ const page = ({ params }: { params: { id: string } }) => {
 
 
   const { data } = useQuery({
-    queryKey: ["risks", params.id],
+    queryKey: ["risk", params.id],
     queryFn: async () => getRiskById(params.id),
   });
   return (

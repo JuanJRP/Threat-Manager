@@ -13,6 +13,8 @@ export const createThreat = async (data: Threat) => {
 
     return res.data;
   } catch (error) {
-    console.error(error);
+
+    throw error;
+
   }
 };

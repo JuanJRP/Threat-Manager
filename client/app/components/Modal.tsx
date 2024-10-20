@@ -1,18 +1,20 @@
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import useModalStore from "../store/modalStore";
 
 type ModalFormProps = {
-  isVisible: boolean;
-  onClose: () => void;
   children?: React.ReactNode;
   name: string;
 };
 
-const Modal = ({ isVisible, onClose, children, name }: ModalFormProps) => {
-  if (!isVisible) return null;
+const Modal = ({ children, name }: ModalFormProps) => {
+
+  const { showModal, closeModal } = useModalStore();
+
+  if (!showModal) return null;
 
   const handleClose = (e: React.MouseEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).id === "wrapper") {
-      onClose();
+      closeModal();
     }
   };
   return (
@@ -29,7 +31,7 @@ const Modal = ({ isVisible, onClose, children, name }: ModalFormProps) => {
           <IoMdCloseCircleOutline
             size={"2.5rem"}
             className="cursor-pointer"
-            onClick={onClose}
+            onClick={closeModal}
           />
         </div>
         <div className="p-4">{children}</div>
