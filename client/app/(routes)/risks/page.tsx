@@ -10,27 +10,29 @@ import { getAllRiskTypes } from "../risk_type/riskTypeServices";
 import { createThreat, getAllThreats } from "../threats/threatServices";
 import { getAllAssetTypes } from "../asset-types/assetTypeServices";
 import { getAllVulnerabilities } from "../vulnerability/vulnerabilityServices";
+import useModalStore from "@/app/store/modalStore";
+import Table from "@/app/components/Table";
 
 const RisksPage = () => {
-  const [showModal, setShowModal] = useState(false);
+  const { openModal } = useModalStore();
 
-  const { data: risks } = useQuery({
+  const { data: risks, isLoading } = useQuery({
     queryKey: ["risks"],
     queryFn: async () => getAllRisks(),
   });
+
+  if (isLoading) return <div>Loading...</div>;
   return (
     <>
-      <div className="">
-        {risks?.map((risk: Risk) => (
-          <div key={risk.id}>
-            <h2>{risk.id}</h2>
-            <h2>{risk.frequency}</h2>
-            <h2>{risk.penalty}</h2>
-          </div>
-        ))}
-        <Button value="Agregar Riesgo" onClick={() => setShowModal(true)} />
+      <div className=" flex justify-center">
+        <Table
+          data={risks}
+          columns={["frequency", "penalty"]}
+          details={"risks"}
+        />
       </div>
-      <Modal isVisible={showModal} onClose={() => setShowModal(false)} name="Riesgo">
+      <Button value="Agregar Riesgo" onClick={openModal} />
+      <Modal name="Riesgos">
         <CreateForm
           module="risks"
           fetchFunctions={[
@@ -42,7 +44,6 @@ const RisksPage = () => {
           createData={createRisk}
         />
       </Modal>
-
     </>
   );
 };

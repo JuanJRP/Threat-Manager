@@ -16,8 +16,10 @@ export const getRiskById = async (id: string) => {
 };
 
 export const createRisk = async (risk: CreateRisk) => {
-  const res = await axios.post("http://localhost:3000/api/risks", risk);
-
-  console.log(res.data);
-  return res.data;
+  try {
+    const res = await axios.post("http://localhost:3000/api/risks", risk);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
 };
