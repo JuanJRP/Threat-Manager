@@ -1,47 +1,78 @@
-# Test Manual for Control and Vulnerability
+# Documentación API de Gestión de Activos - Controles
 
-## Initial Configuration
+## Descripción General
 
-1. **Server Base URL for Vulnerability**: `http://localhost:3000/api/vulnerability`
-2. **Server Base URL for Control**: `http://localhost:3000/api/control`
-3. **Application used for testing**: Postman
-4. **Data format**: JSON
-5. **Dependencies**:
-   - The Control model must be registered before creating a Vulnerability.
+Esta API proporciona endpoints para gestionar activos en el sistema. Sigue los principios REST y utiliza JSON para el intercambio de datos.
 
-## Tests for Control Module
+## URL Base
 
-### 1. Create Control (POST)
+```
+http://localhost:3000/api/control
+```
 
-**Description**: This endpoint allows the creation of a new control.  
-**Endpoint**: `api/control`  
-**Method**: `POST`  
-**Body**:
+## Modelo de Datos
+
+### Estructura del Modelo Control
+
+```typescript
+interface ControlDTO {
+  code: number; // @id @default(autoincrement())
+  description_iso: string; //Descripciòn de la iso
+  description_city_hall: string; //Descripciòn adicional
+}
+
+```
+
+### Estructura del Modelo UpdateControl 
+
+```typescript
+interface UpdateControlDTO {
+  description_iso: string; //Descripciòn de la iso
+  description_city_hall: string; //Descripciòn adicional
+}
+```
+
+## Endpoints
+
+### 1. Crear Control
+
+Crea un nuevo control en el sistema.
+
+**Endpoint:** `POST /`  
+**Content-Type:** `application/json`
+
+#### Cuerpo de la Petición
+
+```json
 {
   "code": 101,
   "description_iso": "ISO description example",
   "description_city_hall": "City hall description example"
 }
+```
 
-**Expected Response (201)**:
+#### Respuestas
+
+- `201 Created`: Control creado exitosamente
+
+```json
 {
   "id": 1,
   "code": 101,
   "description_iso": "ISO description example",
   "description_city_hall": "City hall description example"
 }
+```
 
-**Errors**:
-- 409 Conflict: If the code already exists.
-- 400 Bad Request: If required fields are missing.
+### 2. Obtener Todos los controles
 
-### 2. Get All Controls (GET)
+Recupera todos los controles del sistema.
 
-**Description**: Retrieves the list of all controls.  
-**Endpoint**: `api/control`  
-**Method**: `GET`
+**Endpoint:** `GET /`
 
-**Expected Response (200)**:
+#### Respuesta Exitosa (200 OK)
+
+```json
 [
   {
     "id": 1,
@@ -50,108 +81,102 @@
     "description_city_hall": "City hall description example"
   }
 ]
+```
 
-### 3. Get Control by ID (GET)
+### 3. Obtener control por ID
 
-**Description**: Retrieves a specific control by its ID.  
-**Endpoint**: `api/control/{id}`  
-**Method**: `GET`  
-**Parameters**: `{id}` must be the control ID.
+Recupera un control específico por su ID.
 
-**Expected Response (200)**:
+**Endpoint:** `GET /:id`
+
+#### Parámetros de Ruta
+
+- `id`: ID numérico del control
+
+#### Respuesta Exitosa (200 OK)
+
+```json
 {
   "id": 1,
   "code": 101,
   "description_iso": "ISO description example",
   "description_city_hall": "City hall description example"
 }
+```
 
-**Errors**:
-- 404 Not Found: If the control does not exist.
+### 4. Actualizar control por id
 
-### 4. Update Control by ID (PUT)
+Actualiza un control por un id específico.
 
-**Description**: Updates an existing control.  
-**Endpoint**: `api/control/{id}`  
-**Method**: `PUT`  
-**Parameters**: `{id}` of the control.  
-**Body**:
+**Endpoint:** `PUT /:id`
+
+#### Parámetros de Ruta
+
+- `id`: ID numérico del control
+
+### Ejemplo
+
+```json
 {
   "description_iso": "Updated ISO description",
   "description_city_hall": "Updated city hall description"
 }
+```
 
-**Expected Response (200)**:
+### Resultado
+
+```json
 {
   "id": 1,
   "code": 101,
   "description_iso": "Updated ISO description",
   "description_city_hall": "Updated city hall description"
 }
+```
+#### Respuesta Exitosa (200 OK)
 
-**Errors**:
-- 404 Not Found: If the control does not exist.
+### 5. Eliminar  un Control por id
 
-### 5. Delete Control by ID (DELETE)
+Elimina un único control por ID.
 
-**Description**: Deletes a control by its ID.  
-**Endpoint**: `api/control/{id}`  
-**Method**: `DELETE`  
-**Parameters**: `{id}` of the control.
+**Endpoint:** `DELETE /:id`
 
-**Expected Response (200)**:
+#### Parámetros de Ruta
+
+- `id`: ID numérico del control
+
+### Respuesta
+
+```json
 {
   "message": "Control deleted successfully"
 }
+```
 
-**Errors**:
-- 404 Not Found: If the control does not exist.
 
-## Tests for Vulnerability Module
 
-### 1. Create Vulnerability (POST)
+### Relaciones
 
-**Description**: Creates a new vulnerability associated with a control.  
-**Endpoint**: `api/vulnerability`  
-**Method**: `POST`  
-**Note**: The `control_code` must be an existing code in the Control table.  
-**Body**:
+- `vulnerability`: Debe existir en la tabla `Vulnerability`
+
+## Manejo de Errores
+
+Todos los endpoints devuelven errores en el siguiente formato:
+
+```json
 {
-  "control_code": 101,
-  "name": "Example vulnerability",
-  "description": "Vulnerability description"
+  "message": "Descripción del error",
+  "err": "Detalles técnicos del error (opcional)"
 }
+```
 
-**Expected Response (201)**:
-{
-  "id": 1,
-  "control_code": 101,
-  "name": "Example vulnerability",
-  "description": "Vulnerability description"
-}
+### Códigos de Estado HTTP
 
-**Errors**:
-- 404 Not Found: If the `control_code` does not exist.
-- 400 Bad Request: If required fields are missing.
+- `200`: Operación exitosa
+- `201`: Creación exitosa
+- `400`: Error de validación o solicitud incorrecta
+- `404`: Si no existe
+- `409`: Si hay datos duplicados
+- `500`: Error interno del servidor
 
-### 2. Get All Vulnerabilities (GET)
 
-**Description**: Retrieves all vulnerabilities, including their associated control.  
-**Endpoint**: `api/vulnerability`  
-**Method**: `GET`
-
-**Expected Response (200)**:
-[
-  {
-    "id": 1,
-    "control_code": 101,
-    "name": "Example vulnerability",
-    "description": "Vulnerability description",
-    "code": {
-      "id": 1,
-      "code": 101,
-      "description_iso": "ISO description example",
-      "description_city_hall": "City hall description example"
-    }
-  }
-]
