@@ -1,12 +1,14 @@
 import riskControllers from "./risk.controllers";
 import { Router } from "express";
 
-const risksRouter = Router();
+const riskController = new riskControllers();
+const router = Router();
 
-risksRouter.post("/risks", riskControllers.createRisk);
-risksRouter.get("/risks", riskControllers.getAllRisks);
-risksRouter.get("/risks/:id", riskControllers.getRiskById);
-risksRouter.put("/risks/:id", riskControllers.updateRisk);
-risksRouter.delete("/risks/:id", riskControllers.deleteRisk);
 
-export default risksRouter;
+router.post("/", riskController.createRisk.bind(riskController));
+router.get("/", riskController.getAllRisks.bind(riskController));
+router.get("/:id", riskController.getRiskById.bind(riskController));
+router.put("/:id", riskController.updateRisk.bind(riskController));
+router.delete("/:id", riskController.deleteRisk.bind(riskController));
+
+export { router as risksRouter };

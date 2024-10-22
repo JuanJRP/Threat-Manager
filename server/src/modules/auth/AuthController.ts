@@ -1,9 +1,7 @@
 import type { Request, Response, NextFunction, CookieOptions } from "express";
 import AuthService from "./AuthService";
-
 const COOKIE_OPTIONS: CookieOptions = {
   httpOnly: true,
-  maxAge: 24 * 60 * 60 * 1000,
   sameSite: "none",
   secure: process.env.NODE_ENV === "production",
 };
@@ -17,32 +15,30 @@ export default class AuthController {
   }
   async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const { accessToken, refresh_token } = await this.authService.login(
+      const { accessToken, refreshToken } = await this.authService.login(
         req.body
       );
       res
-        .cookie("jwt", refresh_token, COOKIE_OPTIONS)
+        .cookie("jwt", refreshToken, COOKIE_OPTIONS)
         .status(200)
         .send({ accessToken });
     } catch (err) {
       next(err);
     }
   }
-
   async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const { accessToken, refresh_token } = await this.authService.register(
+      const { accessToken, refreshToken } = await this.authService.register(
         req.body
       );
       res
-        .cookie("jwt", refresh_token, COOKIE_OPTIONS)
+        .cookie("jwt", refreshToken, COOKIE_OPTIONS)
         .status(201)
         .send({ accessToken });
-    } catch (error) {
-      next(error);
+    } catch (err) {
+      next(err);
     }
   }
-
   async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       const { accessToken } = await this.authService.refresh(req.cookies.jwt);
@@ -51,20 +47,21 @@ export default class AuthController {
       next(err);
     }
   }
-
   async logout(req: Request, res: Response, next: NextFunction) {
     try {
-      const refresh_token = req.cookies.jwt;
-      if (!refresh_token) {
+      const refreshToken = req.cookies.jwt;
+      if (!refreshToken) {
         res.sendStatus(204);
         return;
       }
-      const user = await this.authService.logout(refresh_token);
+      const user = await this.authService.logout(refreshToken);
       if (user) {
         res.clearCookie("jwt", COOKIE_OPTIONS).sendStatus(204);
+        return;
       }
-    } catch (error) {
-      next(error);
+      res.clearCookie("jwt", COOKIE_OPTIONS).sendStatus(204);
+    } catch (err) {
+      next(err);
     }
   }
 }

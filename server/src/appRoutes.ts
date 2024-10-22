@@ -8,27 +8,28 @@ import Auth from "./middlewares/Auth";
 import { Role } from "@prisma/client";
 import { AuthRoutes } from "./modules/auth/AuthRoutes";
 import { actionPlanRouter } from "./modules/action_plan/action_plan.routes";
+import { risksRouter } from "./modules/risk/risk.routes";
 import { vulnerabilitiesRouter } from "./modules/vulnerability/vulnerability.routes";
 import { controlsRouter } from "./modules/control/control.routes";
+
 
 const router = Router();
 const authMiddleware = new Auth();
 
+router.use("/risks", risksRouter);
 router.use("/risk_type", risk_typeRouter);
 router.use("/assets", assetsRouter);
-router.use("/threat", threathsRouter);
+router.use("/threats", threathsRouter);
 router.use("/action-plans", actionPlanRouter);
 router.use("/assets_type", assetTypeRoutes);
-router.use(
-  "/users",
-  authMiddleware.verifyToken,
-  authMiddleware.verifyRole([Role.ADMIN]),
-  userRoutes
-);
 router.use("/auth", AuthRoutes);
 router.use("/vulnerability", vulnerabilitiesRouter);
 router.use("/control", controlsRouter);
+router.use(
+  "/users",
+  authMiddleware.verifyToken,
+  userRoutes
+);
 
-//app.use("/", risksRouter);
 
 export { router as appRoutes };

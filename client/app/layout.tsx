@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import ReactQueryProvider from "./utils/ReactQueryProvider";
 
 const geistSans = localFont({
   src: "./fonts/Barlow-Regular.ttf",
-  variable: "--font-geist-sans",
+  variable: "--font-barlow-regular",
   weight: "100 900",
 });
 const geistMono = localFont({
   src: "./fonts/Barlow-Regular.ttf",
-  variable: "--font-geist-mono",
+  variable: "--font-barlow-mono",
   weight: "100 900",
 });
 
@@ -24,11 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="light">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );
