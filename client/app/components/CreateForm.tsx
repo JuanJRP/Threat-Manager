@@ -98,7 +98,7 @@ const CreateForm = ({
 
   console.log(extraAtributes);
   console.log(newAttribute);
-console.log(formData);
+  console.log(formData);
   return (
     <div className="flex flex-col items-center">
       <form
