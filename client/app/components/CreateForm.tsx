@@ -19,16 +19,9 @@ const CreateForm = ({
   needExtraAttributes = false,
 }: FormProps) => {
   const [formData, setFormData] = React.useState<{ [key: string]: any }>({});
-  const [extraAtributes, setExtraAtributes] = React.useState<{
-    [key: string]: any;
-  }>({});
-  const [newAttribute, setNewAttribute] = React.useState<{
-    key: string;
-    value: any;
-  }>({ key: "", value: "" });
   const [message, setMessage] = React.useState<string | null>(null);
 
-  const schema = formConfig[module];
+  const schema: any = formConfig[module];
 
   const fetchResults: any = {};
 
@@ -45,7 +38,7 @@ const CreateForm = ({
       createData
         ? createData({
             ...data,
-            ...extraAtributes
+            user_id: 1,
           })
         : Promise.reject("createData is undefined"),
     onError: (error) => {
@@ -55,17 +48,26 @@ const CreateForm = ({
     onSuccess: () => {
       setMessage("Creado con éxito");
       setFormData({});
-      needExtraAttributes && setExtraAtributes({});
+
       setTimeout(() => setMessage(null), 3000);
     },
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    isStatic: boolean = false
   ) => {
     const { name, value, type, tagName } = e.target;
+
+    
     const newValue =
-      tagName === "SELECT"
+      tagName === "SELECT" && isStatic
+        ? schema
+            .find((f: any) => f.name === name)
+            ?.staticOptions?.find(
+              (option: any) => option.id.toString() === value
+            )?.name
+        : tagName === "SELECT"
         ? parseInt(value, 10)
         : type === "checkbox"
         ? (e.target as HTMLInputElement).checked
@@ -75,41 +77,24 @@ const CreateForm = ({
     setFormData((prevData) => ({ ...prevData, [name]: newValue }));
   };
 
-  const handleAttributeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewAttribute((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const addExtraAttribute = () => {
-    if (newAttribute.key) {
-      setExtraAtributes((prevData) => ({
-        ...prevData,
-        [newAttribute.key]: newAttribute.value,
-      }));
-      setNewAttribute({ key: "", value: "" });
-    }
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutation.mutate(formData);
   };
 
-
-  console.log(extraAtributes);
-  console.log(newAttribute);
-  console.log(formData);
   return (
     <div className="flex flex-col items-center">
       <form
         onSubmit={handleSubmit}
         className="grid grid-cols-2 gap-x-8 w-full max-w-lg max-h-[80vh] overflow-y-auto p-4"
       >
-        {schema.map((field) => {
+        {schema.map((field: any) => {
           if (field.type === "select") {
             const options =
               "options" in field && field.options
                 ? fetchResults[field.options]
+                : "staticOptions" in field
+                ? field.staticOptions
                 : [];
 
             return (
@@ -117,7 +102,7 @@ const CreateForm = ({
                 <label>{field.label}</label>
                 <select
                   name={field.name}
-                  onChange={handleChange}
+                  onChange={(e) => handleChange(e, !!field.staticOptions)}
                   className="mt-1 p-2 border rounded shadow-md shadow-cPurple-600"
                   required={field?.required}
                 >
@@ -163,41 +148,7 @@ const CreateForm = ({
             </div>
           );
         })}
-        {needExtraAttributes && (
-          <div className="col-span-2 flex flex-col mt-4">
-            <h3 className="text-lg font-semibold mb-4">Atributos Extra</h3>
-            {Object.keys(extraAtributes).map((key) => (
-              <div key={key} className="flex justify-between items-center">
-                <span>
-                  <b>Atributo</b> {key} | <b>Valor</b>: {extraAtributes[key]}
-                </span>
-              </div>
-            ))}
-            <div className="flex mt-2 gap-y-4 flex-wrap items-center justify-center">
-              <input
-                type="text"
-                name="key"
-                placeholder="Nombre del atributo"
-                value={newAttribute.key}
-                onChange={handleAttributeChange}
-                className="mt-1 rounded border-b border-cPurple-300 focus:outline-none focus:border-cPurple-600 focus:bg-cPurple-300 appearance-none"
-              />
-              <input
-                type="text"
-                placeholder="Valor del atributo"
-                name="value"
-                value={newAttribute.value}
-                onChange={handleAttributeChange}
-                className="mt-1 rounded border-b border-cPurple-300 focus:outline-none focus:border-cPurple-600 focus:bg-cPurple-300 appearance-none"
-              />
-              <Button
-                value=""
-                onClick={addExtraAttribute}
-                icon={<CiCirclePlus size={"2rem"} />}
-              />
-            </div>
-          </div>
-        )}
+
         <div className="col-span-2 flex justify-center mt-4">
           <Button type="submit" value="Crear" />
         </div>
