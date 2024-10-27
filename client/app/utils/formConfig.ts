@@ -15,6 +15,25 @@ export const formConfig = {
       required: true,
     },
     {
+      name: "control_type",
+      label: "Tipo de control",
+      type: "select",
+      staticOptions: [
+        { id: 1, name: "Preventivo" },
+        { id: 2, name: "Detectivo" },
+        { id: 3, name: "Correctivo" },
+      ]
+    },
+    {
+      name: "implementation",
+      label: "Implementación",
+      type: "select",
+      staticOptions: [
+        { id: 1, name: "Manual" },
+        { id: 2, name: "Automático" },
+      ],
+    },
+    {
       name: "threat_id",
       label: "Amenaza",
       type: "select",

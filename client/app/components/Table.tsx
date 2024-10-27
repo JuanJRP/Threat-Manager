@@ -30,7 +30,7 @@ const Table = <T,>({ data, columns, columnNames, details }: TableProps<T>) => {
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const paginatedData = data.slice(
+  const paginatedData = data?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -44,7 +44,7 @@ const Table = <T,>({ data, columns, columnNames, details }: TableProps<T>) => {
   };
 
   return (
-    <div className="w-4/5 mx-auto p-4 overflow-x-auto flex flex-col">
+    <div className="w-11/12 mx-auto p-4 overflow-x-auto flex flex-col">
       <table className="table-auto border-collapse border border-gray-300 rounded-lg w-full">
         {/* Encabezados */}
         <thead className="bg-gray-100">
@@ -61,7 +61,7 @@ const Table = <T,>({ data, columns, columnNames, details }: TableProps<T>) => {
           </tr>
         </thead>
         <tbody>
-          {paginatedData.map((row, index) => (
+          {paginatedData?.map((row, index) => (
             <tr key={index} className="odd:bg-white even:bg-gray-50">
               <th className="border border-gray-300 p-2">
                 <label>

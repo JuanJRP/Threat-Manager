@@ -12,18 +12,34 @@ import { getAllAssetTypes } from "../asset-types/assetTypeServices";
 import { getAllVulnerabilities } from "../vulnerability/vulnerabilityServices";
 import useModalStore from "@/app/store/modalStore";
 import Table from "@/app/components/Table";
+import Loading from "@/app/components/Loading";
+import Error from "@/app/components/Error";
 
 const RisksPage = () => {
   const { openModal } = useModalStore();
 
-  const { data: risks, isLoading } = useQuery({
-    queryKey: ["risks"],
+  const {
+    data: risks,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["risk"],
     queryFn: async () => getAllRisks(),
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
+
+  if (isError) return <Error />;
+  
   return (
     <>
+      <div className="flex flex-col items-center justify-center gap-y-8 mt-8">
+        <Button value="Agregar Riesgo" onClick={openModal} />
+        <h2 className="font-semibold text-xl">
+          Aqui tienes toda la información acerca de tus riesgos
+        </h2>
+      </div>
+
       <div className=" flex justify-center">
         <Table
           data={risks}
@@ -31,7 +47,6 @@ const RisksPage = () => {
           details={"risks"}
         />
       </div>
-      <Button value="Agregar Riesgo" onClick={openModal} />
       <Modal name="Riesgos">
         <CreateForm
           module="risks"
