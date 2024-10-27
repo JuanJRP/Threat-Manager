@@ -14,6 +14,7 @@ type ButtonProps = {
 
 const Button: React.FC<ButtonProps> = ({
   color = "bg-cPurple-600",
+  
   value,
   hover = "hover:bg-cPurple-800",
   textColor = "text-cPurple-50",

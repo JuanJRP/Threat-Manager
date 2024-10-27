@@ -82,7 +82,6 @@ const CreateForm = ({
     mutation.mutate(formData);
   };
 
-  console.log(formData);
   return (
     <div className="flex flex-col items-center">
       <form
