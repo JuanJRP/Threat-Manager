@@ -4,27 +4,27 @@ CREATE TYPE "Role" AS ENUM ('ADMIN', 'USER');
 -- CreateTable
 CREATE TABLE "Asset" (
     "id" SERIAL NOT NULL,
-    "process" VARCHAR(255) NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
-    "description" VARCHAR(255) NOT NULL,
-    "format" VARCHAR(255) NOT NULL,
-    "software_version" VARCHAR(255) NOT NULL,
-    "manufacturer" VARCHAR(255) NOT NULL,
+    "process" VARCHAR(255),
+    "name" VARCHAR(255),
+    "description" VARCHAR(255),
+    "format" VARCHAR(255),
+    "software_version" VARCHAR(255),
+    "manufacturer" VARCHAR(255),
     "physical_location" VARCHAR(255),
-    "electronic_location" VARCHAR(255) NOT NULL,
-    "responsible" VARCHAR(255) NOT NULL,
-    "user_access" VARCHAR(255) NOT NULL,
-    "access_date" TIMESTAMP(3) NOT NULL,
-    "state" BOOLEAN NOT NULL,
-    "entry_date" TIMESTAMP(3) NOT NULL,
+    "electronic_location" VARCHAR(255),
+    "responsible" VARCHAR(255),
+    "user_access" VARCHAR(255),
+    "access_date" TIMESTAMP(3),
+    "state" BOOLEAN,
+    "entry_date" TIMESTAMP(3),
     "retirement_date" TIMESTAMP(3),
-    "availability" BOOLEAN NOT NULL,
-    "integrity" TEXT NOT NULL,
+    "availability" BOOLEAN,
+    "integrity" TEXT,
     "extra_atributes" JSON,
-    "confidentiality" TEXT NOT NULL,
-    "criticality" TEXT NOT NULL,
-    "asset_type_id" INTEGER NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "confidentiality" TEXT,
+    "criticality" TEXT,
+    "asset_type_id" INTEGER,
+    "user_id" INTEGER,
 
     CONSTRAINT "Asset_pkey" PRIMARY KEY ("id")
 );
@@ -148,10 +148,10 @@ CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
-ALTER TABLE "Asset" ADD CONSTRAINT "Asset_asset_type_id_fkey" FOREIGN KEY ("asset_type_id") REFERENCES "Asset_type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Asset" ADD CONSTRAINT "Asset_asset_type_id_fkey" FOREIGN KEY ("asset_type_id") REFERENCES "Asset_type"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Asset" ADD CONSTRAINT "Asset_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Asset" ADD CONSTRAINT "Asset_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Vulnerability" ADD CONSTRAINT "Vulnerability_control_code_fkey" FOREIGN KEY ("control_code") REFERENCES "Control"("code") ON DELETE RESTRICT ON UPDATE CASCADE;

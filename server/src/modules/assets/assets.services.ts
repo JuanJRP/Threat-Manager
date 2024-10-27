@@ -4,10 +4,9 @@ import type { Prisma } from "@prisma/client";
 class AssetService {
   private assetRepository = new AssetRepository();
 
-  async createAsset(asset: Prisma.AssetCreateInput) {
-    return this.assetRepository.createAsset(asset);
+  async createAsset(assetDTO: Prisma.AssetCreateInput) {
+    return this.assetRepository.createAsset(assetDTO);
   }
-
   async getAllAssets() {
     return this.assetRepository.getAllAssets();
   }
