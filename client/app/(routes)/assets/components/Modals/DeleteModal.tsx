@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface DeleteModalProps {
   isOpen: boolean;
@@ -11,7 +11,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
   isOpen,
   onClose,
   onConfirm,
-  itemName
+  itemName,
 }) => {
   if (!isOpen) return null;
 
@@ -22,7 +22,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
           <h2 className="text-xl font-bold text-center">
             ESTA SEGURO QUE DESEA ELIMINAR {itemName.toUpperCase()}
           </h2>
-          
+
           <p className="text-gray-500 font-bold text-center">
             Esta operacion es irreversible
           </p>
@@ -34,7 +34,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
             >
               Cancelar
             </button>
-            
+
             <button
               onClick={onConfirm}
               className="px-8 py-3 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors text-lg min-w-[140px]"

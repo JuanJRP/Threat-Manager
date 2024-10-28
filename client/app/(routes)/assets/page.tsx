@@ -9,7 +9,7 @@ import SearchBar from "./components/DataTable/SearchBar";
 import ActionButtons from "./components/DataTable/ActionButtons";
 import Pagination from "./components/DataTable/Pagination";
 import { Asset, Column } from "./components/Interface";
-import EditAssetModal from './components/Modals/EditAssets';
+import EditAssetModal from "./components/Modals/EditAssets";
 import DeleteModal from "./components/Modals/DeleteModal";
 
 const ROWS_PER_PAGE = 6;
@@ -79,10 +79,12 @@ const Page = () => {
     setFilteredAssets(filtered);
   }, [searchQuery, assets]);
 
-  const handleCSVImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCSVImport = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
-  
+
     Papa.parse(file, {
       complete: async (results) => {
         if (
@@ -97,7 +99,7 @@ const Page = () => {
               visible: true,
             })
           );
-  
+
           setColumns((prev) => {
             const updatedColumns = [...prev];
             csvColumns.forEach((csvCol) => {
@@ -107,7 +109,7 @@ const Page = () => {
             });
             return updatedColumns;
           });
-  
+
           for (const row of results.data) {
             const asset: Partial<Asset> = {};
             csvColumns.forEach((col) => {
@@ -115,24 +117,30 @@ const Page = () => {
                 asset[col.key] = (row as { [key: string]: any })[col.key] || "";
               }
             });
-  
+
             try {
-              const response = await fetch("http://localhost:3001/api/assets/", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(asset),
-              });
-  
+              const response = await fetch(
+                "http://localhost:3001/api/assets/",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(asset),
+                }
+              );
+
               if (!response.ok) {
-                console.error(`Error al procesar fila: ${JSON.stringify(asset)}`);
-                throw new Error(`Error en la solicitud: ${response.statusText}`);
+                console.error(
+                  `Error al procesar fila: ${JSON.stringify(asset)}`
+                );
+                throw new Error(
+                  `Error en la solicitud: ${response.statusText}`
+                );
               }
-            } catch (error) {
-            }
+            } catch (error) {}
           }
-  
+
           // Actualizar la lista de assets después de procesar todo el CSV
           await fetchAssets();
         }
@@ -141,8 +149,6 @@ const Page = () => {
       skipEmptyLines: true,
     });
   };
-  
-  
 
   const handlePreviousPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
@@ -164,7 +170,6 @@ const Page = () => {
       }
     }
   };
-  
 
   const totalPages = Math.ceil(filteredAssets.length / ROWS_PER_PAGE);
   const startIndex = (currentPage - 1) * ROWS_PER_PAGE;
@@ -198,9 +203,7 @@ const Page = () => {
 
   return (
     <div className="p-8 w-full min-h-screen bg-gray-50">
-      <Nav
-        title="Activos"
-      />
+      <Nav title="Activos" />
 
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 

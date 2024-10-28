@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Loader2, CircleX } from 'lucide-react';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Loader2, CircleX } from "lucide-react";
+import axios from "axios";
 
 interface Column {
   key: string;
@@ -8,7 +8,7 @@ interface Column {
   type?: string;
   options?: string[];
   required?: boolean;
-  visible?: boolean; 
+  visible?: boolean;
   exclude?: boolean;
 }
 
@@ -46,12 +46,14 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
     setError(null);
 
     try {
-      await axios.post('http://localhost:3001/api/assets/', { formData });
+      await axios.post("http://localhost:3001/api/assets/", { formData });
       onAssetAdded();
       onClose();
       setFormData({});
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error al agregar el activo');
+      setError(
+        err instanceof Error ? err.message : "Error al agregar el activo"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -85,14 +87,16 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
                     htmlFor={column.key}
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    {column.label}{' '}
+                    {column.label}{" "}
                     {column.required && <span className="text-red-500">*</span>}
                   </label>
-                  {column.type === 'select' ? (
+                  {column.type === "select" ? (
                     <select
                       id={column.key}
-                      value={formData[column.key] || ''}
-                      onChange={(e) => handleInputChange(column.key, e.target.value)}
+                      value={formData[column.key] || ""}
+                      onChange={(e) =>
+                        handleInputChange(column.key, e.target.value)
+                      }
                       className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     >
                       <option value="">Seleccionar</option>
@@ -102,20 +106,24 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
                         </option>
                       ))}
                     </select>
-                  ) : column.type === 'date' ? (
+                  ) : column.type === "date" ? (
                     <input
                       id={column.key}
                       type="date"
-                      value={formData[column.key] || ''}
-                      onChange={(e) => handleInputChange(column.key, e.target.value)}
+                      value={formData[column.key] || ""}
+                      onChange={(e) =>
+                        handleInputChange(column.key, e.target.value)
+                      }
                       className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   ) : (
                     <input
                       id={column.key}
                       type="text"
-                      value={formData[column.key] || ''}
-                      onChange={(e) => handleInputChange(column.key, e.target.value)}
+                      value={formData[column.key] || ""}
+                      onChange={(e) =>
+                        handleInputChange(column.key, e.target.value)
+                      }
                       className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     />
                   )}
@@ -129,7 +137,7 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
               className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 flex items-center gap-2"
             >
               {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-              {isLoading ? 'Guardando...' : 'Guardar Activo'}
+              {isLoading ? "Guardando..." : "Guardar Activo"}
             </button>
           </div>
         </form>

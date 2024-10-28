@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Asset, Column } from '../Interface';
-import { CircleX } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { Asset, Column } from "../Interface";
+import { CircleX } from "lucide-react";
 
 interface EditAssetModalProps {
   isOpen: boolean;
@@ -27,7 +27,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
     if (asset) {
       // Solo inicializar los campos que están en las columnas visibles
       const visibleData: Partial<Asset> = {};
-      columns.forEach(column => {
+      columns.forEach((column) => {
         if (column.visible && asset[column.key] !== undefined) {
           visibleData[column.key] = asset[column.key];
         }
@@ -37,9 +37,9 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
   }, [asset, columns]);
 
   const handleInputChange = (key: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [key]: value
+      [key]: value,
     }));
   };
 
@@ -54,25 +54,28 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
       // Combinar los datos existentes con los actualizados para no perder campos no visibles
       const updatedAsset = {
         ...asset,
-        ...formData
+        ...formData,
       };
 
-      const response = await fetch(`http://localhost:3001/api/assets/${asset.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedAsset),
-      });
+      const response = await fetch(
+        `http://localhost:3001/api/assets/${asset.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updatedAsset),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Error al actualizar el activo');
+        throw new Error("Error al actualizar el activo");
       }
 
       onAssetUpdated();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error desconocido');
+      setError(err instanceof Error ? err.message : "Error desconocido");
     } finally {
       setIsLoading(false);
     }
@@ -104,21 +107,23 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
           {/* Campos visibles en la tabla */}
           <div className="grid grid-cols-2 gap-4">
             {columns
-              .filter(col => col.visible)
-              .map(column => (
+              .filter((col) => col.visible)
+              .map((column) => (
                 <div key={column.key}>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {column.label}
                   </label>
                   <input
                     type="text"
-                    value={formData[column.key] || ''}
-                    onChange={(e) => handleInputChange(column.key, e.target.value)}
-                    disabled={column.key === 'id'} // Deshabilitar el campo ID
+                    value={formData[column.key] || ""}
+                    onChange={(e) =>
+                      handleInputChange(column.key, e.target.value)
+                    }
+                    disabled={column.key === "id"} // Deshabilitar el campo ID
                     className={`w-full p-2 border rounded-md ${
-                      column.key === 'id' 
-                        ? 'bg-gray-50 text-gray-500'
-                        : 'focus:ring-2 focus:ring-purple-500 focus:border-purple-500'
+                      column.key === "id"
+                        ? "bg-gray-50 text-gray-500"
+                        : "focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                     }`}
                     placeholder={`Enter ${column.label}`}
                     title={column.label}
@@ -132,7 +137,7 @@ const EditAssetModal: React.FC<EditAssetModalProps> = ({
               disabled={isLoading}
               className="px-4 py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700 disabled:bg-purple-300"
             >
-              {isLoading ? 'Guardando...' : 'Guardar Cambios'}
+              {isLoading ? "Guardando..." : "Guardar Cambios"}
             </button>
           </div>
         </form>

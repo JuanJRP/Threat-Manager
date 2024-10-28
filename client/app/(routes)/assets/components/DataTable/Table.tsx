@@ -1,6 +1,6 @@
 import React from "react";
 import { Asset, Column } from "../Interface";
-import { Trash2, PencilLine  } from 'lucide-react';
+import { Trash2, PencilLine } from "lucide-react";
 
 interface TableProps {
   columns: Column[];
@@ -88,7 +88,7 @@ const Table: React.FC<TableProps> = ({
                     onClick={() => onDelete(asset.id)}
                     className="flex px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-800 transition-colors font-semibold"
                   >
-                    <Trash2 /> 
+                    <Trash2 />
                     Eliminar
                   </button>
                 </div>
