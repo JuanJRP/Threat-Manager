@@ -26,7 +26,7 @@ const Modal = ({ children, name }: ModalFormProps) => {
       <div className="max-w-2xl flex flex-col bg-cPurple-50 p-2 rounded-2xl border-2 border-black">
         <div className="border-b-2 border-black p-2 flex justify-between items-center">
           <h2 className="text-2xl font-bold flex-grow text-center">
-            Agregar {name}
+            {name}
           </h2>
           <IoMdCloseCircleOutline
             size={"2.5rem"}

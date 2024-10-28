@@ -7,6 +7,7 @@ import { BsFillSafeFill } from "react-icons/bs";
 const UserHomeActions = () => {
   return (
     <>
+
      <Link href="/assets">
         <Button
           value="Gestión de Activos"
@@ -15,6 +16,7 @@ const UserHomeActions = () => {
           icon={<BsFillSafeFill />}
         />
       </Link>
+
       <Link href="/risks">
         <Button
           value="Riesgos"
