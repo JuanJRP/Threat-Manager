@@ -1,3 +1,4 @@
+import AdminHomeActions from "./components/AdminHomeActions";
 import Nav from "./components/Navbar";
 import UserHomeActions from "./components/UserHomeActions";
 
@@ -19,7 +20,7 @@ export default function Home() {
           </p>
 
           <div className="flex flex-wrap gap-4 justify-center">
-            <UserHomeActions />
+            <AdminHomeActions />
           </div>
         </div>
       </main>

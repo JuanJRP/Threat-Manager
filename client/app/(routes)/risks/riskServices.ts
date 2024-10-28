@@ -1,15 +1,16 @@
 import { CreateRisk } from "@/app/interfaces/riskInterface";
 import axios from "axios";
 
-export const getAllRisks = async () => {
-  const res = await axios.get("http://localhost:3001/api/risks");
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_HOST;
 
+export const getAllRisks = async () => {
+  const res = await axios.get(`${SERVER_URL}/risks`);
   const { risks } = res.data;
   return risks;
 };
 
 export const getRiskById = async (id: string) => {
-  const res = await axios.get(`http://localhost:3001/api/risks/${id}`);
+  const res = await axios.get(`${SERVER_URL}/risks/${id}`);
 
   const { risk } = res.data;
   return risk;
@@ -17,7 +18,7 @@ export const getRiskById = async (id: string) => {
 
 export const createRisk = async (risk: CreateRisk) => {
   try {
-    const res = await axios.post("http://localhost:3001/api/risks", risk);
+    const res = await axios.post(`${SERVER_URL}/risks`, risk);
     return res.data;
   } catch (error) {
     throw error;

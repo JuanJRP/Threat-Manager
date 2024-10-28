@@ -26,7 +26,7 @@ const page = ({ params }: { params: { id: string } }) => {
   console.log(risk);
   return (
     risk && (
-      <div className="bg-gradient-to-br from-cPurple-50 via-cPurple-100 to-cPurple-200 p-8 flex flex-col items-center text-cPurple-950">
+      <div className=" p-8 flex flex-col items-center text-cPurple-950">
         <div className="bg-cPurple-50 p-8 rounded-3xl shadow-xl shadow-cPurple-300 w-full max-w-5xl transition transform hover:scale-105 duration-300">
           <h1 className="text-4xl font-extrabold text-cPurple-800 mb-8 border-b-4 border-cPurple-500 inline-block pb-2">
             Detalles del Riesgo
