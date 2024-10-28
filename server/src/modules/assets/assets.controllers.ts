@@ -1,9 +1,8 @@
-import AssetService from './assets.services';
-import { Request, Response } from 'express';
-import type { Prisma } from '@prisma/client';
+import AssetService from "./assets.services";
+import { Request, Response } from "express";
+import type { Prisma } from "@prisma/client";
 
 export class AssetController {
-
   async createAsset(req: Request, res: Response): Promise<void> {
     const assetDTO: Prisma.AssetCreateInput = req.body;
     try {
@@ -39,7 +38,7 @@ export class AssetController {
     try {
       const assets = await AssetService.GetAssetByType(id);
       res.status(200).json(assets);
-    }catch (err) {
+    } catch (err) {
       res.status(500).json({ message: "Error al obtener el Activo", err });
     }
   }
@@ -79,8 +78,10 @@ export class AssetController {
     try {
       const { ids } = req.body;
       if (!Array.isArray(ids) || ids.length === 0) {
-        res.status(400).json({ message: "Invalid array format or empty array" });
-      }else{
+        res
+          .status(400)
+          .json({ message: "Invalid array format or empty array" });
+      } else {
         await AssetService.DeleteManyAssetById(ids);
         res.status(200).json({ message: "Assets deleted successfully" });
       }

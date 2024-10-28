@@ -99,21 +99,21 @@ model Risk_type {
 
 model Risk {
   id                     Int           @id @default(autoincrement())
-  risk_type              Risk_type     @relation(fields: [risk_type_id], references: [id])
-  risk_type_id           Int
   frequency              Int
   penalty                Int
   inherent_probability   String?       @db.VarChar(255)
-  probability_percentage Decimal?
+  probability_percentage Float?        @db.DoublePrecision
   inherent_impact        String?       @db.VarChar(255)
-  impact_percentage      Decimal?
+  impact_percentage      Float?        @db.DoublePrecision
   inherent_risk          String?       @db.VarChar(255)
   control_type           String?       @db.VarChar(255)
   implementation         String?       @db.VarChar(255)
-  control_qualificatiob  Decimal?
-  residual_probability   Decimal?
-  residual_impact        Decimal?
+  control_qualification  Float?        @db.DoublePrecision
+  residual_probability   String?
+  residual_impact        String?
   final_risk             String?       @db.VarChar(255)
+  risk_type              Risk_type     @relation(fields: [risk_type_id], references: [id])
+  risk_type_id           Int
   threat                 Threath       @relation(fields: [threat_id], references: [id])
   threat_id              Int
   asset_type             Asset_type    @relation(fields: [asset_type_id], references: [id])
@@ -131,14 +131,14 @@ enum Role {
 }
 
 model User {
-  id            Int     @id @default(autoincrement())
-  username      String  @unique @db.VarChar(255)
-  first_name    String  @db.VarChar(255)
-  last_name     String  @db.VarChar(255)
-  email         String  @unique @db.VarChar(255)
-  password      String  @db.VarChar(255)
-  role          Role[]  @default([USER])
-  refresh_token String  @default("")
-  risk          Risk[]
-  asset         Asset[]
+  id           Int     @id @default(autoincrement())
+  username     String  @unique @db.VarChar(255)
+  first_name   String  @db.VarChar(255)
+  last_name    String  @db.VarChar(255)
+  email        String  @unique @db.VarChar(255)
+  password     String  @db.VarChar(255)
+  role         Role[]  @default([USER])
+  refreshToken String  @default("")
+  risk         Risk[]
+  asset        Asset[]
 }

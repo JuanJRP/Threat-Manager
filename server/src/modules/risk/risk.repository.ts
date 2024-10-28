@@ -1,13 +1,18 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../../database/prisma";
-import Risk from "./risk.models";
 
 class RiskRepository {
-  async create(risk: Risk) {
-    return await prisma.risk.create({ data: risk });
+  private readonly prisma;
+  constructor() {
+    this.prisma = prisma
+  }
+
+  async create(risk: Prisma.RiskCreateInput) {
+    return await this.prisma.risk.create({ data: risk });
   }
 
   async getAll() {
-    return await prisma.risk.findMany({
+    return await this.prisma.risk.findMany({
       include: {
         risk_type: true,
         threat: true,
@@ -16,8 +21,8 @@ class RiskRepository {
       },
     });
   }
-  async getOne(id: number) {
-    return await prisma.risk.findUnique({
+  async getById(id: number) {
+    return await this.prisma.risk.findUnique({
       where: { id },
       include: {
         risk_type: true,
@@ -28,13 +33,13 @@ class RiskRepository {
     });
   }
 
-  async update(id: number, frequency: number) {
-    return await prisma.risk.update({ where: { id }, data: { frequency } });
+  async update(id: number, risk: Prisma.RiskUpdateInput) {
+    return await this.prisma.risk.update({ where: { id }, data: risk });
   }
 
   async delete(id: number) {
-    return await prisma.risk.delete({ where: { id } });
+    return await this.prisma.risk.delete({ where: { id } });
   }
 }
 
-export default new RiskRepository();
+export default RiskRepository;

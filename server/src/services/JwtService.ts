@@ -6,7 +6,7 @@ dotenv.config();
 
 export type AuthTokens = {
   accessToken: string;
-  refresh_token: string;
+  refreshToken: string;
 };
 
 const {
@@ -21,12 +21,11 @@ export class JwtService {
     const accessToken = this.sign(payload, ACCESS_TOKEN_SECRET, {
       expiresIn: ACCESS_TOKEN_EXPIRY,
     });
-    const refresh_token = this.sign(payload, REFRESH_TOKEN_SECRET, {
+    const refreshToken = this.sign(payload, REFRESH_TOKEN_SECRET, {
       expiresIn: REFRESH_TOKEN_EXPIRY,
     });
-    return { accessToken, refresh_token };
+    return { accessToken, refreshToken };
   }
-
   async verify(token: string, secret: string): Promise<jwt.JwtPayload> {
     const decoded: jwt.JwtPayload = await new Promise((resolve, reject) => {
       jwt.verify(token, secret, (err, decoded) => {
