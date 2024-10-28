@@ -20,7 +20,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
     <div className="grid grid-cols-3 gap-6 mb-5">
       <button
         onClick={onAddClick}
-        className="flex items-center justify-center gap-3 bg-cPurple-900 text-white py-4 px-8 rounded-lg hover:bg-cPurple-700 transition-colors text-lg"
+        className="flex items-center justify-center gap-3 bg-cPurple-900 text-white py-4 px-8 rounded-lg hover:bg-cPurple-700 transition-colors font-semibold text-lg"
       >
         <Plus className="w-6 h-6" />
         Agregar {ButtonName}
@@ -38,7 +38,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
         />
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="w-full flex items-center justify-center gap-3 bg-cPurple-900 text-white py-4 px-8 rounded-lg hover:bg-cPurple-700 transition-colors text-lg"
+          className="w-full flex items-center justify-center gap-3 bg-cPurple-900 text-white py-4 px-8 rounded-lg hover:bg-cPurple-700 font-semibold transition-colors text-lg"
         >
           <FileSpreadsheet className="w-6 h-6" />
           Importar CSV
@@ -47,7 +47,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 
       <button
         onClick={onSettingsClick}
-        className="flex items-center justify-center gap-3 bg-cPurple-900 text-white py-4 px-8 rounded-lg hover:bg-cPurple-700 transition-colors text-lg"
+        className="flex items-center justify-center gap-3 bg-cPurple-900 text-white py-4 px-8 rounded-lg hover:bg-cPurple-700 font-semibold transition-colors text-lg"
       >
         <Settings className="w-6 h-6" />
         Configurar Columnas
