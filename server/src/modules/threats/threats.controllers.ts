@@ -1,9 +1,8 @@
-import ThreathService from './threats.services';
-import { ThreathDTO } from './threats.models';
-import { Request, Response } from 'express';
+import ThreathService from "./threats.services";
+import { ThreathDTO } from "./threats.models";
+import { Request, Response } from "express";
 
 export class ThreathController {
-
   async createThreath(req: Request, res: Response): Promise<void> {
     const threathDTO: ThreathDTO = req.body;
     try {
@@ -69,8 +68,10 @@ export class ThreathController {
     try {
       const { ids } = req.body;
       if (!Array.isArray(ids) || ids.length === 0) {
-        res.status(400).json({ message: "Invalid array format or empty array" });
-      }else{
+        res
+          .status(400)
+          .json({ message: "Invalid array format or empty array" });
+      } else {
         await ThreathService.DeleteManyThreathById(ids);
         res.status(200).json({ message: "Threath deleted successfully" });
       }

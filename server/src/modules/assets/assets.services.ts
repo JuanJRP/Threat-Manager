@@ -1,13 +1,12 @@
-import { AssetRepository } from './assets.repository';
-import { AssetDTO } from './assets.models';
+import { AssetRepository } from "./assets.repository";
+import type { Prisma } from "@prisma/client";
 
 class AssetService {
   private assetRepository = new AssetRepository();
 
-  async createAsset(asset: AssetDTO) {
-    return this.assetRepository.createAsset(asset);
+  async createAsset(assetDTO: Prisma.AssetCreateInput) {
+    return this.assetRepository.createAsset(assetDTO);
   }
-
   async getAllAssets() {
     return this.assetRepository.getAllAssets();
   }
@@ -24,7 +23,7 @@ class AssetService {
     return this.assetRepository.GetAssetByType(assetTypeId);
   }
 
-  async UpdateAssetById(id: number, data: Partial<AssetDTO>) {
+  async UpdateAssetById(id: number, data: Prisma.AssetUpdateInput) {
     return this.assetRepository.UpdateAssetById(id, data);
   }
 

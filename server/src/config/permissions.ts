@@ -28,14 +28,13 @@ const permissionsByRole = {
   [Role.ADMIN]: adminPermissions,
 };
 
-export const getPermissionsByRole = (role: Role[]) => {
+export const getPermissionsByRoles = (roles: Role[]) => {
   const permissionsSet = new Set<string>();
-  role.forEach((role) => {
+  roles.forEach((role) => {
     permissionsByRole[role].forEach((permission) => {
       permissionsSet.add(permission);
     });
   });
-
   const permissions = Array.from(permissionsSet);
   if (permissions.length === 0) return null;
   return permissions;

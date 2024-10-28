@@ -16,7 +16,7 @@ export const createUserSchema = z.object({
     .string()
     .min(6, { message: "La contraseña debe tener al menos 6 caracteres" }),
   role: z.array(z.enum([Role.ADMIN, Role.USER])).optional(),
-  refresh_token: z.string().optional(),
+  refreshToken: z.string().optional(),
 });
 
 export type CreateUserInput = z.infer<typeof createUserSchema>;
@@ -27,7 +27,7 @@ export type UpdateUserInput = z.infer<typeof updateUserSchema>;
 
 export const registerUserSchema = createUserSchema.omit({
   role: true,
-  refresh_token: true,
+  refreshToken: true,
 });
 
 export type RegisterUserInput = z.infer<typeof registerUserSchema>;

@@ -15,29 +15,29 @@ datasource db {
 
 model Asset {
   id                  Int         @id @default(autoincrement())
-  process             String      @db.VarChar(255) // Misional, Estrategico, apoyo, Evaluacion y mejora ENUM
-  name                String      @db.VarChar(255)
-  description         String      @db.VarChar(255)
-  format              String      @db.VarChar(255) // CSV, TXT
-  software_version    String      @db.VarChar(255)
-  manufacturer        String      @db.VarChar(255)
+  process             String?     @db.VarChar(255) // Misional, Estrategico, apoyo, Evaluacion y mejora ENUM
+  name                String?     @db.VarChar(255)
+  description         String?     @db.VarChar(255)
+  format              String?     @db.VarChar(255) // CSV, TXT
+  software_version    String?     @db.VarChar(255)
+  manufacturer        String?     @db.VarChar(255)
   physical_location   String?     @db.VarChar(255)
-  electronic_location String      @db.VarChar(255)
-  responsible         String      @db.VarChar(255)
-  user_access         String      @db.VarChar(255)
-  access_date         DateTime
-  state               Boolean // True = Activo, False = Inactivo
-  entry_date          DateTime
+  electronic_location String?     @db.VarChar(255)
+  responsible         String?     @db.VarChar(255)
+  user_access         String?     @db.VarChar(255)
+  access_date         DateTime?
+  state               Boolean? // True = Activo, False = Inactivo
+  entry_date          DateTime?
   retirement_date     DateTime?
-  availability        Boolean // True = Disponible, False = No Disponible
-  integrity           String      @db.Text
+  availability        Boolean? // True = Disponible, False = No Disponible
+  integrity           String?     @db.Text
   extra_atributes     Json?       @db.Json
-  confidentiality     String      @db.Text
-  criticality         String      @db.Text
+  confidentiality     String?     @db.Text
+  criticality         String?     @db.Text
   asset_type          Asset_type? @relation(fields: [asset_type_id], references: [id])
-  asset_type_id       Int
-  User                User        @relation(fields: [user_id], references: [id])
-  user_id             Int
+  asset_type_id       Int?
+  User                User?       @relation(fields: [user_id], references: [id])
+  user_id             Int?
 }
 
 model Asset_type {
@@ -99,21 +99,21 @@ model Risk_type {
 
 model Risk {
   id                     Int           @id @default(autoincrement())
-  risk_type              Risk_type     @relation(fields: [risk_type_id], references: [id])
-  risk_type_id           Int
   frequency              Int
   penalty                Int
   inherent_probability   String?       @db.VarChar(255)
-  probability_percentage Decimal?
+  probability_percentage Float?        @db.DoublePrecision
   inherent_impact        String?       @db.VarChar(255)
-  impact_percentage      Decimal?
+  impact_percentage      Float?        @db.DoublePrecision
   inherent_risk          String?       @db.VarChar(255)
   control_type           String?       @db.VarChar(255)
   implementation         String?       @db.VarChar(255)
-  control_qualificatiob  Decimal?
-  residual_probability   Decimal?
-  residual_impact        Decimal?
+  control_qualification  Float?        @db.DoublePrecision
+  residual_probability   String?
+  residual_impact        String?
   final_risk             String?       @db.VarChar(255)
+  risk_type              Risk_type     @relation(fields: [risk_type_id], references: [id])
+  risk_type_id           Int
   threat                 Threath       @relation(fields: [threat_id], references: [id])
   threat_id              Int
   asset_type             Asset_type    @relation(fields: [asset_type_id], references: [id])
@@ -131,14 +131,14 @@ enum Role {
 }
 
 model User {
-  id            Int     @id @default(autoincrement())
-  username      String  @unique @db.VarChar(255)
-  first_name    String  @db.VarChar(255)
-  last_name     String  @db.VarChar(255)
-  email         String  @unique @db.VarChar(255)
-  password      String  @db.VarChar(255)
-  role          Role[]  @default([USER])
-  refresh_token String  @default("")
-  risk          Risk[]
-  asset         Asset[]
+  id           Int     @id @default(autoincrement())
+  username     String  @unique @db.VarChar(255)
+  first_name   String  @db.VarChar(255)
+  last_name    String  @db.VarChar(255)
+  email        String  @unique @db.VarChar(255)
+  password     String  @db.VarChar(255)
+  role         Role[]  @default([USER])
+  refreshToken String  @default("")
+  risk         Risk[]
+  asset        Asset[]
 }

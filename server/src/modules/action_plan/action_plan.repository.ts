@@ -29,7 +29,10 @@ class ActionPlanRepository {
   }
 
   async update(id: number, action_plan: Partial<Action_planDTO>) {
-    return await this.prisma.action_plan.update({ where: { id }, data: action_plan });
+    return await this.prisma.action_plan.update({
+      where: { id },
+      data: action_plan,
+    });
   }
 
   async delete(id: number) {

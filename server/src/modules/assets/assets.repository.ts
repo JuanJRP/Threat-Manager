@@ -1,9 +1,9 @@
-import  prisma  from '../../database/prisma';
-import { AssetDTO } from './assets.models';
+import prisma from "../../database/prisma";
+import type { Prisma } from "@prisma/client";
 
 export class AssetRepository {
-  async createAsset(asset: AssetDTO) {
-    return prisma.asset.create({ data: asset});
+  async createAsset(asset: Prisma.AssetCreateInput) {
+    return prisma.asset.create({ data: asset });
   }
 
   async getAllAssets() {
@@ -15,21 +15,23 @@ export class AssetRepository {
   }
 
   async GetAssetByName(name: string) {
-    return prisma.asset.findMany({ 
+    return prisma.asset.findMany({
       where: {
-
         name: {
-          equals: name, 
+          equals: name,
         },
       },
     });
   }
 
   async GetAssetByType(assetTypeId: number) {
-    return prisma.asset.findMany({ where: { asset_type_id: assetTypeId },include: { asset_type: true } });
+    return prisma.asset.findMany({
+      where: { asset_type_id: assetTypeId },
+      include: { asset_type: true },
+    });
   }
 
-  async UpdateAssetById(id: number, data: Partial<AssetDTO>) {
+  async UpdateAssetById(id: number, data: Prisma.AssetUpdateInput) {
     return prisma.asset.update({ where: { id }, data });
   }
 
