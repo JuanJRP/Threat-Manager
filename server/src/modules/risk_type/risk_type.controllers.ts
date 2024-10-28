@@ -26,9 +26,15 @@ export class RiskTypeController {
     try {
       const riskType = await riskTypeService.getRiskTypeById(Number(req.params.id));
       if (!riskType) {
+<<<<<<< Updated upstream
         res.status(404).json({ message: 'Tipo de riesgo no encontrado' });
+=======
+        res.status(404).json({ message: "Tipo de riesgo no encontrado" });
+      }else{
+        res.status(200).json(riskType);
+>>>>>>> Stashed changes
       }
-      res.status(200).json(riskType);
+      
     } catch (error) {
       res.status(500).json({ message: 'Error al obtener el tipo de riesgo' });
     }
