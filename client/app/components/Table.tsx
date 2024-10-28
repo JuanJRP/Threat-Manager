@@ -79,7 +79,7 @@ const Table = <T,>({ data, columns, columnNames, details }: TableProps<T>) => {
               <td className="border border-gray-300 p-2">
                 <button className="btn btn-ghost btn-xs">
                   <Link
-                    href={`http://localhost:3001/${details}/${getNestedValue(
+                    href={`http://localhost:3000/${details}/${getNestedValue(
                       row,
                       "id"
                     )}`}

@@ -1,5 +1,6 @@
 import React from "react";
 import { Asset, Column } from "../Interface";
+import { Trash2, PencilLine  } from 'lucide-react';
 
 interface TableProps {
   columns: Column[];
@@ -33,7 +34,7 @@ const Table: React.FC<TableProps> = ({
               .map((column) => (
                 <th
                   key={column.key}
-                  className="px-8 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+                  className="px-8 py-4 text-left text-sm text-gray-700 uppercase tracking-wider font-semibold"
                 >
                   {column.label}
                 </th>
@@ -78,14 +79,16 @@ const Table: React.FC<TableProps> = ({
                 <div className="flex justify-center gap-4">
                   <button
                     onClick={() => onEdit(asset)}
-                    className="px-6 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors"
+                    className="flex px-3 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-800 transition-colors font-semibold"
                   >
+                    <PencilLine />
                     Editar
                   </button>
                   <button
                     onClick={() => onDelete(asset.id)}
-                    className="px-6 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 transition-colors"
+                    className="flex px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-800 transition-colors font-semibold"
                   >
+                    <Trash2 /> 
                     Eliminar
                   </button>
                 </div>

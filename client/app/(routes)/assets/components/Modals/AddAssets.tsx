@@ -18,7 +18,6 @@ interface AddAssetModalProps {
   onClose: () => void;
   onAssetAdded: () => void;
   name: string;
-  
 }
 
 const AddAssetModal: React.FC<AddAssetModalProps> = ({
@@ -71,13 +70,11 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
             onClick={onClose}
           />
         </div>
-
         {error && (
           <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-md text-red-600">
             {error}
           </div>
         )}
-
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-4">
             {columns
@@ -125,15 +122,7 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
                 </div>
               ))}
           </div>
-
           <div className="mt-6 flex justify-end gap-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-            >
-              Cancelar
-            </button>
             <button
               type="submit"
               disabled={isLoading}
