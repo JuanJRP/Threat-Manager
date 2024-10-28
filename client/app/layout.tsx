@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="light">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-cPurple-100`} 
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-cPurple-100 px-8`} 
       >
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
