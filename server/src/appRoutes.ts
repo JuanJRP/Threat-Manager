@@ -17,7 +17,7 @@ const router = Router();
 const authMiddleware = new Auth();
 
 router.use("/risks", risksRouter);
-router.use("/risk_type", risk_typeRouter);
+//router.use("/risk_type", risk_typeRouter);
 router.use("/assets", assetsRouter);
 router.use("/threats", threathsRouter);
 router.use("/action-plans", actionPlanRouter);

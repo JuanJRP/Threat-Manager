@@ -14,7 +14,11 @@ class RiskService {
     this.riskCalculatedAtributes = riskCalculatedAtributes;
   }
   async createRisk(data: Prisma.RiskCreateInput) {
-    const { frequency, penalty, asset_type } = data;
+    const { frequency, penalty, control_type, implementation } = data;
+
+    if (!control_type || !implementation) {
+      throw new HttpException(400, "Control type and implementation are required");
+    }
 
     const inherentProbability =
       this.riskCalculatedAtributes.inherentProbability(frequency);
@@ -27,12 +31,10 @@ class RiskService {
       inherentProbability,
       inherentImpact
     );
-    const controlType = this.riskCalculatedAtributes.controlType(asset_type);
-    const implementation =
-      this.riskCalculatedAtributes.implemetation(asset_type);
+
     const controlCualification =
       this.riskCalculatedAtributes.controlCualification(
-        controlType,
+        control_type,
         implementation
       );
     const residualProbability =
@@ -55,8 +57,6 @@ class RiskService {
       inherent_impact: inherentImpact,
       impact_percentage: impactPercentage,
       inherent_risk: inherentRisk,
-      control_type: controlType.type,
-      implementation: implementation.type,
       control_qualification: controlCualification,
       residual_probability: residualProbability,
       residual_impact: residualImpact,
