@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { createRisk, getAllRisks } from "./riskServices";
+import { createRisk, deleteRisk, getAllRisks } from "./riskServices";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import CreateForm from "@/app/components/CreateForm";
@@ -14,6 +14,8 @@ import Table from "@/app/components/Table";
 import Loading from "@/app/components/Loading";
 import Error from "@/app/components/Error";
 import { LuPlus } from "react-icons/lu";
+import { PiGridNineFill } from "react-icons/pi";
+import Link from "next/link";
 
 const RisksPage = () => {
   const { openModal } = useModalStore();
@@ -23,7 +25,7 @@ const RisksPage = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["risk"],
+    queryKey: ["risks"],
     queryFn: async () => getAllRisks(),
   });
 
@@ -33,17 +35,19 @@ const RisksPage = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center gap-y-8 mt-8">
+      <div className="flex items-center justify-center gap-y-8 mt-8 gap-x-4">
         <Button
           value="Agregar Riesgo"
           onClick={openModal}
           icon={<LuPlus size={"1.5rem"} />}
         />
-        <h2 className="font-semibold text-xl">
-          Aqui tienes toda la información acerca de tus riesgos
-        </h2>
+        <Link href="/risks/matrix">
+          <Button value="Ver mi matriz de riesgos" icon={<PiGridNineFill />} />
+        </Link>
       </div>
-
+      <h2 className="font-semibold text-xl text-center">
+        Aqui tienes toda la información acerca de tus riesgos
+      </h2>
       <div className=" flex justify-center">
         <Table
           data={risks}
@@ -74,6 +78,7 @@ const RisksPage = () => {
             ["final_risk"]: "Riesgo Final",
           }}
           details={"risks"}
+          deleteFunction={deleteRisk}
         />
       </div>
       <Modal name="Riesgos">

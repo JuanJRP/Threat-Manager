@@ -20,7 +20,7 @@ export default function Home() {
           </p>
 
           <div className="flex flex-wrap gap-4 justify-center">
-            <AdminHomeActions />
+            <UserHomeActions />
           </div>
         </div>
       </main>
