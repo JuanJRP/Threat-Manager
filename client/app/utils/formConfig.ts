@@ -30,7 +30,7 @@ export const formConfig = {
       type: "select",
       staticOptions: [
         { id: 1, name: "Manual" },
-        { id: 2, name: "Automático" },
+        { id: 2, name: "Automatico" },
       ],
     },
     {
