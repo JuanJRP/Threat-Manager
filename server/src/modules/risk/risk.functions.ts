@@ -57,15 +57,15 @@ class RiskCalculatedAtributes {
 
   probabilityPercentage(inherentProbability: string): number {
     switch (inherentProbability) {
-      case "Muy Bajo":
+      case "Muy Baja":
         return 0.2;
-      case "Bajo":
+      case "Baja":
         return 0.4;
-      case "Medio":
+      case "Media":
         return 0.6;
-      case "Alto":
+      case "Alta":
         return 0.8;
-      case "Muy Alto":
+      case "Muy Alta":
         return 1;
       default:
         return 0;
@@ -137,7 +137,7 @@ class RiskCalculatedAtributes {
       inherentProbability * (inherentProbability - cualification);
 
     const ranges: Range[] = [
-      { min: 0, max: 0.2, result: "Muy Baja" },
+      { min: -Infinity, max: 0.2, result: "Muy Baja" },
       { min: 0.21, max: 0.4, result: "Baja" },
       { min: 0.41, max: 0.6, result: "Media" },
       { min: 0.61, max: 0.8, result: "Alta" },
@@ -151,10 +151,10 @@ class RiskCalculatedAtributes {
   }
 
   residualImpact(inherentImpact: number, cualification: number): string {
-    const result = inherentImpact * (inherentImpact - cualification);
+    const result: number = inherentImpact * (inherentImpact - cualification);
 
     const ranges: Range[] = [
-      { min: 0, max: 0.2, result: "Leve" },
+      { min: -Infinity, max: 0.2, result: "Leve" },
       { min: 0.21, max: 0.4, result: "Menor" },
       { min: 0.41, max: 0.6, result: "Moderado" },
       { min: 0.61, max: 0.8, result: "Mayor" },
@@ -164,6 +164,10 @@ class RiskCalculatedAtributes {
     const foundRange = ranges.find(
       (range) => result >= range.min && result <= range.max
     );
+    console.log(inherentImpact - cualification);
+    console.log(cualification);
+    console.log(result);
+    console.log(foundRange);
     return foundRange ? foundRange.result : "Unknown";
   }
 

@@ -88,6 +88,7 @@ model Action_plan {
 
 model Risk_type {
   id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(255)
   availability    Boolean? // True = Disponible, False = No Disponible
   integrity       Boolean?
   confidentiality Boolean?
