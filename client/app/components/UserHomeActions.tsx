@@ -7,12 +7,15 @@ import { BsFillSafeFill } from "react-icons/bs";
 const UserHomeActions = () => {
   return (
     <>
-      <Button
-        value="Gestión de Activos"
-        color="bg-cPurple-600"
-        hover="hover:bg-cPurple-800"
-        icon={<BsFillSafeFill />}
-      />
+      <Link href="/assets">
+        <Button
+          value="Gestión de Activos"
+          color="bg-cPurple-600"
+          hover="hover:bg-cPurple-800"
+          icon={<BsFillSafeFill />}
+        />
+      </Link>
+
       <Link href="/risks">
         <Button
           value="Riesgos"
@@ -21,12 +24,14 @@ const UserHomeActions = () => {
           icon={<FaSkull />}
         />
       </Link>
-      <Button
-        value="Planes de accion"
-        color="bg-cPurple-600"
-        hover="hover:bg-cPurple-800"
-        icon={<FaClipboardList />}
-      />
+      <Link href="/action-plan">
+        <Button
+          value="Planes de accion"
+          color="bg-cPurple-600"
+          hover="hover:bg-cPurple-800"
+          icon={<FaClipboardList />}
+        />
+      </Link>
     </>
   );
 };

@@ -1,25 +1,16 @@
-<<<<<<< Updated upstream
-import React from 'react'
-
-const AssetsPage = () => {
-  return (
-    <div>AssetsPage</div>
-  )
-}
-
-export default AssetsPage
-=======
 "use client";
 import React, { useState, useEffect } from "react";
 import Papa from "papaparse";
 import { DeleteAssetById } from "./assetServices";
-import AddAssetModal from "./components/addAssets";
+import AddAssetModal from "./components/Modals/AddAssets";
 import Nav from "../../components/Navbar";
 import Table from "./components/DataTable/Table";
 import SearchBar from "./components/DataTable/SearchBar";
 import ActionButtons from "./components/DataTable/ActionButtons";
 import Pagination from "./components/DataTable/Pagination";
 import { Asset, Column } from "./components/Interface";
+import EditAssetModal from "./components/Modals/EditAssets";
+import DeleteModal from "./components/Modals/DeleteModal";
 
 const ROWS_PER_PAGE = 6;
 
@@ -36,6 +27,9 @@ const Page = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [assetToDelete, setAssetToDelete] = useState<string | null>(null);
 
   const fetchAssets = async () => {
     setError(null);
@@ -85,10 +79,12 @@ const Page = () => {
     setFilteredAssets(filtered);
   }, [searchQuery, assets]);
 
-  const handleCSVImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCSVImport = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
-  
+
     Papa.parse(file, {
       complete: async (results) => {
         if (
@@ -103,7 +99,7 @@ const Page = () => {
               visible: true,
             })
           );
-  
+
           setColumns((prev) => {
             const updatedColumns = [...prev];
             csvColumns.forEach((csvCol) => {
@@ -113,7 +109,7 @@ const Page = () => {
             });
             return updatedColumns;
           });
-  
+
           for (const row of results.data) {
             const asset: Partial<Asset> = {};
             csvColumns.forEach((col) => {
@@ -121,24 +117,30 @@ const Page = () => {
                 asset[col.key] = (row as { [key: string]: any })[col.key] || "";
               }
             });
-  
+
             try {
-              const response = await fetch("http://localhost:3001/api/assets/", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(asset),
-              });
-  
+              const response = await fetch(
+                "http://localhost:3001/api/assets/",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(asset),
+                }
+              );
+
               if (!response.ok) {
-                console.error(`Error al procesar fila: ${JSON.stringify(asset)}`);
-                throw new Error(`Error en la solicitud: ${response.statusText}`);
+                console.error(
+                  `Error al procesar fila: ${JSON.stringify(asset)}`
+                );
+                throw new Error(
+                  `Error en la solicitud: ${response.statusText}`
+                );
               }
-            } catch (error) {
-            }
+            } catch (error) {}
           }
-  
+
           // Actualizar la lista de assets después de procesar todo el CSV
           await fetchAssets();
         }
@@ -147,8 +149,6 @@ const Page = () => {
       skipEmptyLines: true,
     });
   };
-  
-  
 
   const handlePreviousPage = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1));
@@ -158,12 +158,16 @@ const Page = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
   };
 
-  const onDelete = async (assetId: string) => {
-    try {
-      await DeleteAssetById(assetId);
-      fetchAssets();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Error desconocido");
+  const handleDelete = async () => {
+    if (assetToDelete) {
+      try {
+        await DeleteAssetById(assetToDelete);
+        await fetchAssets();
+        setIsDeleteModalOpen(false);
+        setAssetToDelete(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Error desconocido");
+      }
     }
   };
 
@@ -199,10 +203,7 @@ const Page = () => {
 
   return (
     <div className="p-8 w-full min-h-screen bg-gray-50">
-      <Nav
-        title="Activos"
-        onClick={() => (window.location.href = "../risk_type")}
-      />
+      <Nav title="Activos" />
 
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
@@ -218,9 +219,12 @@ const Page = () => {
         currentAssets={currentAssets}
         onEdit={(asset) => {
           setSelectedAsset(asset);
-          setIsAddModalOpen(true);
+          setIsEditModalOpen(true);
         }}
-        onDelete={onDelete}
+        onDelete={(assetId) => {
+          setAssetToDelete(assetId);
+          setIsDeleteModalOpen(true);
+        }}
       />
 
       <Pagination
@@ -239,6 +243,28 @@ const Page = () => {
         onAssetAdded={fetchAssets}
         columns={columns}
         name="Activo"
+      />
+
+      <EditAssetModal
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          setIsEditModalOpen(false);
+          setSelectedAsset(null);
+        }}
+        asset={selectedAsset}
+        onAssetUpdated={fetchAssets}
+        columns={columns}
+        name="Activo"
+      />
+
+      <DeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setAssetToDelete(null);
+        }}
+        onConfirm={handleDelete}
+        itemName="EL ACTIVO"
       />
 
       {showColumnsSettings && (
@@ -273,7 +299,7 @@ const Page = () => {
                       setShowColumnModal(false);
                     }
                   }}
-                  className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+                  className="px-4 py-2 bg-cPurple-800 text-white rounded hover:bg-cPurple-700"
                 >
                   Agregar
                 </button>
@@ -302,7 +328,6 @@ const Page = () => {
                 </div>
               ))}
             </div>
-
             <div className="mt-6 flex justify-end">
               <button
                 onClick={() => setShowColumnsSettings(false)}
@@ -319,4 +344,3 @@ const Page = () => {
 };
 
 export default Page;
->>>>>>> Stashed changes
