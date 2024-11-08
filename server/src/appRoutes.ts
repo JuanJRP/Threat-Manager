@@ -2,7 +2,7 @@ import { Router } from "express";
 import { userRoutes } from "./modules/user/user.routes";
 import { assetsRouter } from "./modules/assets/assets.routes";
 import { threathsRouter } from "./modules/threats/threats.routes";
-import { risk_typeRouter } from "./modules/risk_type/risk_type.routes";
+import { riskTypeRouter } from "./modules/risk_type/risk_type.routes";
 import { assetTypeRoutes } from "./modules/assets_type/assets_type.routes";
 import Auth from "./middlewares/Auth";
 import { Role } from "@prisma/client";
@@ -17,7 +17,7 @@ const router = Router();
 const authMiddleware = new Auth();
 
 router.use("/risks", risksRouter);
-router.use("/risk_type", risk_typeRouter);
+router.use("/risk_type", riskTypeRouter);
 router.use("/assets", assetsRouter);
 router.use("/threats", threathsRouter);
 router.use("/action-plans", actionPlanRouter);
