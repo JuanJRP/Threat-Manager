@@ -1,3 +1,4 @@
+// risk_type.routes.ts
 import { Router } from "express";
 import { RiskTypeController } from "./risk_type.controllers";
 
@@ -7,7 +8,9 @@ const riskTypeController = new RiskTypeController();
 router.post("/", riskTypeController.createRiskType);
 router.get("/", riskTypeController.getAllRiskTypes);
 router.get("/:id", riskTypeController.getRiskTypeById);
-router.put("/:id", riskTypeController.updateRiskTypeById);
-router.delete("/:id", riskTypeController.deleteRiskTypeById);
+router.delete("/:id", riskTypeController.deleteRiskType);
 
-export { router as risk_typeRouter };
+export { router as riskTypeRouter };
+
+
+
