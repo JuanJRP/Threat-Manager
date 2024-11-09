@@ -25,16 +25,16 @@ const Table: React.FC<TableProps> = ({
   }, [] as string[]);
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-lg">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+    <div className="overflow-x-auto rounded-lg border border-gray-300 shadow-lg">
+      <table className="min-w-full divide-y divide-gray-800 bg-gray-400">
+        <thead className="">
           <tr>
             {columns
               .filter((col) => col.visible && col.key !== "extra_atributes")
               .map((column) => (
                 <th
                   key={column.key}
-                  className="px-8 py-4 text-left text-sm text-gray-700 uppercase tracking-wider font-semibold"
+                  className="px-8 py-4 text-left text-sl text-black uppercase tracking-wider font-bold "
                 >
                   {column.label}
                 </th>
@@ -43,17 +43,17 @@ const Table: React.FC<TableProps> = ({
             {extraAttributes.map((attr) => (
               <th
                 key={attr}
-                className="px-8 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider"
+                className="px-8 py-4 text-left text-sl font-bold text-black uppercase tracking-wider"
               >
                 {attr}
               </th>
             ))}
-            <th className="px-8 py-4 text-center text-sm font-medium text-gray-500 uppercase tracking-wider sticky right-0 bg-gray-50">
+            <th className="px-8 py-4 text-center text-sl text-black uppercase tracking-wider font-bold sticky right-0 bg-gray-400">
               Acciones
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-gray-300 divide-y divide-gray-800">
           {currentAssets.map((asset) => (
             <tr key={asset.id} className="hover:bg-gray-50">
               {columns
@@ -61,7 +61,7 @@ const Table: React.FC<TableProps> = ({
                 .map((column) => (
                   <td
                     key={column.key}
-                    className="px-8 py-5 whitespace-nowrap text-base text-gray-500"
+                    className="px-8 py-5 whitespace-nowrap text-sl font-semibold text-black"
                   >
                     {asset[column.key]?.toString() || ""}
                   </td>
@@ -70,12 +70,12 @@ const Table: React.FC<TableProps> = ({
               {extraAttributes.map((attr) => (
                 <td
                   key={attr}
-                  className="px-8 py-5 whitespace-nowrap text-base text-gray-500"
+                  className="px-8 py-5 whitespace-nowrap text-sl font-semibold text-black"
                 >
                   {asset.extra_atributes?.[attr]?.toString() || ""}
                 </td>
               ))}
-              <td className="px-8 py-5 whitespace-nowrap text-base text-gray-500 text-center sticky right-0 bg-white">
+              <td className=" px-8 py-5 whitespace-nowrap text-base text-black text-center sticky right-0 bg-gray-300 hover:bg-gray-50">
                 <div className="flex justify-center gap-4">
                   <button
                     onClick={() => onEdit(asset)}

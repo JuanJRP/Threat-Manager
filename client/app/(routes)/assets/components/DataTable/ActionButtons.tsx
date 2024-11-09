@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
-import { Plus, FileSpreadsheet, Settings } from "lucide-react";
+import { Plus, Settings } from "lucide-react";
+import { BsFiletypeCsv } from "react-icons/bs";
 
 interface ActionButtonsProps {
   onAddClick: () => void;
-  onCSVImport: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onCSVImport: () => void;
   onSettingsClick: () => void;
   ButtonName: string;
 }
@@ -14,7 +15,6 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   onSettingsClick,
   ButtonName,
 }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="grid grid-cols-3 gap-6 mb-5">
@@ -31,16 +31,15 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
           type="file"
           accept=".csv"
           onChange={onCSVImport}
-          ref={fileInputRef}
           className="hidden"
           id="csv-upload"
           title="Upload CSV file"
         />
         <button
-          onClick={() => fileInputRef.current?.click()}
+          onClick={onCSVImport}
           className="w-full flex items-center justify-center gap-3 bg-cPurple-900 text-white py-4 px-8 rounded-lg hover:bg-cPurple-700 font-semibold transition-colors text-lg"
         >
-          <FileSpreadsheet className="w-6 h-6" />
+          <BsFiletypeCsv className="w-6 h-6" />
           Importar CSV
         </button>
       </div>
