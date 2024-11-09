@@ -1,6 +1,6 @@
 # API de Tipos de Riesgo
 
-Esta API proporciona endpoints para la gestión de tipos de riesgo, permitiendo crear, leer, actualizar y eliminar (CRUD) diferentes tipos de riesgos en el sistema.
+Esta API proporciona endpoints para la gestión de tipos de riesgo, permitiendo crear, leer, y eliminar (CRUD) diferentes tipos de riesgos en el sistema.
 
 ## Estructura del Proyecto
 
@@ -14,7 +14,7 @@ El proyecto sigue una arquitectura en capas:
 ## Base URL
 
 ```
-/risk-type
+http://localhost:3001/api/risk_type/
 ```
 
 ## Modelo de Datos
@@ -22,8 +22,9 @@ El proyecto sigue una arquitectura en capas:
 ```typescript
 interface RiskTypeDTO {
   name: string;          // Nombre del tipo de riesgo
-  description: string;   // Descripción detallada
-  classification: string; // Clasificación del riesgo
+  integrity: boolean | null; // Indica si el riesgo afecta la integridad 
+  confidentiality: boolean | null; // Indica si el riesgo afecta la confidencialidad
+  availability: boolean | null; // Indica si el riesgo afecta la disponibilidad
 }
 ```
 
@@ -38,8 +39,9 @@ Crea un nuevo tipo de riesgo.
 ```json
 {
     "name": "Riesgo Operacional",
-    "description": "Riesgos relacionados con operaciones",
-    "classification": "Alto"
+    "integrity": true,
+    "confidentiality": false,
+    "availability": true
 }
 ```
 
@@ -69,28 +71,7 @@ Retorna un tipo de riesgo específico por su ID.
 - `404`: Tipo de riesgo no encontrado
 - `500`: Error al obtener el tipo de riesgo
 
-### 4. Actualizar Tipo de Riesgo
-**PUT /:id**
-
-Actualiza un tipo de riesgo existente.
-
-**Parámetros de URL:**
-- `id`: ID del tipo de riesgo (número)
-
-**Request Body:**
-```json
-{
-    "name": "Nuevo nombre",
-    "description": "Nueva descripción",
-    "classification": "Nueva clasificación"
-}
-```
-
-**Respuestas:**
-- `200`: Tipo de riesgo actualizado exitosamente
-- `500`: Error al actualizar el tipo de riesgo
-
-### 5. Eliminar Tipo de Riesgo
+### 4. Eliminar Tipo de Riesgo
 **DELETE /:id**
 
 Elimina un tipo de riesgo existente.
@@ -108,7 +89,6 @@ La API implementa un manejo de errores consistente:
 
 - Errores de servidor (500) incluyen un mensaje descriptivo
 - Recursos no encontrados (404) incluyen un mensaje específico
-- Las respuestas exitosas incluyen los datos solicitados o un código de estado apropiado
 
 ## Tecnologías Utilizadas
 

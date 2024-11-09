@@ -29,10 +29,7 @@ model Asset {
   state               Boolean? // True = Activo, False = Inactivo
   entry_date          DateTime?
   retirement_date     DateTime?
-  availability        Boolean? // True = Disponible, False = No Disponible
-  integrity           String?     @db.Text
   extra_atributes     Json?       @db.Json
-  confidentiality     String?     @db.Text
   criticality         String?     @db.Text
   asset_type          Asset_type? @relation(fields: [asset_type_id], references: [id])
   asset_type_id       Int?
@@ -90,11 +87,12 @@ model Action_plan {
 }
 
 model Risk_type {
-  id             Int    @id @default(autoincrement())
-  name           String @db.VarChar(255)
-  description    String @db.Text
-  classification String @db.VarChar(255) // Alta, Media, Baja ENUM
-  risk           Risk[]
+  id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(255)
+  availability    Boolean? // True = Disponible, False = No Disponible
+  integrity       Boolean?
+  confidentiality Boolean?
+  risk            Risk[]
 }
 
 model Risk {
