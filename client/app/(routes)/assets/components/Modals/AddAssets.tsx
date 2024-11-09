@@ -40,16 +40,36 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
     }));
   };
 
+  const validateForm = () => {
+    const requiredFields = columns.filter(col => col.required && col.visible && !col.exclude);
+    for (const field of requiredFields) {
+      if (!formData[field.key] || formData[field.key].trim() === '') {
+        throw new Error(`El campo ${field.label} es requerido`);
+      }
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
     try {
-      await axios.post("http://localhost:3001/api/assets/", { formData });
-      onAssetAdded();
-      onClose();
-      setFormData({});
+      validateForm();
+
+      const cleanedFormData = Object.fromEntries(
+        Object.entries(formData).filter(([_, value]) => value !== '')
+      );
+
+      const response = await axios.post("http://localhost:3001/api/assets", cleanedFormData);
+
+      if (response.status === 201) {
+        onAssetAdded();
+        onClose();
+        setFormData({});
+      } else {
+        throw new Error("Error al crear el activo");
+      }
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Error al agregar el activo"
@@ -77,7 +97,7 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
             {error}
           </div>
         )}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             {columns
               .filter((col) => col.visible && !col.exclude)
@@ -87,8 +107,10 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
                     htmlFor={column.key}
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    {column.label}{" "}
-                    {column.required && <span className="text-red-500">*</span>}
+                    {column.label}
+                    {column.required && (
+                      <span className="text-red-500 ml-1">*</span>
+                    )}
                   </label>
                   {column.type === "select" ? (
                     <select
@@ -98,6 +120,7 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
                         handleInputChange(column.key, e.target.value)
                       }
                       className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      required={column.required}
                     >
                       <option value="">Seleccionar</option>
                       {column.options?.map((option) => (
@@ -115,16 +138,18 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
                         handleInputChange(column.key, e.target.value)
                       }
                       className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      required={column.required}
                     />
                   ) : (
                     <input
                       id={column.key}
-                      type="text"
+                      type={column.type || "text"}
                       value={formData[column.key] || ""}
                       onChange={(e) =>
                         handleInputChange(column.key, e.target.value)
                       }
                       className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      required={column.required}
                     />
                   )}
                 </div>
@@ -132,9 +157,16 @@ const AddAssetModal: React.FC<AddAssetModalProps> = ({
           </div>
           <div className="mt-6 flex justify-end gap-4">
             <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
+            >
+              Cancelar
+            </button>
+            <button
               type="submit"
               disabled={isLoading}
-              className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 flex items-center gap-2"
+              className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 flex items-center gap-2 disabled:bg-purple-400"
             >
               {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
               {isLoading ? "Guardando..." : "Guardar Activo"}

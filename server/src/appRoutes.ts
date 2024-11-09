@@ -12,7 +12,6 @@ import { risksRouter } from "./modules/risk/risk.routes";
 import { vulnerabilitiesRouter } from "./modules/vulnerability/vulnerability.routes";
 import { controlsRouter } from "./modules/control/control.routes";
 
-
 const router = Router();
 const authMiddleware = new Auth();
 
@@ -25,11 +24,6 @@ router.use("/assets_type", assetTypeRoutes);
 router.use("/auth", AuthRoutes);
 router.use("/vulnerability", vulnerabilitiesRouter);
 router.use("/control", controlsRouter);
-router.use(
-  "/users",
-  authMiddleware.verifyToken,
-  userRoutes
-);
-
+router.use("/users", authMiddleware.verifyToken, userRoutes);
 
 export { router as appRoutes };
