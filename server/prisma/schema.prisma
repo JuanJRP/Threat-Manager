@@ -11,37 +11,37 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model Asset {
-  id                  Int        @id @default(autoincrement())
-  process             String     @db.VarChar(255)
-  name                String     @db.VarChar(255)
-  description         String     @db.VarChar(255)
-  asset_type          Asset_type @relation(fields: [asset_type_id], references: [id])
-  asset_type_id       Int
-  format              String     @db.VarChar(255) // CSV, TXT
-  software_version    String     @db.VarChar(255)
-  manufacturer        String     @db.VarChar(255)
-  physical_location   String     @db.VarChar(255)
-  electronic_location String     @db.VarChar(255)
-  responsible         String     @db.VarChar(255)
-  user_access         String     @db.VarChar(255)
-  access_date         DateTime
-  state               Boolean   // True = Activo, False = Inactivo
-  entry_date          DateTime
-  retirement_date     DateTime
-  availability        Boolean  // True = Disponible, False = No Disponible
-  integrity           String     @db.Text
-  confidentiality     String     @db.Text
+  id                  Int         @id @default(autoincrement())
+  process             String?     @db.VarChar(255) // Misional, Estrategico, apoyo, Evaluacion y mejora ENUM
+  name                String?     @db.VarChar(255)
+  description         String?     @db.VarChar(255)
+  format              String?     @db.VarChar(255) // CSV, TXT
+  software_version    String?     @db.VarChar(255)
+  manufacturer        String?     @db.VarChar(255)
+  physical_location   String?     @db.VarChar(255)
+  electronic_location String?     @db.VarChar(255)
+  responsible         String?     @db.VarChar(255)
+  user_access         String?     @db.VarChar(255)
+  access_date         DateTime?
+  state               Boolean? // True = Activo, False = Inactivo
+  entry_date          DateTime?
+  retirement_date     DateTime?
+  extra_atributes     Json?       @db.Json
+  criticality         String?     @db.Text
+  asset_type          Asset_type? @relation(fields: [asset_type_id], references: [id])
+  asset_type_id       Int?
+  User                User?       @relation(fields: [user_id], references: [id])
+  user_id             Int?
 }
 
 model Asset_type {
   id          Int     @id @default(autoincrement())
   name        String  @db.VarChar(255) // Hardware, Software, Información ENUM
   description String  @db.Text
-  category    String  @db.VarChar(255) 
+  category    String  @db.VarChar(255)
   asset       Asset[]
   risk        Risk[]
 }
@@ -60,33 +60,7 @@ model Control {
   code                  Int             @unique
   description_iso       String          @db.Text
   description_city_hall String          @db.Text
-  classification        Int
   vulnerability         Vulnerability[]
-}
-
-model Affect {
-  id                    Int     @id @default(autoincrement())
-  probability           Int
-  impact                Impact  @relation(fields: [impact_id], references: [id])
-  impact_id             Int
-  type                  String  @db.VarChar(255) // Preventivo 25%, Correctivo 10%, Detectivo 15% ENUM
-  implementation        String  @db.VarChar(255) // automatico 25%, manual 15% ENUM
-  control_qualification Int // type + implementation
-  documented            Boolean // True = Documented, False = Not Documented
-  frequency             String  @db.VarChar(255)
-  evidence              String  @db.VarChar(255)
-}
-
-model Impact {
-  id          Int      @id @default(autoincrement())
-  penalty     Int
-  impact      Int
-  risk_zone   String?  @db.VarChar(255)
-  probability String?  @db.VarChar(255) // Baja, Media, Alta ENUM
-  comment     String?  @db.Text
-  affect      Affect[]
-  risk        Risk     @relation(fields: [risk_id], references: [id])
-  risk_id     Int
 }
 
 model Threath {
@@ -97,40 +71,72 @@ model Threath {
 }
 
 model Action_plan {
-  id                  Int      @id @default(autoincrement())
-  residual_risk       String   @db.Text
-  treatment           String   @db.VarChar(255)
-  action_plan         String   @db.Text
-  responsible         String   @db.VarChar(255)
-  implementation_date DateTime
-  control_tracking    String   @db.Text
-  state               String   @db.VarChar(255) // Pendiente, En proceso, Finalizado ENUM
-  monitoring          String   @db.Text
-  monitoring_date     DateTime
-  indicator           String   @db.Text
-  risk                Risk     @relation(fields: [risk_id], references: [id])
-  risk_id             Int
+  id                  Int       @id @default(autoincrement())
+  residual_risk       String    @db.Text
+  treatment           String    @db.VarChar(255)
+  action_plan         String    @db.Text
+  responsible         String    @db.VarChar(255)
+  implementation_date DateTime?
+  control_tracking    String?   @db.Text
+  state               String    @db.VarChar(255) // Pendiente, En proceso, Finalizado ENUM
+  monitoring          String?   @db.Text
+  monitoring_date     DateTime?
+  indicator           String?   @db.Text
+  risk                Risk      @relation(fields: [risk_id], references: [id])
+  risk_id             Int       @unique
 }
 
 model Risk_type {
-  id             Int    @id @default(autoincrement())
-  name           String @db.VarChar(255)
-  description    String @db.Text
-  classification String @db.VarChar(255) // Alta, Media, Baja ENUM
-  risk           Risk[]
+  id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(255)
+  availability    Boolean? // True = Disponible, False = No Disponible
+  integrity       Boolean?
+  confidentiality Boolean?
+  risk            Risk[]
 }
 
 model Risk {
-  id               Int           @id @default(autoincrement())
-  risk_type        Risk_type     @relation(fields: [risk_type_id], references: [id])
-  risk_type_id     Int
-  frequency        Int?          
-  threat           Threath       @relation(fields: [threat_id], references: [id])
-  threat_id        Int
-  asset_type       Asset_type    @relation(fields: [asset_type_id], references: [id])
-  asset_type_id    Int
-  vulnerability    Vulnerability @relation(fields: [vulnerability_id], references: [id])
-  vulnerability_id Int
-  action_plan      Action_plan[]
-  impact           Impact[]
+  id                     Int           @id @default(autoincrement())
+  frequency              Int
+  penalty                Int
+  inherent_probability   String?       @db.VarChar(255)
+  probability_percentage Float?        @db.DoublePrecision
+  inherent_impact        String?       @db.VarChar(255)
+  impact_percentage      Float?        @db.DoublePrecision
+  inherent_risk          String?       @db.VarChar(255)
+  control_type           String?       @db.VarChar(255)
+  implementation         String?       @db.VarChar(255)
+  control_qualification  Float?        @db.DoublePrecision
+  residual_probability   String?
+  residual_impact        String?
+  final_risk             String?       @db.VarChar(255)
+  risk_type              Risk_type     @relation(fields: [risk_type_id], references: [id])
+  risk_type_id           Int
+  threat                 Threath       @relation(fields: [threat_id], references: [id])
+  threat_id              Int
+  asset_type             Asset_type    @relation(fields: [asset_type_id], references: [id])
+  asset_type_id          Int
+  vulnerability          Vulnerability @relation(fields: [vulnerability_id], references: [id])
+  vulnerability_id       Int
+  action_plan            Action_plan?
+  user                   User          @relation(fields: [user_id], references: [id])
+  user_id                Int
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model User {
+  id           Int     @id @default(autoincrement())
+  username     String  @unique @db.VarChar(255)
+  first_name   String  @db.VarChar(255)
+  last_name    String  @db.VarChar(255)
+  email        String  @unique @db.VarChar(255)
+  password     String  @db.VarChar(255)
+  role         Role[]  @default([USER])
+  refreshToken String  @default("")
+  risk         Risk[]
+  asset        Asset[]
 }

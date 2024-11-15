@@ -20,11 +20,14 @@ const config: Config = {
           700: "#8a31bf",
           800: "#742c9d",
           900: "#5f257e",
-          950: "#410f5c"
-        }
+          950: "#410f5c",
+        },
       },
     },
   },
-  plugins: [],
+  daisyui: {
+    themes: ["light", "dark", "cupcake, sunset, dim"],
+  },
+  plugins: [require("daisyui")],
 };
 export default config;
