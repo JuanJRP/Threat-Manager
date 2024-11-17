@@ -1,6 +1,6 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { createRisk, deleteRisk, getAllRisks } from "./riskServices";
+import { createRisk, deleteRisk, getAllRisks, updateRisk } from "./riskServices";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import CreateForm from "@/app/components/CreateForm";
@@ -81,6 +81,7 @@ const RisksPage = () => {
           details={"risks"}
           deleteFunction={deleteRisk}
           showDetails={true}
+          updateFunction={updateRisk}
         />
       </div>
       <Modal name="Riesgos">

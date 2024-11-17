@@ -5,22 +5,23 @@ import Link from "next/link";
 import { FaTrash } from "react-icons/fa6";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import useModalStore from "../store/modalStore";
-import Modal from "./Modal";
 import DeleteModal from "./DeleteModal";
 import DeleteForm from "./DeleteForm";
 import { FaInfoCircle } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import UpdateModal from "./UpdateModal";
 import UpdateForm from "./UpdateForm";
-import { updateRisk } from "../(routes)/risks/riskServices";
+import updateFormConfig from "../utils/updateFormConfig";
+import { formConfig } from "../utils/formConfig";
 
 type TableProps<T> = {
   data: T[];
   columns: string[];
   columnNames?: { [key: string]: string };
-  details: string | number;
+  details: keyof typeof updateFormConfig | keyof typeof formConfig;
   deleteFunction?: (id: string) => Promise<void>;
   showDetails?: boolean;
+  updateFunction: (id: string, data: any) => Promise<void>;
 };
 
 const getNestedValue = (obj: any, path: string) => {
@@ -34,12 +35,12 @@ const Table = <T,>({
   details,
   deleteFunction,
   showDetails = false,
+  updateFunction,
 }: TableProps<T>) => {
   const {
     openDeleteModal,
     closeDeleteModal,
     openUpdateModal,
-    closeUpdateModal,
   } = useModalStore();
 
   const {
@@ -145,9 +146,10 @@ const Table = <T,>({
                   <UpdateModal name="Actualizar">
                     <UpdateForm
                       id={getNestedValue(row, "id")}
-                      module="risks"
+                      item={row}
+                      module={details}
                       updateData={(data) =>
-                        updateRisk(getNestedValue(row, "id"), data)
+                        updateFunction(getNestedValue(row, "id"), data)
                       }
                     />
                   </UpdateModal>
