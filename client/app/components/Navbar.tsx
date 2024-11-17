@@ -10,7 +10,7 @@ const Nav: React.FC<NavProps> = ({ title }) => {
 
     <nav className=" text-cPurple-50 relative h-20 flex items-center justify-center w-full py-2 mb-5">
       <div className="bg-cPurple-950 relative h-full w-[100%] flex items-center justify-center rounded-xl">
-        <Link href="/" className="flex items-center ">
+        <Link href="/dashboard" className="flex items-center ">
           <FaRegArrowAltCircleLeft
             size={"2em"}
             className="absolute left-3 hover:brightness-75 transition cursor-pointer"
