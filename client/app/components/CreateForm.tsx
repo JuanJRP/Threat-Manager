@@ -73,7 +73,7 @@ const CreateForm = ({ module, fetchFunctions, createData }: FormProps) => {
     e.preventDefault();
     mutation.mutate(formData);
   };
-
+console.log(formData)
   return (
     <div className="flex flex-col items-center">
       <form
