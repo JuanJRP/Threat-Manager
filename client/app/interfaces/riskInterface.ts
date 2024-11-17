@@ -37,8 +37,9 @@ export interface Risk {
   export interface RiskType {
     id: number
     name: string
-    description: string
-    classification: string
+    avaiability: boolean
+    confidentiality: boolean
+    integrity: boolean
   }
   
   export interface Threat {

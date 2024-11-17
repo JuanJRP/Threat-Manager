@@ -3,21 +3,14 @@ import React from "react";
 import Button from "./Button";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { formConfig } from "../utils/formConfig";
-import { CiCirclePlus } from "react-icons/ci";
 
 interface FormProps {
   module: keyof typeof formConfig;
   fetchFunctions?: Array<{ key: string; fetchFunction: () => Promise<any> }>;
   createData?: (data: any) => Promise<any>;
-  needExtraAttributes?: boolean;
 }
 
-const CreateForm = ({
-  module,
-  fetchFunctions,
-  createData,
-  needExtraAttributes = false,
-}: FormProps) => {
+const CreateForm = ({ module, fetchFunctions, createData }: FormProps) => {
   const [formData, setFormData] = React.useState<{ [key: string]: any }>({});
   const [message, setMessage] = React.useState<string | null>(null);
 
@@ -59,7 +52,6 @@ const CreateForm = ({
   ) => {
     const { name, value, type, tagName } = e.target;
 
-    
     const newValue =
       tagName === "SELECT" && isStatic
         ? schema

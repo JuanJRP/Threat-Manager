@@ -104,7 +104,7 @@ const page = ({ params }: { params: { id: string } }) => {
               </p>
               <p>
                 <span className="font-semibold">Calificación del Control:</span>{" "}
-                {risk.control_qualification}
+                {risk.control_qualification * 100}%
               </p>
             </div>
           </div>
@@ -137,6 +137,12 @@ const page = ({ params }: { params: { id: string } }) => {
               <p>
                 <span className="font-semibold">Amenaza:</span>{" "}
                 {risk.threat.name}
+              </p>
+              <p>
+                <span className="font-semibold">
+                  Descripción de la amenaza:
+                </span>{" "}
+                {risk.threat.description}
               </p>
             </div>
           </div>
