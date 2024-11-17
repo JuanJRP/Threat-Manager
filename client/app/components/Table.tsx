@@ -52,7 +52,7 @@ const Table = <T,>({
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    setTotalItems(data.length);
+    setTotalItems(data?.length);
   }, [data, setTotalItems]);
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);

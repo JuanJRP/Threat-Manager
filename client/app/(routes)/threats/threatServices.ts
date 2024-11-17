@@ -17,3 +17,11 @@ export const createThreat = async (data: Threat) => {
     throw error;
   }
 };
+export const deleteThreat = async (id:string)=>{
+  try{
+    const res = await axios.delete(`${SERVER_URL}/threats/${id}`)
+    return res.data
+  } catch(error){
+    throw error;
+  }
+};
