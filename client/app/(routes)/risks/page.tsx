@@ -4,7 +4,6 @@ import { createRisk, deleteRisk, getAllRisks } from "./riskServices";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import CreateForm from "@/app/components/CreateForm";
-import { Risk } from "@/app/interfaces/riskInterface";
 import { getAllRiskTypes } from "../risk_type/riskTypeServices";
 import { getAllThreats } from "../threats/threatServices";
 import { getAllAssetTypes } from "../asset-types/assetTypeServices";
@@ -13,8 +12,8 @@ import useModalStore from "@/app/store/modalStore";
 import Table from "@/app/components/Table";
 import Loading from "@/app/components/Loading";
 import Error from "@/app/components/Error";
-import { LuPlus } from "react-icons/lu";
-import { PiGridNineFill } from "react-icons/pi";
+import { LuPlus, LuAlertTriangle } from "react-icons/lu";
+
 import Link from "next/link";
 
 const RisksPage = () => {
@@ -42,7 +41,10 @@ const RisksPage = () => {
           icon={<LuPlus size={"1.5rem"} />}
         />
         <Link href="/risks/matrix">
-          <Button value="Ver mi matriz de riesgos" icon={<PiGridNineFill />} />
+          <Button
+            value="Ver mis riesgos mas criticos"
+            icon={<LuAlertTriangle size={"1.5rem"} />}
+          />
         </Link>
       </div>
       <h2 className="font-semibold text-xl text-center">

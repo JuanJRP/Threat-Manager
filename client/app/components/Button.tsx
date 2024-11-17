@@ -18,7 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   value,
   hover = "hover:bg-cPurple-800",
   textColor = "text-cPurple-50",
-  borderColor,
+  borderColor = "border-none",
   icon,
   onClick,
   type,
