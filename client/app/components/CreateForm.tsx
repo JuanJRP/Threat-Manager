@@ -41,7 +41,6 @@ const CreateForm = ({ module, fetchFunctions, createData }: FormProps) => {
     onSuccess: () => {
       setMessage("Creado con éxito");
       setFormData({});
-
       setTimeout(() => setMessage(null), 3000);
     },
   });

@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { getRiskById } from "../riskServices";
 import Loading from "@/app/components/Loading";
-import Error from "@/app/components/Error";
+import Error from "@/app/components/ErrorComponent";
 import {
   FaClipboardList,
   FaExclamationTriangle,

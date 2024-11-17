@@ -1,6 +1,6 @@
 "use client";
 import Loading from "@/app/components/Loading";
-import Error from "@/app/components/Error";
+import Error from "@/app/components/ErrorComponent";
 import { useRisks } from "../riskServices";
 import { Risk } from "@/app/interfaces/riskInterface";
 import Button from "@/app/components/Button";
