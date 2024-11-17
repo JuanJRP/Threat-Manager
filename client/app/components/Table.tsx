@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePaginationStore } from "../store/paginationStore";
 import Button from "./Button";
 import Link from "next/link";
@@ -20,6 +20,7 @@ type TableProps<T> = {
   columnNames?: { [key: string]: string };
   details: string | number;
   deleteFunction?: (id: string) => Promise<void>;
+  showDetails?: boolean;
 };
 
 const getNestedValue = (obj: any, path: string) => {
@@ -32,6 +33,7 @@ const Table = <T,>({
   columnNames,
   details,
   deleteFunction,
+  showDetails = false,
 }: TableProps<T>) => {
   const {
     openDeleteModal,
@@ -50,6 +52,8 @@ const Table = <T,>({
   } = usePaginationStore();
 
   const queryClient = useQueryClient();
+
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     setTotalItems(data.length);
@@ -75,6 +79,10 @@ const Table = <T,>({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [details] });
       closeDeleteModal();
+    },
+    onError: () => {
+      setMessage("No es posible eliminar este elemento");
+      setTimeout(() => setMessage(null), 3000);
     },
   });
 
@@ -106,19 +114,21 @@ const Table = <T,>({
                 ))}
                 <td className="border border-gray-300">
                   <div className="flex items-center justify-around p-1">
-                    <div className="tooltip" data-tip="Informacion adicional">
-                      <Link
-                        href={`http://localhost:3000/${details}/${getNestedValue(
-                          row,
-                          "id"
-                        )}`}
-                      >
-                        <FaInfoCircle
-                          className="text-cPurple-600 cursor-pointer"
-                          size={"1rem"}
-                        />
-                      </Link>
-                    </div>
+                    {showDetails && (
+                      <div className="tooltip" data-tip="Informacion adicional">
+                        <Link
+                          href={`http://localhost:3000/${details}/${getNestedValue(
+                            row,
+                            "id"
+                          )}`}
+                        >
+                          <FaInfoCircle
+                            className="text-cPurple-600 cursor-pointer"
+                            size={"1rem"}
+                          />
+                        </Link>
+                      </div>
+                    )}
                     <div className="tooltip" data-tip="Editar">
                       <button onClick={openUpdateModal}>
                         <MdEdit size="1.25rem" className="text-cPurple-800" />
@@ -133,7 +143,13 @@ const Table = <T,>({
                 </td>
                 <>
                   <UpdateModal name="Actualizar">
-                    <UpdateForm id={getNestedValue(row, "id")} module="risks" updateData={(data) => updateRisk(getNestedValue(row, "id"), data)}/>
+                    <UpdateForm
+                      id={getNestedValue(row, "id")}
+                      module="risks"
+                      updateData={(data) =>
+                        updateRisk(getNestedValue(row, "id"), data)
+                      }
+                    />
                   </UpdateModal>
                   <DeleteModal name={`Confirmar eliminacion`}>
                     <DeleteForm
@@ -142,6 +158,19 @@ const Table = <T,>({
                         deleteMutation.mutate(getNestedValue(row, "id"))
                       }
                     />
+                    {message && (
+                      <div
+                        className={`mt-4 ${
+                          message.includes("Error")
+                            ? "bg-red-400"
+                            : "bg-green-500"
+                        }`}
+                      >
+                        <h3 className={`text-center p-2 my-4 rounded`}>
+                          {message}
+                        </h3>
+                      </div>
+                    )}
                   </DeleteModal>
                 </>
               </tr>

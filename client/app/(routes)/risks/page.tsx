@@ -11,9 +11,8 @@ import { getAllVulnerabilities } from "../vulnerability/vulnerabilityServices";
 import useModalStore from "@/app/store/modalStore";
 import Table from "@/app/components/Table";
 import Loading from "@/app/components/Loading";
-import Error from "@/app/components/Error";
+import ErrorComponent from "@/app/components/ErrorComponent";
 import { LuPlus, LuAlertTriangle } from "react-icons/lu";
-
 import Link from "next/link";
 
 const RisksPage = () => {
@@ -30,7 +29,7 @@ const RisksPage = () => {
 
   if (isLoading) return <Loading />;
 
-  if (isError) return <Error />;
+  if (isError) return <ErrorComponent />;
 
   return (
     <>
@@ -81,6 +80,7 @@ const RisksPage = () => {
           }}
           details={"risks"}
           deleteFunction={deleteRisk}
+          showDetails={true}
         />
       </div>
       <Modal name="Riesgos">
