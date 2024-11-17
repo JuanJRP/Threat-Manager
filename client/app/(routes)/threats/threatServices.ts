@@ -10,7 +10,7 @@ export const getAllThreats = async () => {
 
 export const createThreat = async (data: Threat) => {
   try {
-    const res = await axios.post("http://localhost:3000/api/threats", data);
+    const res = await axios.post(`${SERVER_URL}/threats`,data);
 
     return res.data;
   } catch (error) {

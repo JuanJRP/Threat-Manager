@@ -42,7 +42,7 @@ export interface Risk {
   }
   
   export interface Threat {
-    id: number
+    id?: number
     name: string
     description?: string
   }
