@@ -7,7 +7,7 @@ import { useState } from 'react';
 interface TableRow {
     id: number; 
     name: string;
-    description: string;
+    description: string ;
 }
   
 interface TableProps {
