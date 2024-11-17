@@ -56,7 +56,7 @@ const Table = <T,>({
   const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    setTotalItems(data.length);
+    setTotalItems(data?.length);
   }, [data, setTotalItems]);
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
