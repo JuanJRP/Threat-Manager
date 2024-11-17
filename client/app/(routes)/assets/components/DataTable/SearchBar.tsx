@@ -12,11 +12,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   return (
     <div className="relative mb-5">
-      <Search className="absolute left-6 top-4 h-6 w-6 text-gray-400" />
+      <Search className="absolute left-6 top-4 h-6 w-6 text-gray-800" />
       <input
         type="text"
         placeholder="Buscar en todas las columnas..."
-        className="w-full pl-16 pr-6 py-4 rounded-full border border-gray-200 text-lg"
+        className="w-full pl-16 pr-6 py-4 rounded-full border border-gray-800 text-lg"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />

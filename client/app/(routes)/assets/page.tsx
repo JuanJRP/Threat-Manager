@@ -11,6 +11,7 @@ import Pagination from "./components/DataTable/Pagination";
 import { Asset, Column } from "./components/Interface";
 import EditAssetModal from "./components/Modals/EditAssets";
 import DeleteModal from "./components/Modals/DeleteModal";
+import CSVImportModal from "./components/Modals/ImportCSV";
 
 const ROWS_PER_PAGE = 6;
 
@@ -30,6 +31,7 @@ const Page = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [assetToDelete, setAssetToDelete] = useState<string | null>(null);
+  const [isCSVModalOpen, setIsCSVModalOpen] = useState(false);
 
   const fetchAssets = async () => {
     setError(null);
@@ -202,14 +204,14 @@ const Page = () => {
   }
 
   return (
-    <div className="p-8 w-full min-h-screen bg-gray-50">
+    <div className="p-4 w-full min-h-screen">
       <Nav title="Activos" />
 
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
       <ActionButtons
         onAddClick={() => setIsAddModalOpen(true)}
-        onCSVImport={handleCSVImport}
+        onCSVImport={() => setIsCSVModalOpen(true)}
         onSettingsClick={() => setShowColumnsSettings(!showColumnsSettings)}
         ButtonName="Activo"
       />
@@ -265,6 +267,12 @@ const Page = () => {
         }}
         onConfirm={handleDelete}
         itemName="EL ACTIVO"
+      />
+
+      <CSVImportModal
+        isOpen={isCSVModalOpen}
+        onClose={() => setIsCSVModalOpen(false)}
+        onFileSelect={handleCSVImport}
       />
 
       {showColumnsSettings && (

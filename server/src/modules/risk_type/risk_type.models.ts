@@ -1,5 +1,10 @@
+// risk_type.models.ts
 export interface RiskTypeDTO {
   name: string;
-  description: string;
-  classification: string;
+  integrity: boolean | null;
+  confidentiality: boolean | null;
+  availability: boolean | null;
 }
+
+
+
