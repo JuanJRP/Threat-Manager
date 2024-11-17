@@ -31,7 +31,7 @@ const CreateForm = ({ module, fetchFunctions, createData }: FormProps) => {
       createData
         ? createData({
             ...data,
-            user_id: 1,
+            //user_id: 1,
           })
         : Promise.reject("createData is undefined"),
     onError: (error) => {
