@@ -58,7 +58,7 @@ export class ThreathController {
     const id = parseInt(req.params.id);
     try {
       await ThreathService.DeleteThreathById(id);
-      res.status(200).json({ message: "Activo eliminado correctamente" });
+      res.status(200).json({ message: "Amenaza eliminada correctamente" });
     } catch (err) {
       res.status(500).json({ message: "Error al eliminar la Amenaza" });
     }
