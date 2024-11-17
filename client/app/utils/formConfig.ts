@@ -208,5 +208,26 @@ export const formConfig = {
     type: "text",
     placeholder: "Ingresa una descripeción",
     required: true,
+  }],
+  controls:[{
+    name: "code",
+    label: "codigo",
+    type: "number",
+    placeholder: "Ingresa el codigo",
+    required: true,
+  },
+  {
+    name: "description_iso",
+    label: "Descripción iso",
+    type: "text",
+    placeholder: "Ingresa una descripción",
+    required: true,
+  },
+  {
+    name: "description_city_hall",
+    label: "Descripción de la alcaldía",
+    type: "text",
+    placeholder: "Ingresa la descripción de la alcaldía",
+    required: true,
   }]
 };

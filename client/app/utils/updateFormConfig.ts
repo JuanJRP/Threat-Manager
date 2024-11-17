@@ -34,6 +34,21 @@ export const updateFormConfig = {
       ],
     },
   ],
+  controls:[
+  {
+    name: "description_iso",
+    label: "Descripción iso",
+    type: "text",
+    placeholder: "Ingresa una descripción",
+    required: true,
+  },
+  {
+    name: "description_city_hall",
+    label: "Descripción de la alcaldía",
+    type: "text",
+    placeholder: "Ingresa la descripción de la alcaldía",
+    required: true,
+  }]
 };
 
 export default updateFormConfig;
