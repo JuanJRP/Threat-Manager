@@ -23,7 +23,7 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="mt-4 flex items-center justify-between px-4">
       <div className="flex items-center gap-2">
-        <span className="text-sm text-gray-700 font-semibold">
+        <span className="text-sm text-black font-bold">
           Mostrando {startIndex + 1} a {Math.min(endIndex, totalItems)} de{" "}
           {totalItems} registros
         </span>
@@ -35,13 +35,13 @@ const Pagination: React.FC<PaginationProps> = ({
           disabled={currentPage === 1}
           className={`p-2 rounded-md ${
             currentPage === 1
-              ? "bg-gray-100 text-gray-400 "
+              ? "bg-gray-100 text-gray-800 "
               : "bg-purple-100 text-purple-700 hover:bg-purple-200"
           }`}
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
-        <span className="px-4 py-2 text-sm text-gray-700 font-semibold">
+        <span className="px-4 py-2 text-sm text-black font-bold">
           Página {currentPage} de {totalPages}
         </span>
         <button
@@ -50,7 +50,7 @@ const Pagination: React.FC<PaginationProps> = ({
           disabled={currentPage === totalPages}
           className={`p-2 rounded-md ${
             currentPage === totalPages
-              ? "bg-gray-100 text-gray-400"
+              ? "bg-gray-100 text-black font-bold"
               : "bg-purple-100 text-purple-700 hover:bg-purple-200"
           }`}
         >

@@ -10,10 +10,18 @@ export const getAllThreats = async () => {
 
 export const createThreat = async (data: Threat) => {
   try {
-    const res = await axios.post("http://localhost:3000/api/threats", data);
+    const res = await axios.post(`${SERVER_URL}/threats`,data);
 
     return res.data;
   } catch (error) {
+    throw error;
+  }
+};
+export const deleteThreat = async (id:string)=>{
+  try{
+    const res = await axios.delete(`${SERVER_URL}/threats/${id}`)
+    return res.data
+  } catch(error){
     throw error;
   }
 };

@@ -6,20 +6,23 @@ interface SearchFilterProps {
   onSearch: (term: string) => void;
 }
 
-const SearchFilter: React.FC<SearchFilterProps> = ({ searchTerm, onSearch }) => {
+const Search: React.FC<SearchFilterProps> = ({ searchTerm, onSearch }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onSearch(e.target.value);
   };
 
-  return (
+return (
+  <div className="">
     <input
       type="text"
-      placeholder="Buscar tipo de riesgos..."
+      placeholder="Buscar amenaza..."
       value={searchTerm}
       onChange={handleChange}
-      className="border rounded p-1 w-1/2" 
+      className="rounded p-1 w-1/2 border-solid border-2 border-black"
     />
-  );
+  </div>
+);
+
 };
 
-export default SearchFilter;
+export default Search;

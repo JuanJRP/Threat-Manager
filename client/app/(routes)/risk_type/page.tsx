@@ -1,136 +1,151 @@
 "use client";
-import { useState } from "react";
-import Modal from "./components/modals/modal";
-import Form from "./components/forms/form";
-import Button from "./components/buttons/button";
-import Table from "./components/tables/table";
-import SearchFilter from "./components/filters/searchfilter";
-import Import from "./components/import/import";
+
+import React, { useState, useEffect } from "react";
+import Navbar from "../../components/Navbar";
+import Button from "../../components/Button";
+import Table from "./components/Table";
+import Modal from "./components/Modal";
+import DeleteModal from "./components/DeleteModal";
 import DatosRiskType from "./interfaces/datosrisktype";
 
-export default function Home() {
+const API_BASE_URL = "http://localhost:3001/api/risk_type";
+
+const RiskTypePage: React.FC = () => {
+  const [data, setData] = useState<DatosRiskType[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [data, setData] = useState<DatosRiskType[]>([
-    { id: 1, name: "Riesgo 1", description: "Descripción del Riesgo 1", classification: "Alto" },
+  const [selectedRisk, setSelectedRisk] = useState<DatosRiskType | null>(null);
 
-  ]);
-  const [editRow, setEditRow] = useState<DatosRiskType | null>(null);
-  const [deleteId, setDeleteId] = useState<number | null>(null);
-  const [formError, setFormError] = useState<string | null>(null);
+  // Obtener datos desde el backend
+  const fetchData = async () => {
+    try {
+      const response = await fetch(API_BASE_URL);
 
-  const handleFormSubmit = (newData: Omit<DatosRiskType, "id">) => {
-    
-    if (!newData.name.trim() || !newData.description.trim()) {
-      setFormError("Todos los campos son obligatorios.");
-      return; 
+      if (!response.ok) {
+        throw new Error("Error al obtener los tipos de riesgo.");
+      }
+
+      const riskTypes: DatosRiskType[] = await response.json();
+      console.log("Datos obtenidos:", riskTypes); // Para depuración
+      setData(riskTypes);
+    } catch (error) {
+      console.error("Error al cargar los datos:", error);
+      alert("No se pudo cargar la lista de tipos de riesgo.");
     }
-
-    if (newData.classification === "Seleccionar") {
-      setFormError("Por favor selecciona una clasificación válida.");
-      return; 
-    }
-
-    // Si estamos en modo edición, actualizamos el registro existente
-    if (editRow) {
-      setData(data.map((row) => (row.id === editRow.id ? { ...row, ...newData } : row)));
-      setEditRow(null);
-    } else {
-      
-      setData([...data, { ...newData, id: data.length + 1 }]);
-    }
-
-   
-    setFormError(null);
-    setIsModalOpen(false);
   };
 
-  const handleEdit = (row: DatosRiskType) => {
-    setEditRow(row);
-    setFormError(null); 
-    setIsModalOpen(true);
-  };
+  // Hook para cargar los datos al montar el componente
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const handleDelete = (id: number) => {
-    setDeleteId(id);
-    setIsDeleteModalOpen(true);
-  };
+  // Agregar un nuevo tipo de riesgo
+  const handleAddData = async (newData: Omit<DatosRiskType, "id">) => {
+    console.log("Intentando agregar tipo de riesgo:", JSON.stringify(newData, null, 2));
+    try {
+      const response = await fetch("http://localhost:3001/api/risk_type", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: newData.name,
+          integrity: newData.integrity,
+          confidentiality: newData.confidentiality,
+          availability: newData.availability,
+        }),
+      });
 
-  const confirmDelete = () => {
-    if (deleteId !== null) {
-      setData(data.filter((row) => row.id !== deleteId));
-      setDeleteId(null);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Error al agregar:", response.status, errorText);
+        throw new Error(`Error al agregar: ${response.status}`);
+      }
+
+      const createdRisk: DatosRiskType = await response.json();
+      console.log("Tipo de riesgo creado:", createdRisk);
+      setData((prevData) => [...prevData, createdRisk]);
+      setIsModalOpen(false); // Cierra el modal después de agregar
+    } catch (error) {
+      console.error("Error al agregar el tipo de riesgo:", error);
+      alert("No se pudo agregar el tipo de riesgo.");
     }
-    setIsDeleteModalOpen(false);
   };
 
-  const filteredData = data.filter((row) =>
-    row.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Eliminar un tipo de riesgo
+  const handleDeleteConfirm = async () => {
+    if (!selectedRisk) return;
+
+    try {
+      console.log("Intentando eliminar tipo de riesgo con ID:", selectedRisk.id);
+      const response = await fetch(`${API_BASE_URL}/${selectedRisk.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al eliminar el tipo de riesgo.");
+      }
+
+      setData((prevData) =>
+        prevData.filter((item) => item.id !== selectedRisk.id)
+      );
+      setIsDeleteModalOpen(false);
+      setSelectedRisk(null);
+    } catch (error) {
+      console.error("Error al eliminar el tipo de riesgo:", error);
+      alert("No se pudo eliminar el tipo de riesgo.");
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-[#ededed] p-8">
-      <h1 className="text-cPurple-500 text-3xl font-bold mb-4 text-center bg-cPurple-100 p-2 rounded">
-        Gestión Tipos de Riesgos
-      </h1>
+    <div>
+      {/* Navbar */}
+      <Navbar title="Gestión de Tipos de Riesgo" />
 
-      <div className="mb-4 flex space-x-2">
-        <SearchFilter searchTerm={searchTerm} onSearch={setSearchTerm} />
-        <Button text="Agregar Tipo de Riesgo" onClick={() => { 
-          setEditRow(null); 
-          setFormError(null); 
-          setIsModalOpen(true); 
-        }} />
-        <Button text="Importar Tipos de Riesgos" onClick={() => setIsImportModalOpen(true)} />
+      {/* Botón para agregar */}
+      <div className="flex justify-center mt-10">
+        <Button value="Agregar Tipo de Riesgo" onClick={() => setIsModalOpen(true)} />
       </div>
 
-      <Table data={filteredData} onEdit={handleEdit} onDelete={handleDelete} />
-
-      {/* Modal para Agregar o Editar Riesgos */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setEditRow(null);
-          setFormError(null); 
-        }}
-        title={editRow ? "Editar Tipo de Riesgo" : "Agregar Tipo de Riesgo"}
-      >
-        {formError && (
-          <div className="bg-red-100 text-red-700 p-2 rounded mb-4">
-            {formError}
-          </div>
-        )}
-        <Form
-          onSubmit={handleFormSubmit}
-          initialData={editRow || { name: "", description: "", classification: "Seleccionar" }}
+      {/* Tabla de datos */}
+      <div className="mt-10 flex justify-center">
+        <Table
+          data={data}
+          onDelete={(id) => {
+            const risk = data.find((item) => item.id === id);
+            if (risk) {
+              setSelectedRisk(risk);
+              setIsDeleteModalOpen(true);
+            }
+          }}
         />
-      </Modal>
+      </div>
 
-      {/* Modal de Confirmación de Eliminación */}
-      <Modal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        title="Confirmación de Eliminación"
-      >
-        <p>¿Está seguro de que desea eliminar este tipo de riesgo?</p>
-        <div className="flex justify-between mt-6 w-full">
-          <Button text="Cancelar" onClick={() => setIsDeleteModalOpen(false)} color="bg-gray-300 hover:bg-gray-400" />
-          <Button text="Eliminar" onClick={confirmDelete} color="bg-red-500 hover:bg-red-700" />
-        </div>
-      </Modal>
+      {/* Modal para agregar */}
+      {isModalOpen && (
+        <Modal
+          name="Agregar Tipo de riesgo"
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleAddData}
+          existingData={data} // Aquí pasamos correctamente los datos existentes
+        />
+      )}
 
-      {/* Modal para Importar Datos */}
-      <Import
-        isOpen={isImportModalOpen}
-        onClose={() => setIsImportModalOpen(false)}
-        onImport={(newData) => {
-          setData((prevData) => [...prevData, ...newData]);
-          setIsImportModalOpen(false);
-        }}
-      />
+        {isDeleteModalOpen && selectedRisk ? (
+          <DeleteModal
+            isOpen={isDeleteModalOpen}
+            name="Confirmar Eliminación"
+            riskName={selectedRisk ? String(selectedRisk.name) : ""} 
+            onConfirm={handleDeleteConfirm}
+            onClose={() => {
+              setIsDeleteModalOpen(false);
+              setSelectedRisk(null);
+            }}
+          />
+        ) : null}
+
     </div>
   );
-}
+};
+
+export default RiskTypePage;

@@ -1,10 +1,10 @@
 import { Loader2, CircleX } from "lucide-react";
 
-interface AddVulnerabilityprops {
+interface EditThreatsprops {
   onClose: () => void; 
   isOpen: boolean;
 }
-const AddVulnerability: React.FC<AddVulnerabilityprops>= ({isOpen,onClose}) => {
+const EditThreats: React.FC<EditThreatsprops>= ({isOpen,onClose}) => {
     
     if (!isOpen) return null;
   
@@ -13,7 +13,7 @@ const AddVulnerability: React.FC<AddVulnerabilityprops>= ({isOpen,onClose}) => {
         <div className="bg-white p-6 w-[700px] max-h-[80vh] overflow-y-auto rounded-2xl border-2 border-black">
           <div className="border-b-2 border-black p-2 flex justify-between items-center mb-5">
             <h2 className="text-2xl font-bold flex-grow text-center">
-              Agregar Vulnerabilidad
+              Editar Amenaza
             </h2>
             <CircleX
               onClick={onClose}
@@ -29,18 +29,12 @@ const AddVulnerability: React.FC<AddVulnerabilityprops>= ({isOpen,onClose}) => {
                 <label>Id</label>
                 <input type="number" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"/>
                 
-                <label>Code</label>
-                <input type="number" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"/>
-                
-                <label>Control Code</label>
-                <input type="number" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"/>
-                
+                <label>Name</label>
+                <input type="text" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"/>
+                                
                 <label>Descripcion</label>
                 <input type="text"  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"/>
                 
-                <label>Clasificacion</label>
-                <input type="text"  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"/>
-
             </div>
             <div className="mt-6 flex justify-end gap-4">
               <button
@@ -58,5 +52,5 @@ const AddVulnerability: React.FC<AddVulnerabilityprops>= ({isOpen,onClose}) => {
     );
   };
   
-  export default AddVulnerability;
+  export default EditThreats;
   
