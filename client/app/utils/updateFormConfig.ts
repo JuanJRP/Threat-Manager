@@ -48,7 +48,21 @@ export const updateFormConfig = {
     type: "text",
     placeholder: "Ingresa la descripción de la alcaldía",
     required: true,
-  }]
+  }],
+  threats:[{
+    name: "name",
+    label: "Nombre",
+    type: "text",
+    placeholder: "Ingresa un nombre",
+    required: true,
+  },
+  {
+    name: "description",
+    label: "Descripción",
+    type: "text",
+    placeholder: "Ingresa una descripeción",
+    required: true,
+  }],
 };
 
 export default updateFormConfig;
