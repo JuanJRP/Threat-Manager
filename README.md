@@ -69,6 +69,7 @@ npx prisma studio
 - **Manuela Martínez loaiza**
 - **David Alejandro Chica**
 - **Juan Manuel Almanza**
+- **Juan Manuel Morales Gonzalez**
   
 ### Back-End
 - **Jorge Alejandro Zapata Sanchez**
