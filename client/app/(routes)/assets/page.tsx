@@ -81,26 +81,22 @@ const Page = () => {
     setFilteredAssets(filtered);
   }, [searchQuery, assets]);
 
-  const handleCSVImport = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleCSVImport = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     Papa.parse(file, {
       complete: async (results) => {
-        if (
-          results.data &&
-          Array.isArray(results.data) &&
-          results.data.length > 0
-        ) {
-          const csvColumns = Object.keys(results.data[0] as object).map(
-            (key) => ({
-              key,
-              label: key.charAt(0).toUpperCase() + key.slice(1),
-              visible: true,
-            })
-          );
+        if (results.data && Array.isArray(results.data) && results.data.length > 0) {
+          // Obtener solo las columnas que existen en el CSV
+          const csvHeaders = Object.keys(results.data[0] as object);
+          
+          // Actualizar las columnas visibles en la UI
+          const csvColumns = csvHeaders.map((key) => ({
+            key,
+            label: key.charAt(0).toUpperCase() + key.slice(1),
+            visible: true,
+          }));
 
           setColumns((prev) => {
             const updatedColumns = [...prev];
@@ -112,44 +108,57 @@ const Page = () => {
             return updatedColumns;
           });
 
+          // Procesar cada fila del CSV
           for (const row of results.data) {
-            const asset: Partial<Asset> = {};
-            csvColumns.forEach((col) => {
-              if (col.key !== "id") {
-                asset[col.key] = (row as { [key: string]: any })[col.key] || "";
+            // Crear un objeto solo con los campos que existen en el CSV
+            const asset: { [key: string]: any } = {};
+            
+            csvHeaders.forEach(header => {
+              const value = (row as { [key: string]: any })[header];
+              // Solo incluir el campo si tiene un valor
+              if (value !== null && value !== undefined && value.toString().trim() !== "") {
+                asset[header] = value;
               }
             });
 
-            try {
-              const response = await fetch(
-                "http://localhost:3001/api/assets/",
-                {
+            // Verificar que tenemos datos para enviar
+            if (Object.keys(asset).length > 0) {
+              console.log('Datos a enviar:', asset); // Para debugging
+
+              try {
+                const response = await fetch("http://localhost:3001/api/assets/", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify(asset),
-                }
-              );
+                });
 
-              if (!response.ok) {
-                console.error(
-                  `Error al procesar fila: ${JSON.stringify(asset)}`
-                );
-                throw new Error(
-                  `Error en la solicitud: ${response.statusText}`
-                );
+                if (!response.ok) {
+                  const errorData = await response.json();
+                  console.error('Error response:', errorData);
+                  throw new Error(`Error en la solicitud: ${response.statusText}`);
+                }
+
+                const responseData = await response.json();
+                console.log('Respuesta del servidor:', responseData); // Para debugging
+              } catch (error) {
+                console.error('Error al enviar datos:', error);
               }
-            } catch (error) {}
+            }
           }
 
-          // Actualizar la lista de assets después de procesar todo el CSV
+          // Actualizar la lista de assets y cerrar el modal
           await fetchAssets();
+          setIsCSVModalOpen(false);
         }
       },
       header: true,
       skipEmptyLines: true,
     });
+    
+    // Limpiar el input file para permitir subir el mismo archivo de nuevo si es necesario
+    event.target.value = '';
   };
 
   const handlePreviousPage = () => {
