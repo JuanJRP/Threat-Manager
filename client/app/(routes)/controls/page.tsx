@@ -1,13 +1,13 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { createControl, deleteControl, getAllControls } from "./controlServices";
+import { createControl, deleteControl, getAllControls, updateControl } from "./controlServices";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import CreateForm from "@/app/components/CreateForm";
 import useModalStore from "@/app/store/modalStore";
 import Table from "@/app/components/Table";
 import Loading from "@/app/components/Loading";
-import Error from "@/app/components/Error";
+import Error from "@/app/components/ErrorComponent";
 import { LuPlus, LuAlertTriangle } from "react-icons/lu";
 
 import Link from "next/link";
@@ -44,17 +44,20 @@ const ControlsPage = () => {
         <Table
           data={controls}
           columns={[
+            "id",
             "code",
             "description_iso",
             "description_city_hall"
           ]}
           columnNames={{
+            ["id"]: "id",
             ["code"]: "Codigo",
             ["description_iso"]: "Descripción de la iso",
             ["description_city_hall"]: "Descripción de la alcaldía"
           }}
           details={"controls"}
           deleteFunction={deleteControl}
+          updateFunction={updateControl}
         />
       </div>
       <Modal name="Controles">
