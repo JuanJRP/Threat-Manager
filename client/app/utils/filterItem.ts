@@ -3,7 +3,7 @@ const filterItemByFormConfig = (
   allowedFields: string[]
 ) => {
   return Object.keys(item).reduce((filteredItem, key) => {
-    if (allowedFields.includes(key)) {
+    if (allowedFields?.includes(key)) {
         filteredItem[key] = item[key];
     }
     return filteredItem;
