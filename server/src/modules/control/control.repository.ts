@@ -1,8 +1,9 @@
+import { Prisma } from "@prisma/client";
 import prisma from "../../database/prisma";
 import { ControlDTO, UpdateControlDTO } from "./control.models";
 
 export class ControlRepository {
-  async createControl(control: ControlDTO) {
+  async createControl(control: Prisma.ControlCreateInput) {
     return prisma.control.create({ data: control });
   }
 
@@ -26,7 +27,7 @@ export class ControlRepository {
     });
   }
 
-  async updateControlById(id: number, data: UpdateControlDTO) {
+  async updateControlById(id: number, data: Prisma.ControlUpdateInput) {
     return prisma.control.update({
       where: { id },
       data,

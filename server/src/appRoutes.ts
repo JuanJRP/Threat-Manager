@@ -24,6 +24,6 @@ router.use("/assets_type", assetTypeRoutes);
 router.use("/auth", AuthRoutes);
 router.use("/vulnerability", vulnerabilitiesRouter);
 router.use("/control", controlsRouter);
-router.use("/users", authMiddleware.verifyToken, userRoutes);
+router.use("/users", userRoutes);
 
 export { router as appRoutes };

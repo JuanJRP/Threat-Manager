@@ -32,14 +32,6 @@ const UserHomeActions = () => {
           icon={<FaClipboardList />}
         />
       </Link>
-      <Link href="/controls">
-        <Button
-          value="Controles"
-          color="bg-cPurple-600"
-          hover="hover:bg-cPurple-800"
-          icon={<FaClipboardList />}
-        />
-      </Link>
     </>
   );
 };

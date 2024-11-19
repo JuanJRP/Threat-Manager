@@ -1,168 +1,82 @@
-import axios, { AxiosError, AxiosInstance } from 'axios';
+import { SERVER_URL } from "../utils/envFiles";
+import { useAuthStore } from "../store/authStore";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import api from "../utils/axiosCfg";
+import { decode } from "punycode";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-
-export interface LoginCredentials {
-  username?: string;
-  email?: string;
+interface LoginData {
+  username: string;
   password: string;
 }
 
-export interface RegisterCredentials {
-  username: string;
+interface RegisterData extends LoginData {
   email: string;
-  password: string;
   first_name: string;
   last_name: string;
 }
 
-export interface AuthResponse {
-  accessToken: string;
-}
+export const getUser = async (email: string | null) => {
+  const res = await api.get(`${SERVER_URL}/users/email/${email}`);
 
-class AuthService {
-  private api: AxiosInstance;
-  private refreshTokenTimeout?: NodeJS.Timeout;
+  return res.data;
+};
 
-  constructor() {
-    this.api = axios.create({
-      baseURL: API_URL,
-      //withCredentials: true
-    });
+const login = async (credentials: LoginData) => {
+  const res = await api.post(`${SERVER_URL}/auth/login`, credentials);
 
-    // Interceptor para agregar el token a todas las peticiones
-    this.api.interceptors.request.use((config) => {
-      const token = this.getToken();
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-      return config;
-    });
+  return res.data;
+};
 
-    // Interceptor para manejar errores de token y renovación automática
-    this.api.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        const originalRequest = error.config;
+const register = async (user: RegisterData) => {
+  const res = await api.post(`${SERVER_URL}/auth/register`, user);
 
-        // Si el error es 401 y no es un intento de refresh
-        if (error.response?.status === 401 && !originalRequest._retry) {
-          originalRequest._retry = true;
+  return res.data;
+};
 
-          try {
-            // Intentar renovar el token
-            const newToken = await this.refreshAccessToken();
-            
-            if (newToken) {
-              // Actualizar el token en el request original y reintentar
-              this.setToken(newToken);
-              originalRequest.headers.Authorization = `Bearer ${newToken}`;
-              return this.api(originalRequest);
-            }
-          } catch (refreshError) {
-            // Si falla la renovación, limpiar la autenticación
-            this.clearAuth();
-            window.location.href = '/login';
-            return Promise.reject(refreshError);
-          }
-        }
+const refreshToken = async () => {
+  const res = await api.post(`${SERVER_URL}/auth/refresh`);
 
-        return Promise.reject(error);
-      }
-    );
-  }
+  return res.data;
+};
 
-  async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    try {
-      const response = await this.api.post<AuthResponse>('/auth/login', credentials);
-      this.setToken(response.data.accessToken);
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
+export const logout = async () => {
+  await api.post(`${SERVER_URL}/auth/logout`);
+};
 
-  async register(credentials: RegisterCredentials): Promise<AuthResponse> {
-    try {
-      const response = await this.api.post<AuthResponse>('/auth/register', credentials);
-      this.setToken(response.data.accessToken);
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
+export const useLogin = () => {
+  const setIsAutenticated = useAuthStore((state) => state.setIsAuthenticated);
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
+  const accessToken = useAuthStore((state) => state.accessToken);
 
-  async logout(): Promise<void> {
-    try {
-      await this.api.post('/auth/logout');
-      this.clearAuth();
-    } catch (error) {
-      // Incluso si hay error, limpiamos la auth local
-      this.clearAuth();
-      throw this.handleError(error);
-    }
-  }
+  return useMutation({
+    mutationFn: login,
+    onSuccess(data) {
+      setIsAutenticated(true);
+      setAccessToken(data.accessToken);
 
-  private async refreshAccessToken(): Promise<string> {
-    try {
-      const response = await this.api.post<AuthResponse>('/auth/refresh');
-      return response.data.accessToken;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
+      console.log(data);
+    },
+    onError() {
+      setIsAutenticated(false);
+    },
+  });
+};
 
-  async verifyToken(): Promise<boolean> {
-    try {
-      const token = this.getToken();
-      if (!token) return false;
+export const useRegister = () => {
+  const setIsAutenticated = useAuthStore((state) => state.setIsAuthenticated);
+  return useMutation({
+    mutationFn: register,
+    onSuccess: (data) => {
+      setIsAutenticated(true);
+      console.log(data);
+    },
+  });
+};
 
-      // Intenta hacer una petición protegida
-      await this.getCurrentUser();
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
-  async getCurrentUser() {
-    try {
-      const response = await this.api.get('/auth/me');
-      return response.data;
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  isAuthenticated(): boolean {
-    return !!this.getToken();
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('accessToken');
-  }
-
-  private setToken(token: string): void {
-    localStorage.setItem('accessToken', token);
-  }
-
-  private clearAuth(): void {
-    localStorage.removeItem('accessToken');
-    if (this.refreshTokenTimeout) {
-      clearTimeout(this.refreshTokenTimeout);
-    }
-  }
-
-  private handleError(error: unknown): Error {
-    if (axios.isAxiosError(error)) {
-      const axiosError = error as AxiosError<{ message: string }>;
-      if (axiosError.response?.data?.message) {
-        return new Error(axiosError.response.data.message);
-      }
-      return new Error(axiosError.message);
-    }
-    return new Error('An unexpected error occurred');
-  }
-}
-
-export default new AuthService();
+export const useRefresToken = () => {
+  return useQuery({
+    queryKey: ["refreshToken"],
+    queryFn: refreshToken,
+    refetchInterval: 1000 * 60 * 15,
+  });
+};

@@ -88,7 +88,7 @@ const Table = <T,>({
       setTimeout(() => setMessage(null), 3000);
     },
   });
-
+console.log("data", data)
   return (
     <div className="w-11/12 mx-auto p-4  flex flex-col">
       <div className="overflow-auto">
@@ -162,6 +162,7 @@ const Table = <T,>({
                         deleteMutation.mutate(getNestedValue(row, "id"))
                       }
                     />
+                    
                     {message && (
                       <div
                         className={`mt-4 ${

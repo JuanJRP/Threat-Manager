@@ -10,11 +10,9 @@ import {
 import Link from "next/link";
 
 const AdminHomeActions = () => {
-  const clientURL = process.env.CLIENT_HOST;
-  console.log(process.env.CLIENT_HOST);
   return (
     <>
-      <Link href={`${clientURL}asset-types`}>
+      <Link href={`/asset-types`}>
         <Button
           value="Gestión de tipo de Activos"
           color="bg-cPurple-600"
@@ -22,14 +20,15 @@ const AdminHomeActions = () => {
           icon={<FaDatabase />}
         />
       </Link>
-      <Link href={`${clientURL}controls`}></Link>
-      <Button
-        value="Controles"
-        color="bg-cPurple-600"
-        hover="hover:bg-cPurple-800"
-        icon={<FaShieldAlt />}
-      />
-      <Link href={`${clientURL}vulnerability`}>
+      <Link href={`/controls`}>
+        <Button
+          value="Controles"
+          color="bg-cPurple-600"
+          hover="hover:bg-cPurple-800"
+          icon={<FaShieldAlt />}
+        />
+      </Link>
+      <Link href={`/vulnerability`}>
         <Button
           value="Vulnerabilidades"
           color="bg-cPurple-600"
@@ -37,7 +36,7 @@ const AdminHomeActions = () => {
           icon={<FaClipboardList />}
         />
       </Link>
-      <Link href={`${clientURL}threats`}>
+      <Link href={`/threats`}>
         <Button
           value="Amenazas"
           color="bg-cPurple-600"
@@ -45,7 +44,7 @@ const AdminHomeActions = () => {
           icon={<FaUserCog />}
         />
       </Link>
-      <Link href={`${clientURL}risk_type`}>
+      <Link href={`/risk_type`}>
         <Button
           value="Tipo de riesgos"
           color="bg-cPurple-600"

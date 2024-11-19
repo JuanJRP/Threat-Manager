@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
-import DatosRiskType from "../../risk_type/interfaces/datosrisktype";
+import DatosRiskType from "../interfaces/datosrisktype";
 import Button from "../../../components/Button";
 
 type ModalFormProps = {

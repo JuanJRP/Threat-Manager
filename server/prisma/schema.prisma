@@ -76,7 +76,7 @@ model Action_plan {
   treatment           String    @db.VarChar(255)
   action_plan         String    @db.Text
   responsible         String    @db.VarChar(255)
-  implementation_date DateTime?
+  implementation_date DateTime? 
   control_tracking    String?   @db.Text
   state               String    @db.VarChar(255) // Pendiente, En proceso, Finalizado ENUM
   monitoring          String?   @db.Text

@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import UserService from "./user.services";
+import { Prisma } from "@prisma/client";
 
 const userService = new UserService();
 
@@ -21,6 +22,19 @@ class UserController {
   async getById(req: Request, res: Response, next: NextFunction) {
     try {
       const user = await this.userService.getById(Number(req.params.id));
+      res.status(200).json({ user });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getByKey(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user = await this.userService.getByKey(
+        req.params.key as keyof Prisma.UserWhereInput,
+        req.params.value
+      );
+
       res.status(200).json({ user });
     } catch (err) {
       next(err);

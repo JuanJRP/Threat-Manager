@@ -3,7 +3,7 @@ import AuthService from "./AuthService";
 const COOKIE_OPTIONS: CookieOptions = {
   httpOnly: true,
   sameSite: "none",
-  secure: process.env.NODE_ENV === "production",
+  secure: false,
 };
 
 const authService = new AuthService();

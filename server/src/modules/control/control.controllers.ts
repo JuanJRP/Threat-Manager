@@ -1,10 +1,11 @@
 import ControlService from "./control.services";
 import { ControlDTO, UpdateControlDTO } from "./control.models";
 import { Request, Response } from "express";
+import { Prisma } from "@prisma/client";
 
 export class ControlController {
   async createControl(req: Request, res: Response): Promise<void> {
-    const controlDTO: ControlDTO = req.body;
+    const controlDTO: Prisma.ControlCreateInput = req.body;
     try {
       const control = await ControlService.createControl(controlDTO);
       res.status(201).json(control);
@@ -34,7 +35,7 @@ export class ControlController {
 
   async updateControlById(req: Request, res: Response): Promise<void> {
     const id = parseInt(req.params.id);
-    const data: Partial<UpdateControlDTO> = req.body;
+    const data: Prisma.ControlUpdateInput = req.body;
     try {
       const control = await ControlService.updateControlById(id, data);
       res.status(200).json(control);

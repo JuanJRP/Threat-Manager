@@ -83,7 +83,7 @@ export class AssetController {
     const id = parseInt(req.params.id);
     try {
       const asset = await AssetService.GetAssetById(id);
-      console.log(id);
+      
       res.status(200).json(asset);
     } catch (err) {
       res.status(500).json({ message: "Error al obtener el Activo", err });
