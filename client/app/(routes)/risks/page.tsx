@@ -1,12 +1,17 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { createRisk, deleteRisk, getAllRisks, updateRisk } from "./riskServices";
+import {
+  createRisk,
+  deleteRisk,
+  getAllRisks,
+  updateRisk,
+} from "../../services/riskServices";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import CreateForm from "@/app/components/CreateForm";
 import { getAllRiskTypes } from "../risk_type/riskTypeServices";
 import { getAllThreats } from "../threats/threatServices";
-import { getAllAssetTypes } from "../asset-types/assetTypeServices";
+import { getAllAssetTypes } from "..//asset-types/assetTypeServices";
 import { getAllVulnerabilities } from "../vulnerability/vulnerabilityServices";
 import useModalStore from "@/app/store/modalStore";
 import Table from "@/app/components/Table";
@@ -14,6 +19,10 @@ import Loading from "@/app/components/Loading";
 import ErrorComponent from "@/app/components/ErrorComponent";
 import { LuPlus, LuAlertTriangle } from "react-icons/lu";
 import Link from "next/link";
+import { getUser } from "@/app/services/authService";
+import { useAuthStore } from "@/app/store/authStore";
+import decode from "@/app/utils/decodeToken";
+import { Risk } from "@/app/interfaces/riskInterface";
 
 const RisksPage = () => {
   const { openModal } = useModalStore();

@@ -8,12 +8,14 @@ interface FormProps {
   module: keyof typeof formConfig;
   fetchFunctions?: Array<{ key: string; fetchFunction: () => Promise<any> }>;
   createData?: (data: any) => Promise<any>;
+  user?: any;
 }
 
-const CreateForm = ({ module, fetchFunctions, createData }: FormProps) => {
+const CreateForm = ({ module, fetchFunctions, createData, user = null }: FormProps) => {
   const [formData, setFormData] = React.useState<{ [key: string]: any }>({});
   const [message, setMessage] = React.useState<string | null>(null);
 
+  
   const schema: any = formConfig[module];
 
   const fetchResults: any = {};
@@ -31,7 +33,7 @@ const CreateForm = ({ module, fetchFunctions, createData }: FormProps) => {
       createData
         ? createData({
             ...data,
-            //user_id: 1,
+            user_id: 4,
           })
         : Promise.reject("createData is undefined"),
     onError: (error) => {
@@ -124,6 +126,7 @@ console.log(formData)
               </div>
             );
           }
+          
 
           return (
             <div key={field.name} className="flex flex-col">

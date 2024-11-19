@@ -17,7 +17,7 @@ import useModalStore from "@/app/store/modalStore";
 import { warnOptionHasBeenMovedOutOfExperimental } from "next/dist/server/config";
 import Table from "@/app/components/Table";
 import Loading from "@/app/components/Loading";
-import ErrorComponent from "@/app/components/Error"; 
+import ErrorComponent from "@/app/components/ErrorComponent"; 
 
 const Page: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");

@@ -17,6 +17,7 @@ interface FormProps {
 
 const UpdateForm = ({ id, module, updateData, item }: FormProps) => {
   const queryClient = useQueryClient();
+
   const { closeUpdateModal } = useModalStore();
 
   const getProps = updateFormConfig
@@ -24,8 +25,6 @@ const UpdateForm = ({ id, module, updateData, item }: FormProps) => {
     : formConfig[module].map((field) => field.name);
 
   const filteredItem = filterItemByFormConfig(item, getProps);
-
-  console.log(filteredItem);
 
   const [formData, setFormData] = useState<{ [key: string]: any }>(
     filteredItem

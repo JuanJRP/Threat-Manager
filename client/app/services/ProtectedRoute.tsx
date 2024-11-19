@@ -1,35 +1,24 @@
-import { useEffect, ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
-import authService from '@/app/services/authService';
+"use client";
+import React, { useEffect } from "react";
+import { useAuthStore } from "../store/authStore";
+import { usePathname, useRouter } from "next/navigation";
 
-interface ProtectedRouteProps {
-  children: ReactNode;
-}
+const publicRoutes = ["/auth/login", "/auth/register"];
 
-const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // Aquí puedes agregar una llamada a tu API para verificar si el token es válido
-        const token = localStorage.getItem('accessToken');
-        if (!token) {
-          router.push('/login');
-          return;
-        }
+    if (!isAuthenticated && !publicRoutes.includes(pathname)) {
+      router.push("/auth/login");
+    }
+  }, [isAuthenticated, pathname]);
 
-        // Opcional: Verificar la validez del token con el backend
-        await authService.verifyToken();
-      } catch (error) {
-        localStorage.removeItem('accessToken');
-        router.push('/login');
-      }
-    };
-
-    checkAuth();
-  }, [router]);
-
+  if (!isAuthenticated && !publicRoutes.includes(pathname)) {
+    return null;
+  }
   return <>{children}</>;
 };
 

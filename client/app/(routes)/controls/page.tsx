@@ -7,7 +7,7 @@ import CreateForm from "@/app/components/CreateForm";
 import useModalStore from "@/app/store/modalStore";
 import Table from "@/app/components/Table";
 import Loading from "@/app/components/Loading";
-import Error from "@/app/components/Error";
+import ErrorComponent from "@/app/components/ErrorComponent";
 import { LuPlus, LuAlertTriangle } from "react-icons/lu";
 
 import Link from "next/link";
