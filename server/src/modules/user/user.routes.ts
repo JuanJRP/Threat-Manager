@@ -18,6 +18,7 @@ router.post(
   ValidateRequest(createUserSchema),
   userController.create.bind(userController)
 );
+router.get("/:key/:value", userController.getByKey.bind(userController));
 router.patch(
   "/:id",
   ValidateRequest(updateUserSchema),

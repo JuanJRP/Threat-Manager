@@ -164,10 +164,6 @@ class RiskCalculatedAtributes {
     const foundRange = ranges.find(
       (range) => result >= range.min && result <= range.max
     );
-    console.log(inherentImpact - cualification);
-    console.log(cualification);
-    console.log(result);
-    console.log(foundRange);
     return foundRange ? foundRange.result : "Unknown";
   }
 

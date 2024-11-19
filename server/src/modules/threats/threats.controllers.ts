@@ -26,7 +26,7 @@ export class ThreathController {
     const id = parseInt(req.params.id);
     try {
       const threath = await ThreathService.GetThreathById(id);
-      console.log(id);
+      
       res.status(200).json(threath);
     } catch (err) {
       res.status(500).json({ message: "Error al obtener la Amenaza", err });
