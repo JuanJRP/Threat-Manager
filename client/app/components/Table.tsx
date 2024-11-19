@@ -59,7 +59,9 @@ const Table = <T,>({
   useEffect(() => {
     setTotalItems(data?.length);
   }, [data, setTotalItems]);
+     
 
+  
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const paginatedData = data?.slice(

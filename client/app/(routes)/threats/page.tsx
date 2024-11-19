@@ -10,14 +10,14 @@ import AddThreats from "./components/modals/addThreats";
 import EditThreats from "./components/modals/editThreats";
 import { Rows } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { createThreat, deleteThreat, getAllThreats } from "./threatServices";
+import { createThreat, deleteThreat, getAllThreats, updateThreat } from "./threatServices";
 import Modal from "@/app/components/Modal";
 import CreateForm from "@/app/components/CreateForm";
 import useModalStore from "@/app/store/modalStore";
 import { warnOptionHasBeenMovedOutOfExperimental } from "next/dist/server/config";
 import Table from "@/app/components/Table";
 import Loading from "@/app/components/Loading";
-import ErrorComponent from "@/app/components/Error"; 
+import ErrorComponent from "@/app/components/ErrorComponent";
 
 const Page: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -75,6 +75,7 @@ if (isError) return <ErrorComponent/>
         columnNames={{ ["name"]: "Nombre", ["description"]: "Descripción" }}
         details={"threats"}
         deleteFunction={deleteThreat}
+        updateFunction={updateThreat}
       />
       <Modal name="Amenazas">
         <CreateForm module="threats" createData={createThreat} />

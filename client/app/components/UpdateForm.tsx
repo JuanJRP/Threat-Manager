@@ -20,8 +20,8 @@ const UpdateForm = ({ id, module, updateData, item }: FormProps) => {
   const { closeUpdateModal } = useModalStore();
 
   const getProps = updateFormConfig
-    ? updateFormConfig[module].map((field) => field.name)
-    : formConfig[module].map((field) => field.name);
+    ? updateFormConfig[module]?.map((field) => field.name)
+    : formConfig[module]?.map((field) => field.name);
 
   const filteredItem = filterItemByFormConfig(item, getProps);
 
@@ -68,7 +68,7 @@ const UpdateForm = ({ id, module, updateData, item }: FormProps) => {
         onSubmit={handleSubmit}
         className="grid grid-cols-2 gap-x-8 w-full max-w-lg max-h-[80vh] overflow-y-auto p-4"
       >
-        {schema.map((field: any) => (
+        {schema?.map((field: any) => (
           <div key={field.name} className="flex flex-col">
             <label>{field.label}</label>
             {field.type === "select" ? (
