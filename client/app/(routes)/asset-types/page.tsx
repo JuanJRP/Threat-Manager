@@ -1,47 +1,80 @@
 "use client";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar";
-import Search from "./components/Search";
-import Table from "./components/Table";
 import Button from "../../components/Button";
 import { FaPlusCircle } from "react-icons/fa";
 import useModalStore from "@/app/store/modalStore";
-import Modal from "../../components/Modal";
-import Input from "./components/Input";
-import Select from "./components/Select";
+import { useQuery } from "@tanstack/react-query";
+import {
+  CreateAssetTypes,
+  DeleteAssetTypesById,
+  EditAssetTypesById,
+  getAllAssetTypes,
+} from "./assetTypeServices";
+import Table from "@/app/components/Table";
+import Modal from "@/app/components/Modal";
+import CreateForm from "@/app/components/CreateForm";
+import SearchBar from "./components/SearchBar";
+import { AssetType } from "./components/interface";
+import Loading from "@/app/components/Loading";
+import ErrorComponent from "@/app/components/ErrorComponent";
 
 export default function Home() {
+  const [isUserSearching, setIsUserSearching] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const { openModal } = useModalStore();
+  const { data: assetTypes = [], isLoading, isError} = useQuery<AssetType[]>({
+    queryKey: ["assets_type"],
+    queryFn: async () => getAllAssetTypes(),
+  });
+
+  if (isLoading) return <Loading />;
+  if (isError) return <ErrorComponent />;
+
+  const filteredAssetsTypes = (): AssetType[] => {
+    if (!searchQuery) return assetTypes;
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    return assetTypes.filter(
+      (asset) =>
+        asset.name.toLowerCase().includes(lowerCaseQuery) ||
+        asset.description.toLowerCase().includes(lowerCaseQuery) ||
+        asset.category.toLowerCase().includes(lowerCaseQuery)
+    );
+  };
+
+  const dataToShow = !isUserSearching ? assetTypes : filteredAssetsTypes();
+
   return (
     <div>
       <Navbar title="TIPO DE ACTIVO" />
       <header className="flex items-center justify-center mt-16 mb-8">
         <div className="flex flex-col items-center justify-center gap-5 bg-cPurple-100 h-64 w-[670px] p-4 py-10 rounded-xl shadow-black shadow-md ">
-          <Search />
-          <Button value="Agregar Tipo de Activo" icon=<FaPlusCircle className="mr-2 size-6" /> onClick={openModal} />
+          <SearchBar
+            setIsUserSearching={setIsUserSearching}
+            setSearchQuery={setSearchQuery}
+          />
+          <Button
+            value="Agregar tipo de activo"
+            onClick={openModal}
+            icon={<FaPlusCircle />}
+          />
         </div>
       </header>
-      <div className="flex text-center justify-center">
-
-        <Modal name="Agregar Tipo de Activo">
-          <main className="flex">
-            <div className="flex flex-col gap-10 mr-10">
-              <Input title="Name" type="text" placeholder="Escribe..." />
-              <Input title="Description" type="text" placeholder="Escribe..." />
-            </div>
-
-            <div className="flex flex-col gap-10 mr-10">
-              <Input title="Category" type="text" placeholder="Escribe..." />
-              <Input title="Asset " type="date" placeholder="dd/mm/yyyy"/>
-              <Select title="Risk" option="Seleccionar" />
-            </div>
-            
-          </main>
-          <Button value="Agregar"/>
-        </Modal>
-      </div>
-      <main>
-        <Table />
-      </main>
+      <Table
+        data={dataToShow}
+        columns={["name", "description", "category"]}
+        columnNames={{
+          ["name"]: "Nombre",
+          ["description"]: "Descripcion",
+          ["category"]: "Categoria",
+        }}
+        details={"assets_type"}
+        deleteFunction={DeleteAssetTypesById}
+        updateFunction={EditAssetTypesById}
+      />
+      <Modal name="Planes de accion">
+        <CreateForm module="assets_type" createData={CreateAssetTypes} />
+      </Modal>
     </div>
   );
 }

@@ -19,7 +19,7 @@ router.use("/risks", risksRouter);
 router.use("/risk_type", riskTypeRouter);
 router.use("/assets", assetsRouter);
 router.use("/threats", threathsRouter);
-router.use("/action-plans", actionPlanRouter);
+router.use("/action_plans", actionPlanRouter);
 router.use("/assets_type", assetTypeRoutes);
 router.use("/auth", AuthRoutes);
 router.use("/vulnerability", vulnerabilitiesRouter);

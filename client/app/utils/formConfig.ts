@@ -63,16 +63,138 @@ export const formConfig = {
     },
   ],
 
-  threats: [
+
+  threats:[{
+    name: "name",
+    label: "Nombre",
+    type: "text",
+    placeholder: "Ingresa un nombre",
+    required: true,
+  },
+  {
+    name: "description",
+    label: "Descripción",
+    type: "text",
+    placeholder: "Ingresa una descripeción",
+    required: true,
+  }],
+  controls:[{
+    name: "code",
+    label: "codigo",
+    type: "number",
+    placeholder: "Ingresa el codigo",
+    required: true,
+  },
+  {
+    name: "description_iso",
+    label: "Descripción iso",
+    type: "text",
+    placeholder: "Ingresa una descripción",
+    required: true,
+  },
+  {
+    name: "description_city_hall",
+    label: "Descripción de la alcaldía",
+    type: "text",
+    placeholder: "Ingresa la descripción de la alcaldía",
+    required: true,
+  }], 
+
+  action_plans:[{
+    name: "residual_risk",
+    label: "Riesgo residual",
+    type: "text",
+    placeholder: "Ingresa el riesgo residual",
+    required: true,
+  },
+  {
+    name: "treatment",
+    label: "Tratamiento",
+    type: "text",
+    placeholder: "Ingresa el Tratamiento",
+    required: true,
+  },
+  {
+    name: "action_plan",
+    label: "Plan de accion",
+    type: "text",
+    placeholder: "Ingresa el Plan de accion",
+    required: true,
+  },
+  {
+    name: "responsible",
+    label: "Responsable",
+    type: "text",
+    placeholder: "Ingresa el responsable",
+    required: true,
+  },
+  {
+    name: "implementation_date",
+    label: "Fecha de implementacion",
+    type: "datetime-local",
+    placeholder: "Ingresa la fecha de implementacion",
+
+  },
+  {
+    name: "control_tracking",
+    label: "Rastreo de control",
+    type: "text",
+    placeholder: "Ingresa la fecha de rastreo de control",
+    required: true,
+  },
+  {
+    name: "state",
+    label: "Estado",
+    type: "select",
+    staticOptions: [
+      { id: 1, name: "Pendiente" },
+      { id: 2, name: "En proceso" },
+      { id: 3, name: "Finalizado" },
+    ],
+  },
+  {
+    name: "monitoring",
+    label: "Monitoreo",
+    type: "text",
+    placeholder: "Ingresa el monitoreo",
+    required: true,
+  },
+  {
+    name: "monitoring_date",
+    label: "Fecha de Monitoreo",
+    type: "datetime-local",
+    placeholder: "Selecciona la fecha de monitoreo",
+
+  },
+  {
+    name: "indicator",
+    label: "Indicador",
+    type: "text",
+    placeholder: "Ingresa el indicador",
+    required: true,
+  },
+  {
+    name: "risk_id",
+    label: "Riesgo",
+    type: "select",
+    options:"risk",
+    required: true,
+  },
+  ],
+  assets_type:[
+
     {
       name: "name",
       label: "Nombre",
       type: "text",
-      placeholder: "Ingresa un nombre",
+
+      placeholder: "Ingresa el Nombre",
+
       required: true,
     },
     {
       name: "description",
+
       label: "Descripción",
       type: "text",
       placeholder: "Ingresa una descripeción",
@@ -102,4 +224,19 @@ export const formConfig = {
       required: true,
     },
   ],
+
+      label: "Descripcion",
+      type: "text",
+      placeholder: "Ingresa una descripcion",
+      required: true,
+    },
+    {
+      name: "category",
+      label: "Categoria",
+      type: "text",
+      placeholder: "Ingresa una categoria",
+      required: true,
+    },
+  ]
+
 };
