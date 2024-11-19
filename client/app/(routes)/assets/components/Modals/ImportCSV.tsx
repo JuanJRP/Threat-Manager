@@ -12,6 +12,10 @@ const CSVImportModal = ({ isOpen, onClose, onFileSelect }: CSVImportModalProps) 
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const handleExaminarClick = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="bg-white rounded-3xl w-[400px] p-6 relative">
@@ -31,31 +35,26 @@ const CSVImportModal = ({ isOpen, onClose, onFileSelect }: CSVImportModalProps) 
 
         {/* Description */}
         <p className="text-center text-sm mb-6">
-          Sube unicamente archivos en formato CSV o Excel. Asegúrate de que las columnas estén en el siguiente orden.
+          Sube unicamente archivos en formato CSV. Asegúrate de que las columnas estén en el siguiente orden.
         </p>
+
+        {/* File Input */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".csv,.xlsx,.xls"
+          onChange={onFileSelect}
+          className="hidden"
+          title="Selecciona un archivo CSV"
+        />
 
         {/* Buttons */}
         <div className="space-y-3">
-          <label className="block">
-            <span className="sr-only">Examinar archivos</span>
-            <input
-              type="file"
-              accept=".csv,.xlsx,.xls"
-              onChange={onFileSelect}
-              className="hidden"
-            />
-            <button
-              className="w-full py-3 px-6 rounded-full bg-purple-500 text-white hover:bg-purple-600 transition-colors"
-            >
-              Examinar
-            </button>
-          </label>
-
           <button
+            onClick={handleExaminarClick}
             className="w-full py-3 px-6 rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors"
-            onClick={() => fileInputRef.current?.click()}
           >
-            Subir Riesgos
+            Examinar
           </button>
         </div>
       </div>

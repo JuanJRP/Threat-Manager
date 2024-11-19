@@ -34,6 +34,7 @@ const Nav: React.FC<NavProps> = ({ title }) => {
           className="flex items-center absolute left-3 hover:brightness-75 transition cursor-pointer"
         >
           <FaRegArrowAltCircleLeft size={"2em"} />
+
         </Link>
 
         {/* Título centrado */}
